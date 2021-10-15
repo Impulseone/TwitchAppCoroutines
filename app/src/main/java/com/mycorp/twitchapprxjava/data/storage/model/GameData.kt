@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.model
+package com.mycorp.twitchapprxjava.data.storage.model
 
 data class GameData(
     val id: Int,

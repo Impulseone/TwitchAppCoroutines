@@ -1,12 +1,13 @@
-package com.mycorp.twitchapprxjava
+package com.mycorp.twitchapprxjava.presentation
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.GameItemViewBinding
-import com.mycorp.twitchapprxjava.model.GameData
+import com.mycorp.twitchapprxjava.data.storage.model.GameData
 
 class GamesListAdapter(private val items: ArrayList<GameData>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -26,7 +27,7 @@ class GamesListAdapter(private val items: ArrayList<GameData>) :
         fun bind(gameData: GameData) {
             GameItemViewBinding.bind(itemView).apply {
                 Glide.with(itemView.context).load(gameData.logoUrl).into(image)
-                gameName.text = "com.mycorp.twitchapprxjava.model.Game: " + gameData.name
+                gameName.text = "Game: " + gameData.name
                 channelsCount.text = "Channels: " + gameData.channelsCount
                 watchersCount.text = "Viewers: " + gameData.watchersCount
             }
@@ -38,5 +39,6 @@ class GamesListAdapter(private val items: ArrayList<GameData>) :
             clear()
             addAll(games)
         }
+        notifyDataSetChanged()
     }
 }

@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.model
+package com.mycorp.twitchapprxjava.data.storage.model
 
 import com.google.gson.annotations.SerializedName
 
