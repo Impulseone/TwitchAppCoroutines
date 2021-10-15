@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
         viewModel =
-            ViewModelProvider(this, MainViewModelFactory(this))[MainActivityViewModel::class.java]
+            ViewModelProvider(this, MainViewModelFactory(applicationContext))[MainActivityViewModel::class.java]
         initGamesListView()
         loadGames()
     }
@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         })
-        viewModel.makeApiCall()
+        viewModel.getGamesFromServer()
+        viewModel.getGamesFromDb()
     }
 }
