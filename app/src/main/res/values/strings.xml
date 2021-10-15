@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TwitchAppRxJava</string>
+    <string name="rate_app">Оценить приложение</string>
 </resources>
