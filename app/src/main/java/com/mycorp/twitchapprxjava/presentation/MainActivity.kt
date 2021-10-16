@@ -1,15 +1,14 @@
 package com.mycorp.twitchapprxjava.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mycorp.twitchapprxjava.databinding.ActivityMainBinding
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
+import com.mycorp.twitchapprxjava.databinding.ActivityMainBinding
 import com.mycorp.twitchapprxjava.presentation.viewModel.MainActivityViewModel
 import com.mycorp.twitchapprxjava.presentation.viewModel.MainViewModelFactory
-
 
 class MainActivity : AppCompatActivity() {
 

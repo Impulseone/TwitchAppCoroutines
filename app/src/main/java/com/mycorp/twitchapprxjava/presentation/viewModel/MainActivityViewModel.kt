@@ -7,13 +7,11 @@ import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
 import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponse
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromNetworkUseCase
-import io.reactivex.FlowableSubscriber
+import io.reactivex.CompletableObserver
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import org.reactivestreams.Subscription
 
 class MainActivityViewModel(
     private val getFromNetworkUseCase: GetFromNetworkUseCase,
@@ -25,7 +23,7 @@ class MainActivityViewModel(
     fun getGamesDataListObserver() = gamesDataList
 
     fun getGamesFromServer() {
-        getFromNetworkUseCase.execute()
+        getFromNetworkUseCase.getGames()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(gameDataFromServerObserver())
@@ -35,7 +33,28 @@ class MainActivityViewModel(
         getFromDbUseCase.execute()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .toObservable()
             .subscribe(gameDataFromDbObserver())
+    }
+
+    private fun gameDataFromDbObserver(): Observer<List<GameDataTable>> {
+        return object : Observer<List<GameDataTable>> {
+            override fun onComplete() {
+                //hide progress indicator .
+            }
+
+            override fun onError(e: Throwable) {
+                e.printStackTrace()
+            }
+
+            override fun onNext(t: List<GameDataTable>) {
+                gamesDataList.postValue(parseGameDataTableToGameData(t))
+            }
+
+            override fun onSubscribe(d: Disposable) {
+                //start showing progress indicator.
+            }
+        }
     }
 
     private fun gameDataFromServerObserver(): Observer<TwitchResponse> {
@@ -50,6 +69,10 @@ class MainActivityViewModel(
 
             override fun onNext(t: TwitchResponse) {
                 gamesDataList.postValue(parseTwitchResponseToGameData(t))
+                getFromNetworkUseCase.insertGames(parseTwitchResponseToGameDataTableList(t))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(insertObserver())
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -58,21 +81,17 @@ class MainActivityViewModel(
         }
     }
 
-    private fun gameDataFromDbObserver(): FlowableSubscriber<List<GameDataTable>> {
-        return object : FlowableSubscriber<List<GameDataTable>> {
-            override fun onSubscribe(s: Subscription) {
-                //start showing progress indicator.
-            }
-
-            override fun onNext(t: List<GameDataTable>?) {
-                gamesDataList.postValue(parseGameDataTableToGameData(t!!))
-            }
-
-            override fun onError(t: Throwable?) {
+    private fun insertObserver(): CompletableObserver {
+        return object : CompletableObserver {
+            override fun onSubscribe(d: Disposable) {
             }
 
             override fun onComplete() {
-                //hide progress indicator.
+                print("insert success")
+            }
+
+            override fun onError(e: Throwable) {
+                e.printStackTrace()
             }
         }
     }
@@ -103,6 +122,22 @@ class MainActivityViewModel(
                     item.logoUrl,
                     item.channelsCount,
                     item.watchersCount
+                )
+            )
+        }
+        return gamesData
+    }
+
+    private fun parseTwitchResponseToGameDataTableList(twitchResponse: TwitchResponse): List<GameDataTable> {
+        val gamesData: MutableList<GameDataTable> = mutableListOf()
+        for (item in twitchResponse.top!!) {
+            gamesData.add(
+                GameDataTable(
+                    item?.game?.id!!,
+                    item.game.name!!,
+                    item.game.box?.large!!,
+                    item.channels!!,
+                    item.viewers!!
                 )
             )
         }
