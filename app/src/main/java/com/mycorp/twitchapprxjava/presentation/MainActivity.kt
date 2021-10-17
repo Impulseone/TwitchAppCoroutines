@@ -1,15 +1,15 @@
 package com.mycorp.twitchapprxjava.presentation
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mycorp.twitchapprxjava.databinding.ActivityMainBinding
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
+import com.mycorp.twitchapprxjava.databinding.ActivityMainBinding
 import com.mycorp.twitchapprxjava.presentation.viewModel.MainActivityViewModel
 import com.mycorp.twitchapprxjava.presentation.viewModel.MainViewModelFactory
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,8 +22,9 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
         viewModel =
-            ViewModelProvider(this, MainViewModelFactory(this))[MainActivityViewModel::class.java]
+            ViewModelProvider(this, MainViewModelFactory(applicationContext))[MainActivityViewModel::class.java]
         initGamesListView()
+        setReportButton()
         loadGames()
     }
 
@@ -43,6 +44,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         })
-        viewModel.makeApiCall()
+        viewModel.getGamesFromServer()
+        viewModel.getGamesFromDb()
+    }
+    private fun setReportButton() {
+        activityMainBinding.reportButton.setOnClickListener {
+            startActivity(Intent(this, RatingActivity::class.java))
+        }
     }
 }
