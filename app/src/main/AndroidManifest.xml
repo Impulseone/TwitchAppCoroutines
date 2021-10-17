@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TwitchAppRxJava">
         <activity
+            android:name=".presentation.RatingActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>

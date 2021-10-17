@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TwitchAppRxJava</string>
     <string name="rate_app">Оценить приложение</string>
+    <string name="write_report">Напишите отзыв...</string>
+    <string name="send_report">отправить отзыв</string>
+    <string name="back">назад</string>
 </resources>

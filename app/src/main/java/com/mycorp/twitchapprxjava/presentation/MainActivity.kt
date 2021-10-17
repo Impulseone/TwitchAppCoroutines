@@ -1,5 +1,6 @@
 package com.mycorp.twitchapprxjava.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         viewModel =
             ViewModelProvider(this, MainViewModelFactory(applicationContext))[MainActivityViewModel::class.java]
         initGamesListView()
+        setReportButton()
         loadGames()
     }
 
@@ -44,5 +46,10 @@ class MainActivity : AppCompatActivity() {
         })
         viewModel.getGamesFromServer()
         viewModel.getGamesFromDb()
+    }
+    private fun setReportButton() {
+        activityMainBinding.reportButton.setOnClickListener {
+            startActivity(Intent(this, RatingActivity::class.java))
+        }
     }
 }
