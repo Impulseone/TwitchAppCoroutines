@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
         viewModel =
-            ViewModelProvider(this, MainViewModelFactory(applicationContext))[MainActivityViewModel::class.java]
+            ViewModelProvider(this, MainViewModelFactory())[MainActivityViewModel::class.java]
         initGamesListView()
         setReportButton()
         loadGames()
