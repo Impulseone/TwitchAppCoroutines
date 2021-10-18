@@ -17,21 +17,23 @@ class MainActivityViewModel(
     private val getFromDbUseCase: GetFromDbUseCase
 ) : ViewModel() {
 
-    private var gamesFromServerLiveData: MutableLiveData<Resource<List<GameData>>> =
-        MutableLiveData()
-    private var gamesFromDbLiveData: MutableLiveData<Resource<List<GameData>>> = MutableLiveData()
+    var gamesLiveData: MutableLiveData<Resource<List<GameData>>>
 
-    fun getGamesDataFromServerObserver() = gamesFromServerLiveData
-    fun getGamesDataFromDbObserver() = gamesFromDbLiveData
+    init {
+        gamesLiveData = MutableLiveData()
+        getGamesFromServer()
+    }
 
-    fun getGamesFromServer() {
+    fun getGamesDataFromServerObserver() = gamesLiveData
+
+    private fun getGamesFromServer() {
         getFromServerUseCase.getGames()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(gameDataObserver(sourceType = SourceType.SERVER))
     }
 
-    fun getGamesFromDb() {
+    private fun getGamesFromDb() {
         getFromDbUseCase.execute()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -40,23 +42,21 @@ class MainActivityViewModel(
     }
 
     private fun gameDataObserver(sourceType: SourceType): Observer<List<GameData>> {
-        var liveData: MutableLiveData<Resource<List<GameData>>> =
-            if (sourceType == SourceType.SERVER) gamesFromServerLiveData else gamesFromDbLiveData
         return object : Observer<List<GameData>> {
             override fun onComplete() {
 
             }
-
             override fun onError(e: Throwable) {
-                liveData.postValue(
+                gamesLiveData.postValue(
                     Resource.error(
                         message = e.message!!
                     )
                 )
+                if (sourceType == SourceType.SERVER) getGamesFromDb()
             }
 
             override fun onNext(gameData: List<GameData>) {
-                liveData.postValue(
+                gamesLiveData.postValue(
                     Resource.success(
                         data = gameData,
                     )
@@ -70,7 +70,7 @@ class MainActivityViewModel(
             }
 
             override fun onSubscribe(d: Disposable) {
-                liveData.postValue(
+                gamesLiveData.postValue(
                     Resource.loading()
                 )
             }

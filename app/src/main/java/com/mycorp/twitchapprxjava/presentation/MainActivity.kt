@@ -2,6 +2,7 @@ package com.mycorp.twitchapprxjava.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
@@ -38,11 +39,29 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding.gamesRv.adapter = gamesListAdapter
     }
 
-    private fun loadGames() {
-        listenLoadingGames(viewModel.getGamesDataFromServerObserver(), source = "server")
-        listenLoadingGames(viewModel.getGamesDataFromDbObserver(), source = "database")
+    private fun changeProgressbarVisibility(visibility: Int){
+        activityMainBinding.progressIndicator.visibility = visibility
+    }
 
-        viewModel.getGamesFromServer()
+    private fun listenLoadingGames(gamesLiveData: MutableLiveData<Resource<List<GameData>>>){
+        gamesLiveData.observe(this, {
+            when (it.loadingStatus) {
+                LoadingStatus.LOADING -> {
+                    changeProgressbarVisibility(View.VISIBLE)
+                }
+                LoadingStatus.SUCCESS -> {
+                    changeProgressbarVisibility(View.GONE)
+                    gamesListAdapter.addGames(it.data as ArrayList<GameData>)
+                }
+                LoadingStatus.ERROR -> {
+                    makeToast(it.message!!)
+                }
+            }
+        })
+    }
+
+    private fun loadGames() {
+        listenLoadingGames(viewModel.getGamesDataFromServerObserver())
     }
 
     private fun makeToast(message:String){
@@ -51,25 +70,6 @@ class MainActivity : AppCompatActivity() {
             message,
             Toast.LENGTH_SHORT
         ).show()
-    }
-
-    private fun listenLoadingGames(gamesLiveData: MutableLiveData<Resource<List<GameData>>>, source:String){
-        gamesLiveData.observe(this, {
-            when (it.loadingStatus) {
-                LoadingStatus.LOADING -> {
-                    makeToast(it.message!!)
-                }
-                LoadingStatus.SUCCESS -> {
-                    gamesListAdapter.addGames(it.data as ArrayList<GameData>)
-                }
-                LoadingStatus.ERROR -> {
-                    makeToast(it.message!!)
-                    if (source == "server"){
-                        viewModel.getGamesFromDb()
-                    }
-                }
-            }
-        })
     }
 
     private fun setReportButton() {
