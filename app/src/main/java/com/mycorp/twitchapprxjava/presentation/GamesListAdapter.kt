@@ -9,7 +9,7 @@ import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.GameItemViewBinding
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 
-class GamesListAdapter(private val items: ArrayList<GameData>) :
+class GamesListAdapter(private val items: ArrayList<GameData> = arrayListOf()) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =

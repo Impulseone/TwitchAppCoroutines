@@ -3,8 +3,6 @@ package com.mycorp.twitchapprxjava.presentation.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
-import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponse
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromNetworkUseCase
 import io.reactivex.CompletableObserver
@@ -37,8 +35,8 @@ class MainActivityViewModel(
             .subscribe(gameDataFromDbObserver())
     }
 
-    private fun gameDataFromDbObserver(): Observer<List<GameDataTable>> {
-        return object : Observer<List<GameDataTable>> {
+    private fun gameDataFromDbObserver(): Observer<List<GameData>> {
+        return object : Observer<List<GameData>> {
             override fun onComplete() {
                 //hide progress indicator .
             }
@@ -47,8 +45,8 @@ class MainActivityViewModel(
                 e.printStackTrace()
             }
 
-            override fun onNext(t: List<GameDataTable>) {
-                gamesDataList.postValue(parseGameDataTableToGameData(t))
+            override fun onNext(gameData: List<GameData>) {
+                gamesDataList.postValue(gameData)
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -57,8 +55,8 @@ class MainActivityViewModel(
         }
     }
 
-    private fun gameDataFromServerObserver(): Observer<TwitchResponse> {
-        return object : Observer<TwitchResponse> {
+    private fun gameDataFromServerObserver(): Observer<List<GameData>> {
+        return object : Observer<List<GameData>> {
             override fun onComplete() {
                 //hide progress indicator .
             }
@@ -67,9 +65,9 @@ class MainActivityViewModel(
                 e.printStackTrace()
             }
 
-            override fun onNext(t: TwitchResponse) {
-                gamesDataList.postValue(parseTwitchResponseToGameData(t))
-                getFromNetworkUseCase.insertGames(parseTwitchResponseToGameDataTableList(t))
+            override fun onNext(gamesData: List<GameData>) {
+                gamesDataList.postValue(gamesData)
+                getFromNetworkUseCase.insertGames(gamesData)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(insertObserver())
@@ -94,54 +92,6 @@ class MainActivityViewModel(
                 e.printStackTrace()
             }
         }
-    }
-
-    private fun parseTwitchResponseToGameData(response: TwitchResponse): List<GameData> {
-        val gamesData: MutableList<GameData> = mutableListOf()
-        for (item in response.top!!) {
-            gamesData.add(
-                GameData(
-                    item?.game?.id!!,
-                    item.game.name!!,
-                    item.game.box?.large!!,
-                    item.channels!!,
-                    item.viewers!!
-                )
-            )
-        }
-        return gamesData
-    }
-
-    private fun parseGameDataTableToGameData(gamesDataTables: List<GameDataTable>): List<GameData> {
-        val gamesData: MutableList<GameData> = mutableListOf()
-        for (item in gamesDataTables) {
-            gamesData.add(
-                GameData(
-                    item.id,
-                    item.name,
-                    item.logoUrl,
-                    item.channelsCount,
-                    item.watchersCount
-                )
-            )
-        }
-        return gamesData
-    }
-
-    private fun parseTwitchResponseToGameDataTableList(twitchResponse: TwitchResponse): List<GameDataTable> {
-        val gamesData: MutableList<GameDataTable> = mutableListOf()
-        for (item in twitchResponse.top!!) {
-            gamesData.add(
-                GameDataTable(
-                    item?.game?.id!!,
-                    item.game.name!!,
-                    item.game.box?.large!!,
-                    item.channels!!,
-                    item.viewers!!
-                )
-            )
-        }
-        return gamesData
     }
 
 

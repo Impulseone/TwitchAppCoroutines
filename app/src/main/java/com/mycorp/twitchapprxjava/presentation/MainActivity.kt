@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initGamesListView() {
-        gamesListAdapter = GamesListAdapter(arrayListOf())
+        gamesListAdapter = GamesListAdapter()
         activityMainBinding.gamesRv.layoutManager =
             LinearLayoutManager(this)
         activityMainBinding.gamesRv.adapter = gamesListAdapter
