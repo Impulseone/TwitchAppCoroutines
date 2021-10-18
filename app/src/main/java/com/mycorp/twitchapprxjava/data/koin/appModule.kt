@@ -7,7 +7,7 @@ import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.room.RoomStorage
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
-import com.mycorp.twitchapprxjava.domain.use_cases.GetFromNetworkUseCase
+import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -19,7 +19,7 @@ val appModule = module {
 
     single<Repository> { RepositoryImplementation(get(), get()) }
 
-    single { GetFromNetworkUseCase(get()) }
+    single { GetFromServerUseCase(get()) }
 
     single { GetFromDbUseCase(get()) }
 }

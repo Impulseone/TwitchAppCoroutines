@@ -1,10 +1,11 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
-import com.mycorp.twitchapprxjava.domain.use_cases.GetFromNetworkUseCase
+import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,19 +13,22 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class MainActivityViewModel(
-    private val getFromNetworkUseCase: GetFromNetworkUseCase,
+    private val getFromServerUseCase: GetFromServerUseCase,
     private val getFromDbUseCase: GetFromDbUseCase
 ) : ViewModel() {
 
-    private var gamesDataList: MutableLiveData<List<GameData>> = MutableLiveData()
+    private var gamesFromServerLiveData: MutableLiveData<Resource<List<GameData>>> =
+        MutableLiveData()
+    private var gamesFromDbLiveData: MutableLiveData<Resource<List<GameData>>> = MutableLiveData()
 
-    fun getGamesDataListObserver() = gamesDataList
+    fun getGamesDataFromServerObserver() = gamesFromServerLiveData
+    fun getGamesDataFromDbObserver() = gamesFromDbLiveData
 
     fun getGamesFromServer() {
-        getFromNetworkUseCase.getGames()
+        getFromServerUseCase.getGames()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataFromServerObserver())
+            .subscribe(gameDataObserver(sourceType = SourceType.SERVER))
     }
 
     fun getGamesFromDb() {
@@ -32,49 +36,43 @@ class MainActivityViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .toObservable()
-            .subscribe(gameDataFromDbObserver())
+            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))
     }
 
-    private fun gameDataFromDbObserver(): Observer<List<GameData>> {
+    private fun gameDataObserver(sourceType: SourceType): Observer<List<GameData>> {
+        var liveData: MutableLiveData<Resource<List<GameData>>> =
+            if (sourceType == SourceType.SERVER) gamesFromServerLiveData else gamesFromDbLiveData
         return object : Observer<List<GameData>> {
             override fun onComplete() {
-                //hide progress indicator .
+
             }
 
             override fun onError(e: Throwable) {
-                e.printStackTrace()
+                liveData.postValue(
+                    Resource.error(
+                        message = e.message!!
+                    )
+                )
             }
 
             override fun onNext(gameData: List<GameData>) {
-                gamesDataList.postValue(gameData)
+                liveData.postValue(
+                    Resource.success(
+                        data = gameData,
+                    )
+                )
+                if (sourceType == SourceType.SERVER) {
+                    getFromServerUseCase.insertGames(gameData)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(insertObserver())
+                }
             }
 
             override fun onSubscribe(d: Disposable) {
-                //start showing progress indicator.
-            }
-        }
-    }
-
-    private fun gameDataFromServerObserver(): Observer<List<GameData>> {
-        return object : Observer<List<GameData>> {
-            override fun onComplete() {
-                //hide progress indicator .
-            }
-
-            override fun onError(e: Throwable) {
-                e.printStackTrace()
-            }
-
-            override fun onNext(gamesData: List<GameData>) {
-                gamesDataList.postValue(gamesData)
-                getFromNetworkUseCase.insertGames(gamesData)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(insertObserver())
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                //start showing progress indicator.
+                liveData.postValue(
+                    Resource.loading()
+                )
             }
         }
     }
@@ -85,7 +83,7 @@ class MainActivityViewModel(
             }
 
             override fun onComplete() {
-                print("insert success")
+                Log.i("insert", "insert success")
             }
 
             override fun onError(e: Throwable) {
