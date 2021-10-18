@@ -10,8 +10,7 @@ class RoomStorage(context: Context) : Storage {
     private var db: AppDatabase = AppDatabase.getInstance(context = context)
 
     override fun getGamesDataFromDb(): Flowable<List<GameDataTable>> {
-       val flowable: Flowable<List<GameDataTable>> = db.gameDataDao.getAllGames()
-        return flowable
+        return db.gameDataDao.getAllGames()
     }
 
     override fun insertGamesData(gamesData: List<GameDataTable>) =

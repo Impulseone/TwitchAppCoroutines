@@ -5,8 +5,11 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Headers
 
+const val acceptHeader = "Accept: application/vnd.twitchtv.v5+json"
+const val clientId = "Client-ID: ahuoi1tl0qmqbyi8jo8nitbmuaad7w"
+
 interface ApiService {
-    @Headers("Accept: application/vnd.twitchtv.v5+json", "Client-ID: ahuoi1tl0qmqbyi8jo8nitbmuaad7w")
+    @Headers(acceptHeader, clientId)
     @GET("kraken/games/top")
     fun loadGames(): Observable<TwitchResponse>
 }
