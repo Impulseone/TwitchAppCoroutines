@@ -1,12 +1,11 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
-import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponse
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
-import com.mycorp.twitchapprxjava.domain.use_cases.GetFromNetworkUseCase
+import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,69 +13,66 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class MainActivityViewModel(
-    private val getFromNetworkUseCase: GetFromNetworkUseCase,
+    private val getFromServerUseCase: GetFromServerUseCase,
     private val getFromDbUseCase: GetFromDbUseCase
 ) : ViewModel() {
 
-    private var gamesDataList: MutableLiveData<List<GameData>> = MutableLiveData()
+    var gamesLiveData: MutableLiveData<Resource<List<GameData>>>
 
-    fun getGamesDataListObserver() = gamesDataList
-
-    fun getGamesFromServer() {
-        getFromNetworkUseCase.getGames()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataFromServerObserver())
+    init {
+        gamesLiveData = MutableLiveData()
+        getGamesFromServer()
     }
 
-    fun getGamesFromDb() {
+    fun getGamesDataFromServerObserver() = gamesLiveData
+
+    private fun getGamesFromServer() {
+        getFromServerUseCase.getGames()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(gameDataObserver(sourceType = SourceType.SERVER))
+    }
+
+    private fun getGamesFromDb() {
         getFromDbUseCase.execute()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .toObservable()
-            .subscribe(gameDataFromDbObserver())
+            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))
     }
 
-    private fun gameDataFromDbObserver(): Observer<List<GameDataTable>> {
-        return object : Observer<List<GameDataTable>> {
+    private fun gameDataObserver(sourceType: SourceType): Observer<List<GameData>> {
+        return object : Observer<List<GameData>> {
             override fun onComplete() {
-                //hide progress indicator .
-            }
 
+            }
             override fun onError(e: Throwable) {
-                e.printStackTrace()
+                gamesLiveData.postValue(
+                    Resource.error(
+                        message = e.message!!
+                    )
+                )
+                if (sourceType == SourceType.SERVER) getGamesFromDb()
             }
 
-            override fun onNext(t: List<GameDataTable>) {
-                gamesDataList.postValue(parseGameDataTableToGameData(t))
+            override fun onNext(gameData: List<GameData>) {
+                gamesLiveData.postValue(
+                    Resource.success(
+                        data = gameData,
+                    )
+                )
+                if (sourceType == SourceType.SERVER) {
+                    getFromServerUseCase.insertGames(gameData)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(insertObserver())
+                }
             }
 
             override fun onSubscribe(d: Disposable) {
-                //start showing progress indicator.
-            }
-        }
-    }
-
-    private fun gameDataFromServerObserver(): Observer<TwitchResponse> {
-        return object : Observer<TwitchResponse> {
-            override fun onComplete() {
-                //hide progress indicator .
-            }
-
-            override fun onError(e: Throwable) {
-                e.printStackTrace()
-            }
-
-            override fun onNext(t: TwitchResponse) {
-                gamesDataList.postValue(parseTwitchResponseToGameData(t))
-                getFromNetworkUseCase.insertGames(parseTwitchResponseToGameDataTableList(t))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(insertObserver())
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                //start showing progress indicator.
+                gamesLiveData.postValue(
+                    Resource.loading()
+                )
             }
         }
     }
@@ -87,61 +83,13 @@ class MainActivityViewModel(
             }
 
             override fun onComplete() {
-                print("insert success")
+                Log.i("insert", "insert success")
             }
 
             override fun onError(e: Throwable) {
                 e.printStackTrace()
             }
         }
-    }
-
-    private fun parseTwitchResponseToGameData(response: TwitchResponse): List<GameData> {
-        val gamesData: MutableList<GameData> = mutableListOf()
-        for (item in response.top!!) {
-            gamesData.add(
-                GameData(
-                    item?.game?.id!!,
-                    item.game.name!!,
-                    item.game.box?.large!!,
-                    item.channels!!,
-                    item.viewers!!
-                )
-            )
-        }
-        return gamesData
-    }
-
-    private fun parseGameDataTableToGameData(gamesDataTables: List<GameDataTable>): List<GameData> {
-        val gamesData: MutableList<GameData> = mutableListOf()
-        for (item in gamesDataTables) {
-            gamesData.add(
-                GameData(
-                    item.id,
-                    item.name,
-                    item.logoUrl,
-                    item.channelsCount,
-                    item.watchersCount
-                )
-            )
-        }
-        return gamesData
-    }
-
-    private fun parseTwitchResponseToGameDataTableList(twitchResponse: TwitchResponse): List<GameDataTable> {
-        val gamesData: MutableList<GameDataTable> = mutableListOf()
-        for (item in twitchResponse.top!!) {
-            gamesData.add(
-                GameDataTable(
-                    item?.game?.id!!,
-                    item.game.name!!,
-                    item.game.box?.large!!,
-                    item.channels!!,
-                    item.viewers!!
-                )
-            )
-        }
-        return gamesData
     }
 
 

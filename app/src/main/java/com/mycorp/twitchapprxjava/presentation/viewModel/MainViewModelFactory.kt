@@ -1,35 +1,17 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mycorp.twitchapprxjava.data.network.NetworkControllerImpl
-import com.mycorp.twitchapprxjava.data.repository.RepositoryImplementation
-import com.mycorp.twitchapprxjava.data.storage.room.RoomStorage
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
-import com.mycorp.twitchapprxjava.domain.use_cases.GetFromNetworkUseCase
+import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
+import org.koin.java.KoinJavaComponent.get
 
-class MainViewModelFactory(context: Context) : ViewModelProvider.Factory {
-
-    private val getFromNetworkUseCase by lazy {
-        GetFromNetworkUseCase(
-            RepositoryImplementation(
-                NetworkControllerImpl(),
-                RoomStorage(context)
-            )
-        )
-    }
-
-    private val getFromDbUseCase by lazy {
-        GetFromDbUseCase(
-            RepositoryImplementation(
-                NetworkControllerImpl(),
-                RoomStorage(context)
-            )
-        )
-    }
+class MainViewModelFactory : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return MainActivityViewModel(getFromNetworkUseCase, getFromDbUseCase) as T
+        return MainActivityViewModel(
+            get(clazz = GetFromServerUseCase::class.java),
+            get(clazz = GetFromDbUseCase::class.java)
+        ) as T
     }
 }

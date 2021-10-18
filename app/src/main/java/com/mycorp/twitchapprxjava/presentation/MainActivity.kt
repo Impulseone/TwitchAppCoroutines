@@ -2,14 +2,18 @@ package com.mycorp.twitchapprxjava.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.databinding.ActivityMainBinding
 import com.mycorp.twitchapprxjava.presentation.viewModel.MainActivityViewModel
 import com.mycorp.twitchapprxjava.presentation.viewModel.MainViewModelFactory
+import com.mycorp.twitchapprxjava.presentation.viewModel.Resource
+import com.mycorp.twitchapprxjava.presentation.viewModel.LoadingStatus
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,31 +26,52 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
         viewModel =
-            ViewModelProvider(this, MainViewModelFactory(applicationContext))[MainActivityViewModel::class.java]
+            ViewModelProvider(this, MainViewModelFactory())[MainActivityViewModel::class.java]
         initGamesListView()
         setReportButton()
         loadGames()
     }
 
     private fun initGamesListView() {
-        gamesListAdapter = GamesListAdapter(arrayListOf())
+        gamesListAdapter = GamesListAdapter()
         activityMainBinding.gamesRv.layoutManager =
             LinearLayoutManager(this)
         activityMainBinding.gamesRv.adapter = gamesListAdapter
     }
 
-    private fun loadGames() {
-        viewModel.getGamesDataListObserver().observe(this, {
-            if (it != null) gamesListAdapter.addGames(it as ArrayList<GameData>)
-            else Toast.makeText(
-                this,
-                "Error in fetching data",
-                Toast.LENGTH_SHORT
-            ).show()
-        })
-        viewModel.getGamesFromServer()
-        viewModel.getGamesFromDb()
+    private fun changeProgressbarVisibility(visibility: Int){
+        activityMainBinding.progressIndicator.visibility = visibility
     }
+
+    private fun listenLoadingGames(gamesLiveData: MutableLiveData<Resource<List<GameData>>>){
+        gamesLiveData.observe(this, {
+            when (it.loadingStatus) {
+                LoadingStatus.LOADING -> {
+                    changeProgressbarVisibility(View.VISIBLE)
+                }
+                LoadingStatus.SUCCESS -> {
+                    changeProgressbarVisibility(View.GONE)
+                    gamesListAdapter.addGames(it.data as ArrayList<GameData>)
+                }
+                LoadingStatus.ERROR -> {
+                    makeToast(it.message!!)
+                }
+            }
+        })
+    }
+
+    private fun loadGames() {
+        listenLoadingGames(viewModel.getGamesDataFromServerObserver())
+    }
+
+    private fun makeToast(message:String){
+        Toast.makeText(
+            this,
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     private fun setReportButton() {
         activityMainBinding.reportButton.setOnClickListener {
             startActivity(Intent(this, RatingActivity::class.java))
