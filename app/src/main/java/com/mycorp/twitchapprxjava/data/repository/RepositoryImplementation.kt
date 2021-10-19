@@ -22,7 +22,7 @@ class RepositoryImplementation(
 
     override fun getGamesDataFromDb(): Single<List<GameData>> {
         val gameData:Single<List<GameData>> = storage.getGamesDataFromDb().map {
-            it.map { it.toGameData() }
+            it.map { gameDataEntity -> gameDataEntity.toGameData() }
         }
         return gameData
     }

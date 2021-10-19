@@ -1,6 +1,6 @@
 package com.mycorp.twitchapprxjava.data.storage.model
 
-data class GameData(
+class GameData(
     val id: Int,
     val name: String,
     val logoUrl: String,
