@@ -1,11 +1,15 @@
 package com.mycorp.twitchapprxjava.data.koin
 
+import android.content.Context
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.mycorp.twitchapprxjava.data.network.NetworkController
 import com.mycorp.twitchapprxjava.data.network.NetworkControllerImpl
 import com.mycorp.twitchapprxjava.data.network.retrofit.ApiService
 import com.mycorp.twitchapprxjava.data.network.retrofit.ServerApi
 import com.mycorp.twitchapprxjava.data.repository.RepositoryImplementation
 import com.mycorp.twitchapprxjava.data.storage.Storage
+import com.mycorp.twitchapprxjava.data.storage.room.AppDatabase
 import com.mycorp.twitchapprxjava.data.storage.room.RoomStorage
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
@@ -20,7 +24,7 @@ val appModule = module {
 
     single<NetworkController> { NetworkControllerImpl(get()) }
 
-    single<Storage> { RoomStorage(androidContext()) }
+    single<Storage> { RoomStorage(get()) }
 
     single<Repository> { RepositoryImplementation(get(), get()) }
 
@@ -31,6 +35,8 @@ val appModule = module {
     single { provideRetrofit() }
 
     single { provideRetrofitService(get()) }
+
+    single { provideRoomDb(androidContext()) }
 }
 
 private fun provideRetrofit(): Retrofit {
@@ -41,6 +47,15 @@ private fun provideRetrofit(): Retrofit {
         .build()
 }
 
-private fun provideRetrofitService(retrofit: Retrofit): ApiService{
+private fun provideRoomDb(context: Context): AppDatabase {
+    return Room.databaseBuilder(
+        context,
+        AppDatabase::class.java,
+        "games_database"
+    )
+        .build()
+}
+
+private fun provideRetrofitService(retrofit: Retrofit): ApiService {
     return retrofit.create(ApiService::class.java)
 }

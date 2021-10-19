@@ -6,4 +6,14 @@ class GameData(
     val logoUrl: String,
     val channelsCount: Int,
     val watchersCount: Int,
-)
+){
+    fun toGameDataEntity():GameDataEntity{
+        return GameDataEntity(
+            id,
+            name,
+            logoUrl,
+            channelsCount,
+            watchersCount
+        )
+    }
+}
