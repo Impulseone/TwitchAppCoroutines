@@ -5,6 +5,8 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_rating.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_games_list.xml" value="0.2558876811594203" />
+        <entry key="app/src/main/res/layout/fragment_rating.xml" value="0.2151268115942029" />
         <entry key="app/src/main/res/layout/game_item_view.xml" value="0.3098958333333333" />
       </map>
     </option>
