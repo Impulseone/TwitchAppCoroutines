@@ -3,26 +3,25 @@ package com.mycorp.twitchapprxjava.data.storage.room
 import android.content.Context
 import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
-import io.reactivex.Flowable
+import com.mycorp.twitchapprxjava.data.storage.model.GameDataEntity
 import io.reactivex.Single
 
 class RoomStorage(context: Context) : Storage {
 
     private var db: AppDatabase = AppDatabase.getInstance(context = context)
 
-    override fun getGamesDataFromDb(): Single<List<GameDataTable>> {
+    override fun getGamesDataFromDb(): Single<List<GameDataEntity>> {
         return db.gameDataDao.getAllGames()
     }
 
     override fun insertGamesData(gamesData: List<GameData>) = db.gameDataDao.insertAll(parseGameDataToGameDataTable(gamesData))
 
 
-    private fun parseGameDataToGameDataTable(gamesData: List<GameData>): List<GameDataTable> {
-        val gamesDataTables: MutableList<GameDataTable> = mutableListOf()
+    private fun parseGameDataToGameDataTable(gamesData: List<GameData>): List<GameDataEntity> {
+        val gamesDataEntities: MutableList<GameDataEntity> = mutableListOf()
         for (item in gamesData) {
-            gamesDataTables.add(
-                GameDataTable(
+            gamesDataEntities.add(
+                GameDataEntity(
                     item.id,
                     item.name,
                     item.logoUrl,
@@ -31,7 +30,7 @@ class RoomStorage(context: Context) : Storage {
                 )
             )
         }
-        return gamesDataTables
+        return gamesDataEntities
     }
 
 

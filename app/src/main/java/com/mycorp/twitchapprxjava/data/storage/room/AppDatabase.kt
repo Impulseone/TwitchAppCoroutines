@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
+import com.mycorp.twitchapprxjava.data.storage.model.GameDataEntity
 
-@Database(entities = [GameDataTable::class], version = 1, exportSchema = false)
+@Database(entities = [GameDataEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val gameDataDao : GameDataDao
