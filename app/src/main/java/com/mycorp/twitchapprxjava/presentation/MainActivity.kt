@@ -6,20 +6,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.databinding.ActivityMainBinding
 import com.mycorp.twitchapprxjava.presentation.gamesListView.GamesListAdapter
 import com.mycorp.twitchapprxjava.presentation.viewModel.LoadingStatus
 import com.mycorp.twitchapprxjava.presentation.viewModel.MainActivityViewModel
-import com.mycorp.twitchapprxjava.presentation.viewModel.MainViewModelFactory
 import com.mycorp.twitchapprxjava.presentation.viewModel.Resource
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainActivityViewModel
+    private val activityViewModel: MainActivityViewModel by viewModel()
     lateinit var gamesListAdapter: GamesListAdapter
     private lateinit var activityMainBinding: ActivityMainBinding
 
@@ -27,8 +26,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
-        viewModel =
-            ViewModelProvider(this, MainViewModelFactory())[MainActivityViewModel::class.java]
         initGamesListView()
         setReportButton()
         loadGames()
@@ -63,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadGames() {
-        listenLoadingGames(viewModel.getGamesDataFromServerObserver())
+        listenLoadingGames(activityViewModel.getGamesDataFromServerObserver())
     }
 
     private fun makeToast(message:String){

@@ -14,7 +14,10 @@ import com.mycorp.twitchapprxjava.data.storage.room.RoomStorage
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
+import com.mycorp.twitchapprxjava.presentation.MainActivity
+import com.mycorp.twitchapprxjava.presentation.viewModel.MainActivityViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -37,6 +40,8 @@ val appModule = module {
     single { provideRetrofitService(get()) }
 
     single { provideRoomDb(androidContext()) }
+
+    viewModel<MainActivityViewModel>()
 }
 
 private fun provideRetrofit(): Retrofit {
