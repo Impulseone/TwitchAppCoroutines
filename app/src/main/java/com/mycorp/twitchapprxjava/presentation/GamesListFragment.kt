@@ -24,10 +24,6 @@ class GamesListFragment : Fragment() {
     private val activityViewModel: MainActivityViewModel by viewModel()
     private var gamesListAdapter: GamesListAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +34,7 @@ class GamesListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         initViews()
-        loadGames()
+        listenLoadingGames(activityViewModel.getGamesDataFromServerObserver())
     }
 
     private fun initViews() {
@@ -49,9 +45,6 @@ class GamesListFragment : Fragment() {
             gamesRv.adapter = gamesListAdapter
 
         }
-    }
-    private fun loadGames() {
-        listenLoadingGames(activityViewModel.getGamesDataFromServerObserver())
     }
 
     private fun listenLoadingGames(gamesLiveData: MutableLiveData<Resource<List<GameData>>>) {
