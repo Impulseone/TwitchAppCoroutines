@@ -2,7 +2,7 @@ package com.mycorp.twitchapprxjava.data.storage.model
 
 import com.google.gson.annotations.SerializedName
 
-class TwitchResponse(
+class TwitchResponseDto(
 
     @field:SerializedName("top")
     val top: List<TopItem?>? = null,

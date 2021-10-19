@@ -3,7 +3,7 @@ package com.mycorp.twitchapprxjava.data.repository
 import com.mycorp.twitchapprxjava.data.network.NetworkController
 import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponse
+import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponseDto
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 import io.reactivex.Single
 
@@ -14,7 +14,7 @@ class RepositoryImplementation(
 
     override fun getGamesDataFromNetwork(): Single<List<GameData>> {
         val gameData: Single<List<GameData>> =
-            networkController.getDataFromNetwork().map { it: TwitchResponse ->
+            networkController.getDataFromNetwork().map { it: TwitchResponseDto ->
                 it.toListOfGameData()
             }
         return gameData

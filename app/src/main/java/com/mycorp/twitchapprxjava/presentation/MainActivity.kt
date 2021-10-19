@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.databinding.ActivityMainBinding
 import com.mycorp.twitchapprxjava.presentation.gamesListView.GamesListAdapter
@@ -19,30 +21,35 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity() {
 
     private val activityViewModel: MainActivityViewModel by viewModel()
-    lateinit var gamesListAdapter: GamesListAdapter
-    private lateinit var activityMainBinding: ActivityMainBinding
+    private var gamesListAdapter: GamesListAdapter? = null
+    private val activityMainBinding: ActivityMainBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(activityMainBinding.root)
-        initGamesListView()
-        setReportButton()
+        setContentView(R.layout.activity_main)
+        initViews()
         loadGames()
     }
 
-    private fun initGamesListView() {
-        gamesListAdapter = GamesListAdapter()
-        activityMainBinding.gamesRv.layoutManager =
-            LinearLayoutManager(this)
-        activityMainBinding.gamesRv.adapter = gamesListAdapter
+    private fun initViews() {
+        with(activityMainBinding) {
+            gamesListAdapter = GamesListAdapter()
+            gamesRv.layoutManager =
+                LinearLayoutManager(this@MainActivity)
+            gamesRv.adapter = gamesListAdapter
+
+            reportButton.setOnClickListener {
+                startActivity(Intent(this@MainActivity, RatingActivity::class.java))
+            }
+
+        }
     }
 
-    private fun changeProgressbarVisibility(visibility: Int){
-        activityMainBinding.progressIndicator.visibility = visibility
+    private fun loadGames() {
+        listenLoadingGames(activityViewModel.getGamesDataFromServerObserver())
     }
 
-    private fun listenLoadingGames(gamesLiveData: MutableLiveData<Resource<List<GameData>>>){
+    private fun listenLoadingGames(gamesLiveData: MutableLiveData<Resource<List<GameData>>>) {
         gamesLiveData.observe(this, {
             when (it.loadingStatus) {
                 LoadingStatus.LOADING -> {
@@ -50,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 LoadingStatus.SUCCESS -> {
                     changeProgressbarVisibility(View.GONE)
-                    gamesListAdapter.submitList(it.data as ArrayList<GameData>)
+                    gamesListAdapter?.submitList(it.data as ArrayList<GameData>)
                 }
                 LoadingStatus.ERROR -> {
                     makeToast(it.message!!)
@@ -59,21 +66,15 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun loadGames() {
-        listenLoadingGames(activityViewModel.getGamesDataFromServerObserver())
+    private fun changeProgressbarVisibility(visibility: Int) {
+        activityMainBinding.progressIndicator.visibility = visibility
     }
 
-    private fun makeToast(message:String){
+    private fun makeToast(message: String) {
         Toast.makeText(
             this,
             message,
             Toast.LENGTH_SHORT
         ).show()
-    }
-
-    private fun setReportButton() {
-        activityMainBinding.reportButton.setOnClickListener {
-            startActivity(Intent(this, RatingActivity::class.java))
-        }
     }
 }
