@@ -8,6 +8,8 @@ import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import io.reactivex.CompletableObserver
 import io.reactivex.Observer
+import io.reactivex.Single
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -37,25 +39,12 @@ class MainActivityViewModel(
         getFromDbUseCase.execute()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .toObservable()
             .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))
     }
 
-    private fun gameDataObserver(sourceType: SourceType): Observer<List<GameData>> {
-        return object : Observer<List<GameData>> {
-            override fun onComplete() {
-
-            }
-            override fun onError(e: Throwable) {
-                gamesLiveData.postValue(
-                    Resource.error(
-                        message = e.message!!
-                    )
-                )
-                if (sourceType == SourceType.SERVER) getGamesFromDb()
-            }
-
-            override fun onNext(gameData: List<GameData>) {
+    private fun gameDataObserver(sourceType: SourceType): SingleObserver<List<GameData>> {
+        return object : SingleObserver<List<GameData>> {
+            override fun onSuccess(gameData: List<GameData>) {
                 gamesLiveData.postValue(
                     Resource.success(
                         data = gameData,
@@ -67,6 +56,15 @@ class MainActivityViewModel(
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(insertObserver())
                 }
+            }
+
+            override fun onError(e: Throwable) {
+                gamesLiveData.postValue(
+                    Resource.error(
+                        message = e.message!!
+                    )
+                )
+                if (sourceType == SourceType.SERVER) getGamesFromDb()
             }
 
             override fun onSubscribe(d: Disposable) {

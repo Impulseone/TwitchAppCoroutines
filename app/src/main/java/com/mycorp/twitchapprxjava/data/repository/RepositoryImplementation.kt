@@ -8,14 +8,15 @@ import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponse
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class RepositoryImplementation(
     private val networkController: NetworkController,
     private val storage: Storage
 ) : Repository {
 
-    override fun getGamesDataFromNetwork(): Observable<List<GameData>> {
-        val gameData: Observable<List<GameData>> =
+    override fun getGamesDataFromNetwork(): Single<List<GameData>> {
+        val gameData: Single<List<GameData>> =
             networkController.getDataFromNetwork().map { it: TwitchResponse ->
                 parseTwitchResponseToGameData(it)
             }
@@ -38,8 +39,8 @@ class RepositoryImplementation(
         return gamesData
     }
 
-    override fun getGamesDataFromDb(): Flowable<List<GameData>> {
-        val gameData:Flowable<List<GameData>> = storage.getGamesDataFromDb().map {
+    override fun getGamesDataFromDb(): Single<List<GameData>> {
+        val gameData:Single<List<GameData>> = storage.getGamesDataFromDb().map {
             parseGameDataTableToGameData(it)
         }
         return gameData

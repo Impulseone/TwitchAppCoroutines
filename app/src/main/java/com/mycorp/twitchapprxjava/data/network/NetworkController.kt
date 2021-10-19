@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.data.network
 
 import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponse
-import io.reactivex.Observable
+import io.reactivex.Single
 
 interface NetworkController {
-   fun getDataFromNetwork(): Observable<TwitchResponse>
+   fun getDataFromNetwork(): Single<TwitchResponse>
 }

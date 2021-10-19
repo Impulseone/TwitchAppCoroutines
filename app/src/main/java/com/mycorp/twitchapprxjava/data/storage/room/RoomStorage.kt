@@ -5,12 +5,13 @@ import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 class RoomStorage(context: Context) : Storage {
 
     private var db: AppDatabase = AppDatabase.getInstance(context = context)
 
-    override fun getGamesDataFromDb(): Flowable<List<GameDataTable>> {
+    override fun getGamesDataFromDb(): Single<List<GameDataTable>> {
         return db.gameDataDao.getAllGames()
     }
 

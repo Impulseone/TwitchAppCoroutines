@@ -5,6 +5,7 @@ import androidx.room.OnConflictStrategy.REPLACE
 import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 interface GameDataDao {
@@ -21,7 +22,7 @@ interface GameDataDao {
     fun delete(gameData: GameDataTable): Completable
 
     @Query("SELECT * FROM GameDataTable")
-    fun getAllGames(): Flowable<List<GameDataTable>>
+    fun getAllGames(): Single<List<GameDataTable>>
 
     @Query("SELECT * FROM GameDataTable WHERE id=(:id)")
     fun getGameById(id: Int): Flowable<GameDataTable>
