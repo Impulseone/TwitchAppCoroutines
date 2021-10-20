@@ -9,7 +9,12 @@
         android:id="@+id/gamesListFragment"
         android:name="com.mycorp.twitchapprxjava.presentation.GamesListFragment"
         android:label="fragment_games_list"
-        tools:layout="@layout/fragment_games_list" />
+        tools:layout="@layout/fragment_games_list" >
+        <action
+            android:id="@+id/action_gamesListFragment_to_ratingFragment"
+            app:destination="@id/ratingFragment"
+            app:popUpTo="@id/gamesListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ratingFragment"
         android:name="com.mycorp.twitchapprxjava.presentation.RatingFragment"

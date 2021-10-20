@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -46,9 +47,9 @@ class GamesListFragment : Fragment() {
                 LinearLayoutManager(context)
             gamesRv.adapter = gamesListAdapter
 
-            reportButton.setOnClickListener {
-                findNavController().navigate(R.id.ratingFragment)
-            }
+            reportButton.setOnClickListener (
+                Navigation.createNavigateOnClickListener(R.id.action_gamesListFragment_to_ratingFragment)
+            )
 
         }
     }
