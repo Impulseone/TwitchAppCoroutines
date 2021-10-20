@@ -7,19 +7,17 @@ import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import io.reactivex.CompletableObserver
-import io.reactivex.Observer
-import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class MainActivityViewModel(
+class GamesListViewModel(
     private val getFromServerUseCase: GetFromServerUseCase,
     private val getFromDbUseCase: GetFromDbUseCase
 ) : ViewModel() {
 
-    var gamesLiveData: MutableLiveData<Resource<List<GameData>>>
+    var gamesLiveData: MutableLiveData<GameDataViewState<List<GameData>>>
 
     init {
         gamesLiveData = MutableLiveData()
@@ -46,7 +44,7 @@ class MainActivityViewModel(
         return object : SingleObserver<List<GameData>> {
             override fun onSuccess(gameData: List<GameData>) {
                 gamesLiveData.postValue(
-                    Resource.success(
+                    GameDataViewState.success(
                         data = gameData,
                     )
                 )
@@ -60,7 +58,7 @@ class MainActivityViewModel(
 
             override fun onError(e: Throwable) {
                 gamesLiveData.postValue(
-                    Resource.error(
+                    GameDataViewState.error(
                         message = e.message!!
                     )
                 )
@@ -69,7 +67,7 @@ class MainActivityViewModel(
 
             override fun onSubscribe(d: Disposable) {
                 gamesLiveData.postValue(
-                    Resource.loading()
+                    GameDataViewState.loading()
                 )
             }
         }

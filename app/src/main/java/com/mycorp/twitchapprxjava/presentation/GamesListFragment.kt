@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
@@ -16,14 +15,14 @@ import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesListBinding
 import com.mycorp.twitchapprxjava.presentation.gamesListView.GamesListAdapter
 import com.mycorp.twitchapprxjava.presentation.viewModel.LoadingStatus
-import com.mycorp.twitchapprxjava.presentation.viewModel.MainActivityViewModel
-import com.mycorp.twitchapprxjava.presentation.viewModel.Resource
+import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListViewModel
+import com.mycorp.twitchapprxjava.presentation.viewModel.GameDataViewState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GamesListFragment : Fragment() {
 
     private val fragmentViewBinding: FragmentGamesListBinding by viewBinding()
-    private val activityViewModel: MainActivityViewModel by viewModel()
+    private val gamesListViewModel: GamesListViewModel by viewModel()
     private var gamesListAdapter: GamesListAdapter? = null
 
     override fun onCreateView(
@@ -36,7 +35,7 @@ class GamesListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         initViews()
-        listenLoadingGames(activityViewModel.getGamesDataFromServerObserver())
+        listenLoadingGames(gamesListViewModel.getGamesDataFromServerObserver())
     }
 
     private fun initViews() {
@@ -54,20 +53,10 @@ class GamesListFragment : Fragment() {
         }
     }
 
-    private fun listenLoadingGames(gamesLiveData: MutableLiveData<Resource<List<GameData>>>) {
+    private fun listenLoadingGames(gamesLiveData: MutableLiveData<GameDataViewState<List<GameData>>>) {
         gamesLiveData.observe(this, {
-            when (it.loadingStatus) {
-                LoadingStatus.LOADING -> {
-                    changeProgressbarVisibility(View.VISIBLE)
-                }
-                LoadingStatus.SUCCESS -> {
-                    changeProgressbarVisibility(View.GONE)
-                    gamesListAdapter?.submitList(it.data as ArrayList<GameData>)
-                }
-                LoadingStatus.ERROR -> {
-                    makeToast(it.message!!)
-                }
-            }
+            changeProgressbarVisibility(it.progressIndicatorVisibility)
+            gamesListAdapter?.submitList(it.data)
         })
     }
     private fun changeProgressbarVisibility(visibility: Int) {

@@ -2,7 +2,6 @@ package com.mycorp.twitchapprxjava.data.koin
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.mycorp.twitchapprxjava.data.network.NetworkController
 import com.mycorp.twitchapprxjava.data.network.NetworkControllerImpl
 import com.mycorp.twitchapprxjava.data.network.retrofit.ApiService
@@ -14,8 +13,7 @@ import com.mycorp.twitchapprxjava.data.storage.room.RoomStorage
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
-import com.mycorp.twitchapprxjava.presentation.MainActivity
-import com.mycorp.twitchapprxjava.presentation.viewModel.MainActivityViewModel
+import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -41,7 +39,7 @@ val appModule = module {
 
     single { provideRoomDb(androidContext()) }
 
-    viewModel<MainActivityViewModel>()
+    viewModel<GamesListViewModel>()
 }
 
 private fun provideRetrofit(): Retrofit {
