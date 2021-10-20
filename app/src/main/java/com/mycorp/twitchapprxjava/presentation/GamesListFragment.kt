@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,12 +12,12 @@ import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesListBinding
 import com.mycorp.twitchapprxjava.presentation.gamesListView.GamesListAdapter
-import com.mycorp.twitchapprxjava.presentation.viewModel.LoadingStatus
+import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListViewModel
 import com.mycorp.twitchapprxjava.presentation.viewModel.GameDataViewState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class GamesListFragment : FooBaseFragment<GamesListViewModel>() {
+class GamesListFragment : BaseFragment<GamesListViewModel>() {
 
     private val fragmentViewBinding: FragmentGamesListBinding by viewBinding()
     private val gamesListViewModel: GamesListViewModel by viewModel()
@@ -40,7 +38,7 @@ class GamesListFragment : FooBaseFragment<GamesListViewModel>() {
 
     override fun onStart() {
         super.onStart()
-        listenLoadingGames(viewModel.getGamesDataFromServerObserver())
+        listenLoadingGames(viewModel.getGamesDataFromServerLiveData())
     }
 
     private fun initViews() {

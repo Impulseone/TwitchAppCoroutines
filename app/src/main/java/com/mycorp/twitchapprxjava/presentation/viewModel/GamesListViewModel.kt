@@ -2,12 +2,9 @@ package com.mycorp.twitchapprxjava.presentation.viewModel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
-import com.mycorp.twitchapprxjava.presentation.FooBaseViewModel
-import com.mycorp.twitchapprxjava.presentation.SingleLiveEvent
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,18 +14,16 @@ import io.reactivex.schedulers.Schedulers
 class GamesListViewModel(
     private val getFromServerUseCase: GetFromServerUseCase,
     private val getFromDbUseCase: GetFromDbUseCase
-) : FooBaseViewModel() {
+) : BaseViewModel() {
 
-    var gamesLiveData: MutableLiveData<GameDataViewState<List<GameData>>>
-
-    val singleLiveEvent = SingleLiveEvent<String>()
+    private var gamesLiveData: MutableLiveData<GameDataViewState<List<GameData>>>
 
     init {
         gamesLiveData = MutableLiveData()
         getGamesFromServer()
     }
 
-    fun getGamesDataFromServerObserver() = gamesLiveData
+    fun getGamesDataFromServerLiveData() = gamesLiveData
 
     private fun getGamesFromServer() {
         getFromServerUseCase.getGames()
@@ -47,7 +42,6 @@ class GamesListViewModel(
     private fun gameDataObserver(sourceType: SourceType): SingleObserver<List<GameData>> {
         return object : SingleObserver<List<GameData>> {
             override fun onSuccess(gameData: List<GameData>) {
-                singleLiveEvent.value = "success"
                 gamesLiveData.postValue(
                     GameDataViewState.success(
                         data = gameData,
@@ -67,12 +61,10 @@ class GamesListViewModel(
                         message = e.message!!
                     )
                 )
-                singleLiveEvent.value = e.message!!
                 if (sourceType == SourceType.SERVER) getGamesFromDb()
             }
 
             override fun onSubscribe(d: Disposable) {
-                singleLiveEvent.value = "loading started"
                 gamesLiveData.postValue(
                     GameDataViewState.loading()
                 )
@@ -86,7 +78,6 @@ class GamesListViewModel(
             }
 
             override fun onComplete() {
-                Log.i("insert", "insert success")
             }
 
             override fun onError(e: Throwable) {
