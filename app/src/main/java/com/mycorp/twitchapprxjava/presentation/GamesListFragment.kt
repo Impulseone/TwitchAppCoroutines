@@ -19,7 +19,7 @@ import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListViewModel
 import com.mycorp.twitchapprxjava.presentation.viewModel.GameDataViewState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class GamesListFragment : Fragment() {
+class GamesListFragment : FooBaseFragment<GamesListViewModel>() {
 
     private val fragmentViewBinding: FragmentGamesListBinding by viewBinding()
     private val gamesListViewModel: GamesListViewModel by viewModel()
@@ -32,10 +32,15 @@ class GamesListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_games_list, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+        bindVm()
+    }
+
     override fun onStart() {
         super.onStart()
-        initViews()
-        listenLoadingGames(gamesListViewModel.getGamesDataFromServerObserver())
+        listenLoadingGames(viewModel.getGamesDataFromServerObserver())
     }
 
     private fun initViews() {
@@ -57,17 +62,13 @@ class GamesListFragment : Fragment() {
         gamesLiveData.observe(this, {
             changeProgressbarVisibility(it.progressIndicatorVisibility)
             gamesListAdapter?.submitList(it.data)
+            viewModel.showToast(it.message!!)
         })
     }
     private fun changeProgressbarVisibility(visibility: Int) {
         fragmentViewBinding.progressIndicator.visibility = visibility
     }
 
-    private fun makeToast(message: String) {
-        Toast.makeText(
-            context,
-            message,
-            Toast.LENGTH_SHORT
-        ).show()
-    }
+    override val viewModel: GamesListViewModel
+        get() = gamesListViewModel
 }

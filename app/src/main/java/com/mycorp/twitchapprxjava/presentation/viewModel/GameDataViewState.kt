@@ -1,7 +1,6 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
 import android.view.View
-import com.mycorp.twitchapprxjava.data.storage.model.GameData
 
 data class GameDataViewState<out T>(val progressIndicatorVisibility: Int, val data: T?, val message: String?) {
     companion object {
