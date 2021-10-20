@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
@@ -39,10 +40,15 @@ class GamesListFragment : Fragment() {
 
     private fun initViews() {
         with(fragmentViewBinding) {
+
             gamesListAdapter = GamesListAdapter()
             gamesRv.layoutManager =
                 LinearLayoutManager(context)
             gamesRv.adapter = gamesListAdapter
+
+            reportButton.setOnClickListener {
+                findNavController().navigate(R.id.ratingFragment)
+            }
 
         }
     }

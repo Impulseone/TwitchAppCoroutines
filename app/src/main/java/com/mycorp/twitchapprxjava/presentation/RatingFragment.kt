@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentRatingBinding
@@ -34,16 +35,11 @@ class RatingFragment : Fragment() {
                 }
 
             sendReportBtn.setOnClickListener{
-                createGamesListFragment()
+                findNavController().navigate(R.id.gamesListFragment)
             }
-            backBtn.setOnClickListener{createGamesListFragment()}
+            backBtn.setOnClickListener{
+                findNavController().navigate(R.id.gamesListFragment)
+            }
         }
-    }
-
-    private fun createGamesListFragment() {
-        val ft = requireActivity().supportFragmentManager.beginTransaction()
-        val gamesListFragment = GamesListFragment()
-        ft.replace(R.id.fragment_layout, gamesListFragment)
-        ft.commit()
     }
 }

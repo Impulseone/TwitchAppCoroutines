@@ -5,6 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".presentation.GamesListFragment">
 
+    <Button
+        android:id="@+id/report_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/rate_app" />
+
     <ProgressBar
         android:id="@+id/progress_indicator"
         android:layout_width="40dp"
@@ -14,6 +21,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gamesRv"
+        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
