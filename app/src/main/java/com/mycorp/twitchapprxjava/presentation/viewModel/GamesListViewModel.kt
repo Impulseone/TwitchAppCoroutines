@@ -1,6 +1,5 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
@@ -23,7 +22,7 @@ class GamesListViewModel(
         getGamesFromServer()
     }
 
-    fun getGamesDataFromServerLiveData() = gamesLiveData
+    fun gamesLiveData() = gamesLiveData
 
     private fun getGamesFromServer() {
         getFromServerUseCase.getGames()

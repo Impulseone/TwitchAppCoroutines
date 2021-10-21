@@ -15,6 +15,7 @@ import com.mycorp.twitchapprxjava.domain.repository.Repository
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListViewModel
+import com.mycorp.twitchapprxjava.presentation.viewModel.RatingViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -43,6 +44,8 @@ val appModule = module {
     single { get<AppDatabase>().gameDataDao}
 
     viewModel<GamesListViewModel>()
+
+    viewModel<RatingViewModel>()
 }
 
 private fun provideRetrofit(): Retrofit {
