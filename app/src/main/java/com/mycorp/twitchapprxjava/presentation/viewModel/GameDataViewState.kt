@@ -1,14 +1,12 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
-import android.view.View
-
-data class GameDataViewState<out T>(val progressIndicatorVisibility: Int, val data: T?, val message: String?) {
+data class GameDataViewState<out T>(val progressIndicatorVisibility: Boolean, val data: T?) {
     companion object {
-        fun <T> success(data: T): GameDataViewState<T> = GameDataViewState(progressIndicatorVisibility = View.GONE, data = data, message = "get data success")
+        fun <T> success(data: T): GameDataViewState<T> = GameDataViewState(progressIndicatorVisibility = false, data = data)
 
-        fun <T> error(message: String): GameDataViewState<T> =
-            GameDataViewState(progressIndicatorVisibility = View.GONE, data = null, message = message)
+        fun <T> error(): GameDataViewState<T> =
+            GameDataViewState(progressIndicatorVisibility = false, data = null)
 
-        fun <T> loading(): GameDataViewState<T> = GameDataViewState(progressIndicatorVisibility = View.VISIBLE, data = null, message = "loading started")
+        fun <T> loading(): GameDataViewState<T> = GameDataViewState(progressIndicatorVisibility = true, data = null)
     }
 }

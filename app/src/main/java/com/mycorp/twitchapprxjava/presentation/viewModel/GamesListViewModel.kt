@@ -42,6 +42,7 @@ class GamesListViewModel(
     private fun gameDataObserver(sourceType: SourceType): SingleObserver<List<GameData>> {
         return object : SingleObserver<List<GameData>> {
             override fun onSuccess(gameData: List<GameData>) {
+                showToast("get data success")
                 gamesLiveData.postValue(
                     GameDataViewState.success(
                         data = gameData,
@@ -56,10 +57,9 @@ class GamesListViewModel(
             }
 
             override fun onError(e: Throwable) {
+                showToast(e.message!!)
                 gamesLiveData.postValue(
-                    GameDataViewState.error(
-                        message = e.message!!
-                    )
+                    GameDataViewState.error()
                 )
                 if (sourceType == SourceType.SERVER) getGamesFromDb()
             }

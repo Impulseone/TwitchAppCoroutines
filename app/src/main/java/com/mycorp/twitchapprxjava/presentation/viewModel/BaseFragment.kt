@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 @SuppressLint("ResourceType")
-abstract class BaseFragment<VM : BaseViewModel> : Fragment(123345) {
+abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
     abstract val viewModel: VM
 
     open fun bindVm() {
