@@ -60,6 +60,7 @@ class GamesListViewModel(
                 gamesLiveData.postValue(
                     GameDataViewState.error()
                 )
+                handleException(e as Exception)
                 if (sourceType == SourceType.SERVER) getGamesFromDb()
             }
 

@@ -7,5 +7,5 @@ import io.reactivex.Single
 interface Repository {
     fun getGamesDataFromNetwork(): Single<List<GameData>>
     fun getGamesDataFromDb(): Single<List<GameData>>
-    fun insertGamesDataToDb(gameDataTables:List<GameData>): Completable
+    fun insertGamesDataToDb(gameDataTables: List<GameData>): Completable
 }
