@@ -7,13 +7,10 @@ class GamesListChangesCallback :
     DiffUtil.ItemCallback<GameData>() {
 
     override fun areItemsTheSame(oldItem: GameData, newItem: GameData): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem == newItem
     }
 
     override fun areContentsTheSame(oldItem: GameData, newItem: GameData): Boolean {
-        return (oldItem.name == newItem.name &&
-                oldItem.channelsCount == newItem.channelsCount &&
-                oldItem.logoUrl == newItem.logoUrl &&
-                oldItem.watchersCount == newItem.watchersCount)
+        return oldItem == newItem
     }
 }

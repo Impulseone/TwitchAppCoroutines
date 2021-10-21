@@ -12,5 +12,5 @@ class RoomStorage(private val gameDataDao: GameDataDao) : Storage {
     }
 
     override fun insertGamesData(gamesData: List<GameData>) =
-        gameDataDao.insertAll(gamesData.map { it.toGameDataEntity() })
+        gameDataDao.insertAll(gamesData.map { GameDataEntity.toGameDataEntity(it) })
 }

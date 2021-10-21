@@ -10,7 +10,10 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
     open fun bindVm() {
         viewModel.showToast.observe(this, {
-            Toast.makeText(requireContext(), it!!.first, it.second).show()
+            if (it == null) return@observe
+            val (text, length) = it
+
+            Toast.makeText(requireContext(),text, length).show()
         })
     }
 
