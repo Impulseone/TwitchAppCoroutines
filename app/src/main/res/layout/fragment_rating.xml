@@ -4,21 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.RatingActivity">
+    tools:context=".presentation.RatingFragment">
 
     <RatingBar
         android:id="@+id/ratingBar_default"
         style="?android:attr/ratingBarStyle"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/write_report"
-        android:layout_margin="20dp" />
+        android:layout_margin="20dp"
+        android:hint="@string/write_report" />
 
     <Button
         android:id="@+id/send_report_btn"

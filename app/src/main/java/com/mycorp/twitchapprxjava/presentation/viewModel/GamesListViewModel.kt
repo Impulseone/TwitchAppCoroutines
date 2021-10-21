@@ -2,29 +2,28 @@ package com.mycorp.twitchapprxjava.presentation.viewModel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import io.reactivex.CompletableObserver
-import io.reactivex.Observer
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class MainActivityViewModel(
+class GamesListViewModel(
     private val getFromServerUseCase: GetFromServerUseCase,
     private val getFromDbUseCase: GetFromDbUseCase
-) : ViewModel() {
+) : BaseViewModel() {
 
-    var gamesLiveData: MutableLiveData<Resource<List<GameData>>>
+    private var gamesLiveData: MutableLiveData<GameDataViewState<List<GameData>>>
 
     init {
         gamesLiveData = MutableLiveData()
         getGamesFromServer()
     }
 
-    fun getGamesDataFromServerObserver() = gamesLiveData
+    fun getGamesDataFromServerLiveData() = gamesLiveData
 
     private fun getGamesFromServer() {
         getFromServerUseCase.getGames()
@@ -37,27 +36,14 @@ class MainActivityViewModel(
         getFromDbUseCase.execute()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .toObservable()
             .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))
     }
 
-    private fun gameDataObserver(sourceType: SourceType): Observer<List<GameData>> {
-        return object : Observer<List<GameData>> {
-            override fun onComplete() {
-
-            }
-            override fun onError(e: Throwable) {
+    private fun gameDataObserver(sourceType: SourceType): SingleObserver<List<GameData>> {
+        return object : SingleObserver<List<GameData>> {
+            override fun onSuccess(gameData: List<GameData>) {
                 gamesLiveData.postValue(
-                    Resource.error(
-                        message = e.message!!
-                    )
-                )
-                if (sourceType == SourceType.SERVER) getGamesFromDb()
-            }
-
-            override fun onNext(gameData: List<GameData>) {
-                gamesLiveData.postValue(
-                    Resource.success(
+                    GameDataViewState.success(
                         data = gameData,
                     )
                 )
@@ -69,9 +55,18 @@ class MainActivityViewModel(
                 }
             }
 
+            override fun onError(e: Throwable) {
+                gamesLiveData.postValue(
+                    GameDataViewState.error(
+                        message = e.message!!
+                    )
+                )
+                if (sourceType == SourceType.SERVER) getGamesFromDb()
+            }
+
             override fun onSubscribe(d: Disposable) {
                 gamesLiveData.postValue(
-                    Resource.loading()
+                    GameDataViewState.loading()
                 )
             }
         }
@@ -83,7 +78,6 @@ class MainActivityViewModel(
             }
 
             override fun onComplete() {
-                Log.i("insert", "insert success")
             }
 
             override fun onError(e: Throwable) {

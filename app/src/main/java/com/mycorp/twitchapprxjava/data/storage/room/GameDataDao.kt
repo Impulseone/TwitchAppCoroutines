@@ -2,27 +2,28 @@ package com.mycorp.twitchapprxjava.data.storage.room
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
+import com.mycorp.twitchapprxjava.data.storage.model.GameDataEntity
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 interface GameDataDao {
     @Insert(onConflict = REPLACE)
-    fun insert(gameData: GameDataTable): Completable
+    fun insert(gameData: GameDataEntity): Completable
 
     @Insert(onConflict = REPLACE)
-    fun insertAll(objects: List<GameDataTable>): Completable
+    fun insertAll(objects: List<GameDataEntity>): Completable
 
     @Update
-    fun update(gameData: GameDataTable): Completable
+    fun update(gameData: GameDataEntity): Completable
 
     @Delete
-    fun delete(gameData: GameDataTable): Completable
+    fun delete(gameData: GameDataEntity): Completable
 
-    @Query("SELECT * FROM GameDataTable")
-    fun getAllGames(): Flowable<List<GameDataTable>>
+    @Query("SELECT * FROM GameDataEntity")
+    fun getAllGames(): Single<List<GameDataEntity>>
 
-    @Query("SELECT * FROM GameDataTable WHERE id=(:id)")
-    fun getGameById(id: Int): Flowable<GameDataTable>
+    @Query("SELECT * FROM GameDataEntity WHERE id=(:id)")
+    fun getGameById(id: Int): Flowable<GameDataEntity>
 }
