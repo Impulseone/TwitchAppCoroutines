@@ -3,7 +3,6 @@ package com.mycorp.twitchapprxjava.data.storage.model
 import com.google.gson.annotations.SerializedName
 
 class Game(
-
     @field:SerializedName("giantbomb_id")
     val giantbombId: Int? = null,
 
