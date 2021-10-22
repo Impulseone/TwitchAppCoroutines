@@ -15,17 +15,10 @@ import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class GamesListFragment : BaseFragment<GamesListViewModel>() {
+class GamesListFragment : BaseFragment<GamesListViewModel>(R.layout.fragment_games_list) {
 
     private val binding: FragmentGamesListBinding by viewBinding()
     private var gamesListAdapter: GamesListAdapter? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_games_list, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

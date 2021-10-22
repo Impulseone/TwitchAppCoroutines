@@ -13,16 +13,9 @@ import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.RatingViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RatingFragment : BaseFragment<RatingViewModel>() {
+class RatingFragment : BaseFragment<RatingViewModel>(R.layout.fragment_rating) {
 
     private val binding: FragmentRatingBinding by viewBinding()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_rating, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
