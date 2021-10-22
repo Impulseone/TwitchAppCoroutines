@@ -20,10 +20,20 @@ class GamesListFragment : BaseFragment<GamesListViewModel>(R.layout.fragment_gam
     private val binding: FragmentGamesListBinding by viewBinding()
     private var gamesListAdapter: GamesListAdapter? = null
 
+    override val viewModel: GamesListViewModel by viewModel()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         bindVm()
+    }
+
+    override fun bindVm() {
+        super.bindVm()
+        viewModel.gamesLiveData().observe(viewLifecycleOwner, {
+            changeProgressbarVisibility(it.progressIndicatorVisibility)
+            gamesListAdapter?.submitList(it.data)
+        })
     }
 
     private fun initViews() {
@@ -39,18 +49,8 @@ class GamesListFragment : BaseFragment<GamesListViewModel>(R.layout.fragment_gam
         }
     }
 
-    override fun bindVm() {
-        super.bindVm()
-        viewModel.gamesLiveData().observe(viewLifecycleOwner, {
-            changeProgressbarVisibility(it.progressIndicatorVisibility)
-            gamesListAdapter?.submitList(it.data)
-        })
-    }
-
     private fun changeProgressbarVisibility(visibility: Boolean) {
         binding.progressIndicator.isVisible = visibility
     }
-
-    override val viewModel: GamesListViewModel by viewModel()
 
 }

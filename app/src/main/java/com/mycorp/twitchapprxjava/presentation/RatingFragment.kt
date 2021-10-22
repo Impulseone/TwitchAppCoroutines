@@ -17,6 +17,8 @@ class RatingFragment : BaseFragment<RatingViewModel>(R.layout.fragment_rating) {
 
     private val binding: FragmentRatingBinding by viewBinding()
 
+    override val viewModel: RatingViewModel by viewModel()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindVm()
@@ -38,6 +40,4 @@ class RatingFragment : BaseFragment<RatingViewModel>(R.layout.fragment_rating) {
             }
         }
     }
-
-    override val viewModel: RatingViewModel by viewModel()
 }
