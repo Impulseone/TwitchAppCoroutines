@@ -1,6 +1,5 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
@@ -23,7 +22,7 @@ class GamesListViewModel(
         getGamesFromServer()
     }
 
-    fun getGamesDataFromServerLiveData() = gamesLiveData
+    fun gamesLiveData() = gamesLiveData
 
     private fun getGamesFromServer() {
         getFromServerUseCase.getGames()
@@ -42,6 +41,7 @@ class GamesListViewModel(
     private fun gameDataObserver(sourceType: SourceType): SingleObserver<List<GameData>> {
         return object : SingleObserver<List<GameData>> {
             override fun onSuccess(gameData: List<GameData>) {
+                showToast("get data success")
                 gamesLiveData.postValue(
                     GameDataViewState.success(
                         data = gameData,
@@ -56,11 +56,11 @@ class GamesListViewModel(
             }
 
             override fun onError(e: Throwable) {
+                showToast(e.message!!)
                 gamesLiveData.postValue(
-                    GameDataViewState.error(
-                        message = e.message!!
-                    )
+                    GameDataViewState.error()
                 )
+                handleException(e as Exception)
                 if (sourceType == SourceType.SERVER) getGamesFromDb()
             }
 

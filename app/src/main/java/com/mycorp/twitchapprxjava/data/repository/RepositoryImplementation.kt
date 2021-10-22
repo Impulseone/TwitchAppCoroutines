@@ -12,19 +12,13 @@ class RepositoryImplementation(
     private val storage: Storage
 ) : Repository {
 
-    override fun getGamesDataFromNetwork(): Single<List<GameData>> {
-        val gameData: Single<List<GameData>> =
-            networkController.getDataFromNetwork().map { it: TwitchResponseDto ->
-                it.toListOfGameData()
-            }
-        return gameData
-    }
-
-    override fun getGamesDataFromDb(): Single<List<GameData>> {
-        val gameData:Single<List<GameData>> = storage.getGamesDataFromDb().map {
-            it.map { gameDataEntity -> gameDataEntity.toGameData() }
+    override fun getGamesDataFromNetwork() =
+        networkController.getDataFromNetwork().map {
+            it.toListOfGameData()
         }
-        return gameData
+
+    override fun getGamesDataFromDb() = storage.getGamesDataFromDb().map {
+        it.map { it.toGameData() }
     }
 
 

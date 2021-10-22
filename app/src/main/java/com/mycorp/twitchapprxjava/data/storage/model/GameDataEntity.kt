@@ -21,4 +21,17 @@ data class GameDataEntity(
             watchersCount
         )
     }
+
+    companion object {
+        fun toGameDataEntity(gameData: GameData): GameDataEntity {
+            return GameDataEntity(
+                gameData.id,
+                gameData.name,
+                gameData.logoUrl,
+                gameData.channelsCount,
+                gameData.watchersCount
+            )
+        }
+    }
+
 }
