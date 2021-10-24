@@ -56,12 +56,15 @@ class GamesListFragment : BaseFragment<GamesListVM>(R.layout.fragment_games_list
                         override fun onClick(view: View?, position: Int) {
                             val bundle = Bundle()
                             val gameDataJson = Json.encodeToString(gamesList[position])
-                            bundle.putString(SERIALIZE_GAME_KEY, gameDataJson)
+                            bundle.putString(SERIALIZED_GAME_KEY, gameDataJson)
                             findNavController().navigate(R.id.gameItemFragment, bundle)
                         }
 
                         override fun onLongClick(view: View?, position: Int) {
-                            findNavController().navigate(R.id.gameItemFragment)
+                            val bundle = Bundle()
+                            val gameDataJson = Json.encodeToString(gamesList[position])
+                            bundle.putString(SERIALIZED_GAME_KEY, gameDataJson)
+                            findNavController().navigate(R.id.gameItemFragment, bundle)
                         }
                     })
             )

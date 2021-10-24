@@ -3,7 +3,7 @@ package com.mycorp.twitchapprxjava.data.repository
 import com.mycorp.twitchapprxjava.data.network.NetworkController
 import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponseDto
+import com.mycorp.twitchapprxjava.data.storage.model.GameItemDataDto
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 import io.reactivex.Single
 
@@ -16,6 +16,9 @@ class RepositoryImplementation(
         networkController.getDataFromNetwork().map {
             it.toListOfGameData()
         }
+
+    override fun getGameItemDataFromNetwork(id: String): Single<GameItemDataDto> =
+        networkController.getGameItemDataFromNetwork(id)
 
     override fun getGamesDataFromDb() = storage.getGamesDataFromDb().map {
         it.map { it.toGameData() }

@@ -13,24 +13,35 @@ import com.mycorp.twitchapprxjava.databinding.FragmentGameItemBinding
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
 
-const val SERIALIZE_GAME_KEY: String = "game"
+const val SERIALIZED_GAME_KEY: String = "game"
 
 class GameItemFragment : BaseFragment<GameItemFragmentVM>(R.layout.fragment_game_item) {
     override val viewModel: GameItemFragmentVM by viewModel()
     private val binding: FragmentGameItemBinding by viewBinding()
+    private var gameData: GameData? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        bindVm()
     }
 
-    fun initViews() {
+    private fun initViews() {
         with(binding) {
-            val gameData =
-                Json.decodeFromString<GameData>(arguments?.getString(SERIALIZE_GAME_KEY)!!)
-            binding.gameName.text = gameData.name
-            Glide.with(requireContext()).load(gameData.logoUrl).into(image)
+            gameData =
+                Json.decodeFromString<GameData>(arguments?.getString(SERIALIZED_GAME_KEY)!!)
+            binding.gameName.text = gameData?.name
+            Glide.with(requireContext()).load(gameData?.logoUrl).into(image)
         }
+    }
+
+    override fun bindVm() {
+        super.bindVm()
+        viewModel.gameItemLiveData().observe(viewLifecycleOwner, {
+            if (it.data != null) binding.followersCount.text =
+                "followers count: ${it.data.follows?.size.toString()}"
+        })
+        viewModel.getGameItemDataFromServer(gameData?.id.toString())
     }
 
 }
