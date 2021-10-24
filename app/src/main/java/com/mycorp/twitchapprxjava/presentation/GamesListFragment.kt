@@ -8,12 +8,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
+import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesListBinding
 import com.mycorp.twitchapprxjava.presentation.gamesListView.GamesListAdapter
 import com.mycorp.twitchapprxjava.presentation.gamesListView.RecyclerTouchListener
 import com.mycorp.twitchapprxjava.presentation.gamesListView.RecyclerTouchListener.ClickListener
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListVM
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -21,6 +24,7 @@ class GamesListFragment : BaseFragment<GamesListVM>(R.layout.fragment_games_list
 
     private val binding: FragmentGamesListBinding by viewBinding()
     private var gamesListAdapter: GamesListAdapter? = null
+    private var gamesList: List<GameData> = arrayListOf()
     override val viewModel: GamesListVM by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,6 +38,7 @@ class GamesListFragment : BaseFragment<GamesListVM>(R.layout.fragment_games_list
         viewModel.gamesLiveData().observe(viewLifecycleOwner, {
             changeProgressbarVisibility(it.progressIndicatorVisibility)
             gamesListAdapter?.submitList(it.data)
+            if (it.data != null) gamesList = it.data
         })
     }
 
@@ -49,7 +54,10 @@ class GamesListFragment : BaseFragment<GamesListVM>(R.layout.fragment_games_list
                     gamesRv,
                     object : ClickListener {
                         override fun onClick(view: View?, position: Int) {
-                            findNavController().navigate(R.id.gameItemFragment)
+                            val bundle = Bundle()
+                            val gameDataJson = Json.encodeToString(gamesList[position])
+                            bundle.putString(SERIALIZE_GAME_KEY, gameDataJson)
+                            findNavController().navigate(R.id.gameItemFragment, bundle)
                         }
 
                         override fun onLongClick(view: View?, position: Int) {
