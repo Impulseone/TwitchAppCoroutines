@@ -18,30 +18,28 @@ const val SERIALIZED_GAME_KEY: String = "game"
 class GameItemFragment : BaseFragment<GameItemFragmentVM>(R.layout.fragment_game_item) {
     override val viewModel: GameItemFragmentVM by viewModel()
     private val binding: FragmentGameItemBinding by viewBinding()
-    private var gameData: GameData? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
         bindVm()
     }
 
-    private fun initViews() {
+    private fun initViews(gameData: GameData) {
         with(binding) {
-            gameData =
-                Json.decodeFromString<GameData>(arguments?.getString(SERIALIZED_GAME_KEY)!!)
-            binding.gameName.text = gameData?.name
-            Glide.with(requireContext()).load(gameData?.logoUrl).into(image)
+            binding.gameName.text = gameData.name
+            Glide.with(requireContext()).load(gameData.logoUrl).into(image)
         }
     }
 
     override fun bindVm() {
         super.bindVm()
+        val gameData: GameData = Json.decodeFromString(arguments?.getString(SERIALIZED_GAME_KEY)!!)
         viewModel.gameItemLiveData().observe(viewLifecycleOwner, {
             if (it.data != null) binding.followersCount.text =
-                "followers count: ${it.data.size}"
+                "followers count: ${it.data.followersIds.size}"
         })
-        viewModel.getFollowersListFromServer(gameData?.id.toString())
+        viewModel.getFollowersListFromServer(gameData)
+        initViews(gameData)
     }
 
 }

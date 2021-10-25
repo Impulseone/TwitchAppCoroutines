@@ -2,6 +2,8 @@ package com.mycorp.twitchapprxjava.presentation.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
+import com.mycorp.twitchapprxjava.data.storage.model.GameData
+import com.mycorp.twitchapprxjava.data.storage.model.GameItemData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
@@ -17,27 +19,30 @@ class GameItemFragmentVM(
     private val getFromDbUseCase: GetFromDbUseCase
 ) : BaseViewModel() {
 
-    private var gameItemLiveData: MutableLiveData<GameDataViewState<List<FollowerInfo>>> =
+    private var gameItemLiveData: MutableLiveData<GameDataViewState<GameItemData>> =
         MutableLiveData()
 
     fun gameItemLiveData() = gameItemLiveData
 
-    fun getFollowersListFromServer(id: String) {
-        getFromServerUseCase.getFollowersList(id)
+    fun getFollowersListFromServer(gameData: GameData) {
+        getFromServerUseCase.getFollowersList(gameData.id.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(followersListObserver(sourceType = SourceType.SERVER, id))
+            .subscribe(followersListObserver(sourceType = SourceType.SERVER, gameData))
     }
 
     private fun followersListObserver(
         sourceType: SourceType,
-        id: String
+        gameData: GameData
     ): SingleObserver<List<FollowerInfo>> {
         return object : SingleObserver<List<FollowerInfo>> {
             override fun onSuccess(followersList: List<FollowerInfo>) {
                 gameItemLiveData.postValue(
                     GameDataViewState.success(
-                        data = followersList,
+                        data = GameItemData.fromGameData(
+                            gameData,
+                            followersList
+                        )
                     )
                 )
                 if (sourceType == SourceType.SERVER) {
@@ -54,7 +59,7 @@ class GameItemFragmentVM(
                 gameItemLiveData.postValue(
                     GameDataViewState.error()
                 )
-                if (sourceType == SourceType.SERVER) getFollowersFromDb(id)
+                if (sourceType == SourceType.SERVER) getFollowersFromDb(gameData)
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -65,11 +70,11 @@ class GameItemFragmentVM(
         }
     }
 
-    private fun getFollowersFromDb(id: String) {
-        getFromDbUseCase.getFollowersData(id)
+    private fun getFollowersFromDb(gameData: GameData) {
+        getFromDbUseCase.getFollowersData(gameData.id.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(followersListObserver(sourceType = SourceType.DATABASE, id))
+            .subscribe(followersListObserver(sourceType = SourceType.DATABASE, gameData))
     }
 
     private fun insertObserver(): CompletableObserver {
