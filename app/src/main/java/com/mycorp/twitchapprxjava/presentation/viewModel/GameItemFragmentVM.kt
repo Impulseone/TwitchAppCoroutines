@@ -35,7 +35,6 @@ class GameItemFragmentVM(
     ): SingleObserver<List<FollowerInfo>> {
         return object : SingleObserver<List<FollowerInfo>> {
             override fun onSuccess(followersList: List<FollowerInfo>) {
-                showToast("get data success")
                 gameItemLiveData.postValue(
                     GameDataViewState.success(
                         data = followersList,
@@ -50,11 +49,11 @@ class GameItemFragmentVM(
             }
 
             override fun onError(e: Throwable) {
+                handleException(e as Exception)
                 showToast(e.message!!)
                 gameItemLiveData.postValue(
                     GameDataViewState.error()
                 )
-                handleException(e as Exception)
                 if (sourceType == SourceType.SERVER) getFollowersFromDb(id)
             }
 

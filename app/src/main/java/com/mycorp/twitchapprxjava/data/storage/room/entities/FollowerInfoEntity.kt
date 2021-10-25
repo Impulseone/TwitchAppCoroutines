@@ -6,15 +6,13 @@ import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 
 @Entity
 class FollowerInfoEntity(
+    @PrimaryKey val id: String,
     val followerName: String,
     val photoUrl: String
-){
-    @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
-
-    companion object{
-        fun fromFollowerInfo(followerInfo:FollowerInfo) = FollowerInfoEntity(
-           followerInfo.followerName, followerInfo.photoUrl
+) {
+    companion object {
+        fun fromFollowerInfo(followerInfo: FollowerInfo) = FollowerInfoEntity(
+            followerInfo.followerId, followerInfo.followerName, followerInfo.photoUrl
         )
     }
 }

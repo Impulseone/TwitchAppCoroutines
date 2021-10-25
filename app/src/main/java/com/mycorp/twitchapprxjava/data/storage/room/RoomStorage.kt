@@ -5,7 +5,6 @@ import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.data.storage.room.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.data.storage.room.entities.GameDataEntity
-import io.reactivex.Single
 
 class RoomStorage(private val gameDataDao: GameDataDao, private val followersDao: FollowersDao) :
     Storage {
