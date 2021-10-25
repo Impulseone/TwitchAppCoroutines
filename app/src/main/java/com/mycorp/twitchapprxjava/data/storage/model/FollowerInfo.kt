@@ -1,5 +1,6 @@
 package com.mycorp.twitchapprxjava.data.storage.model
 
+import com.mycorp.twitchapprxjava.data.storage.model.gameItemDataResponse.FollowerDto
 import com.mycorp.twitchapprxjava.data.storage.room.entities.FollowerInfoEntity
 
 class FollowerInfo(val followerId: String, val followerName: String, val photoUrl: String) {

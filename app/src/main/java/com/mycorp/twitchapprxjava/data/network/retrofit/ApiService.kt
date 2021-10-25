@@ -1,6 +1,6 @@
 package com.mycorp.twitchapprxjava.data.network.retrofit
 
-import com.mycorp.twitchapprxjava.data.storage.model.GameItemDataDto
+import com.mycorp.twitchapprxjava.data.storage.model.gameItemDataResponse.GameItemDataDto
 import com.mycorp.twitchapprxjava.data.storage.model.topGamesResponse.TopGamesResponseDto
 import io.reactivex.Single
 import retrofit2.http.GET

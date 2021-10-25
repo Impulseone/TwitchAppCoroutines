@@ -1,6 +1,6 @@
 package com.mycorp.twitchapprxjava.data.network
 
-import com.mycorp.twitchapprxjava.data.storage.model.GameItemDataDto
+import com.mycorp.twitchapprxjava.data.storage.model.gameItemDataResponse.GameItemDataDto
 import com.mycorp.twitchapprxjava.data.storage.model.topGamesResponse.TopGamesResponseDto
 import io.reactivex.Single
 
