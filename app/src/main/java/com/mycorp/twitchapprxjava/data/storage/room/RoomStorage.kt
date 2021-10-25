@@ -2,7 +2,7 @@ package com.mycorp.twitchapprxjava.data.storage.room
 
 import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.GameDataEntity
+import com.mycorp.twitchapprxjava.data.storage.room.entities.GameDataEntity
 import io.reactivex.Single
 
 class RoomStorage(private val gameDataDao: GameDataDao) : Storage {
@@ -12,5 +12,5 @@ class RoomStorage(private val gameDataDao: GameDataDao) : Storage {
     }
 
     override fun insertGamesData(gamesData: List<GameData>) =
-        gameDataDao.insertAll(gamesData.map { GameDataEntity.toGameDataEntity(it) })
+        gameDataDao.insertAll(gamesData.map { GameDataEntity.fromGameData(it) })
 }

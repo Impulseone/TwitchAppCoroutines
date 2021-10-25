@@ -39,9 +39,9 @@ class GameItemFragment : BaseFragment<GameItemFragmentVM>(R.layout.fragment_game
         super.bindVm()
         viewModel.gameItemLiveData().observe(viewLifecycleOwner, {
             if (it.data != null) binding.followersCount.text =
-                "followers count: ${it.data.follows?.size.toString()}"
+                "followers count: ${it.data.size}"
         })
-        viewModel.getGameItemDataFromServer(gameData?.id.toString())
+        viewModel.getFollowersListFromServer(gameData?.id.toString())
     }
 
 }

@@ -1,7 +1,7 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import com.mycorp.twitchapprxjava.data.storage.model.GameItemDataDto
+import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import io.reactivex.SingleObserver
@@ -14,25 +14,25 @@ class GameItemFragmentVM(
     private val getFromDbUseCase: GetFromDbUseCase
 ) : BaseViewModel() {
 
-    private var gameItemLiveData: MutableLiveData<GameDataViewState<GameItemDataDto>> =
+    private var gameItemLiveData: MutableLiveData<GameDataViewState<List<FollowerInfo>>> =
         MutableLiveData()
 
     fun gameItemLiveData() = gameItemLiveData
 
-    fun getGameItemDataFromServer(id: String) {
-        getFromServerUseCase.getGameItemData(id)
+    fun getFollowersListFromServer(id: String) {
+        getFromServerUseCase.getFollowersList(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver(sourceType = SourceType.SERVER))
+            .subscribe(followersListObserver(sourceType = SourceType.SERVER))
     }
 
-    private fun gameDataObserver(sourceType: SourceType): SingleObserver<GameItemDataDto> {
-        return object : SingleObserver<GameItemDataDto> {
-            override fun onSuccess(gameData: GameItemDataDto) {
+    private fun followersListObserver(sourceType: SourceType): SingleObserver<List<FollowerInfo>> {
+        return object : SingleObserver<List<FollowerInfo>> {
+            override fun onSuccess(followersList: List<FollowerInfo>) {
                 showToast("get data success")
                 gameItemLiveData.postValue(
                     GameDataViewState.success(
-                        data = gameData,
+                        data = followersList,
                     )
                 )
             }

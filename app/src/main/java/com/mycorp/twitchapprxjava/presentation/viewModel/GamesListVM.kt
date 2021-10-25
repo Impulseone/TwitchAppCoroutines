@@ -32,7 +32,7 @@ class GamesListVM(
     }
 
     private fun getGamesFromDb() {
-        getFromDbUseCase.execute()
+        getFromDbUseCase.getGamesData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))

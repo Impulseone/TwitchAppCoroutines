@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.data.storage.model
+package com.mycorp.twitchapprxjava.data.storage.model.topGamesResponse
 
 import com.google.gson.annotations.SerializedName
 
