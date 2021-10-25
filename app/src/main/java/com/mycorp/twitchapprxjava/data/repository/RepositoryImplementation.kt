@@ -4,8 +4,8 @@ import com.mycorp.twitchapprxjava.data.network.NetworkController
 import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.GameItemDataDto
 import com.mycorp.twitchapprxjava.domain.repository.Repository
+import io.reactivex.Completable
 import io.reactivex.Single
 
 class RepositoryImplementation(
@@ -28,6 +28,9 @@ class RepositoryImplementation(
     }
 
 
-    override fun insertGamesDataToDb(gameDataTables: List<GameData>) =
-        storage.insertGamesData(gamesData = gameDataTables)
+    override fun insertGamesDataToDb(gameDataEntities: List<GameData>) =
+        storage.insertGamesData(gamesData = gameDataEntities)
+
+    override fun insertFollowersToDb(followersList: List<FollowerInfo>) = storage.insertFollowersData(followersList)
+
 }

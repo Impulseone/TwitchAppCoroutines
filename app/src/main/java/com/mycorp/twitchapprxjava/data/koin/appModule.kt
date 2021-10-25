@@ -27,7 +27,7 @@ val appModule = module {
 
     single<NetworkController> { NetworkControllerImpl(get()) }
 
-    single<Storage> { RoomStorage(get()) }
+    single<Storage> { RoomStorage(get(), get()) }
 
     single<Repository> { RepositoryImplementation(get(), get()) }
 
@@ -42,6 +42,8 @@ val appModule = module {
     single { provideRoomDb(androidContext()) }
 
     single { get<AppDatabase>().gameDataDao}
+
+    single { get<AppDatabase>().followersDao}
 
     viewModel<GamesListVM>()
 

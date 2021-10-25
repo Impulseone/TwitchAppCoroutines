@@ -35,6 +35,9 @@ class GameItemFragmentVM(
                         data = followersList,
                     )
                 )
+                if (sourceType == SourceType.SERVER) {
+                    getFromServerUseCase.insertFollowers(followersList)
+                }
             }
 
             override fun onError(e: Throwable) {
