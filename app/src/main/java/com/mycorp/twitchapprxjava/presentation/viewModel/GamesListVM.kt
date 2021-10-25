@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
+import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.SourceType
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.mycorp.twitchapprxjava.data.storage.model.topGamesResponse.ConvertDtoException
+import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.SingleLiveEvent
 
 abstract class BaseViewModel : ViewModel() {
 

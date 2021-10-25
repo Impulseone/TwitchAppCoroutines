@@ -6,8 +6,8 @@ import com.mycorp.twitchapprxjava.domain.repository.Repository
 
 class GetFromServerUseCase(private val repository: Repository) {
 
-    fun getGames() = repository.getGamesDataFromNetwork()
-    fun getFollowersList(id: String) = repository.getFollowersList(id)
+    fun getGames() = repository.getGamesDataFromServer()
+    fun getFollowersList(id: String) = repository.getFollowersListFromServer(id)
 
     fun insertGames(gameData: List<GameData>) =
         repository.insertGamesDataToDb(gameData)

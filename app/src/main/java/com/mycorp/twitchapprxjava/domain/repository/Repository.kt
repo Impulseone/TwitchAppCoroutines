@@ -8,9 +8,11 @@ import io.reactivex.Single
 
 interface Repository {
 
-    fun getGamesDataFromNetwork(): Single<List<GameData>>
-    fun getFollowersList(id: String): Single<List<FollowerInfo>>
+    fun getGamesDataFromServer(): Single<List<GameData>>
+    fun getFollowersListFromServer(id: String): Single<List<FollowerInfo>>
+
     fun getGamesDataFromDb(): Single<List<GameData>>
+    fun getFollowersListFromDb(id: String): Single<List<FollowerInfo>>
 
     fun insertGamesDataToDb(gameDataEntities: List<GameData>): Completable
     fun insertFollowersToDb(followersList: List<FollowerInfo>): Completable
