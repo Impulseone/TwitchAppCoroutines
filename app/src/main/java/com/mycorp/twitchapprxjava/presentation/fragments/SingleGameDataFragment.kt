@@ -14,13 +14,11 @@ import com.mycorp.twitchapprxjava.presentation.fragments.followersList.GAME_ID
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.SingleGameDataFragmentVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 
 const val SERIALIZED_GAME_KEY = "game"
 
-class SingleGameDataFragment : BaseFragment<SingleGameDataFragmentVM>(R.layout.fragment_single_game_data) {
+class SingleGameDataFragment :
+    BaseFragment<SingleGameDataFragmentVM>(R.layout.fragment_single_game_data) {
     override val viewModel: SingleGameDataFragmentVM by viewModel()
     private val binding: FragmentSingleGameDataBinding by viewBinding()
 
@@ -33,10 +31,11 @@ class SingleGameDataFragment : BaseFragment<SingleGameDataFragmentVM>(R.layout.f
         with(binding) {
             binding.gameName.text = singleGameData.name
             GlideApp.with(requireContext()).load(singleGameData.photoUrl).into(image)
-            binding.followersCount.text = getString(R.string.followers_count, singleGameData.followersIds.size.toString())
-            binding.followersCount.setOnClickListener{
+            binding.followersCount.text =
+                getString(R.string.followers_count, singleGameData.followersIds.size.toString())
+            binding.followersCount.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putString(GAME_ID, Json.encodeToString(singleGameData))
+                bundle.putParcelable(GAME_ID, singleGameData)
                 findNavController().navigate(R.id.followersListFragment, bundle)
             }
         }
@@ -44,7 +43,7 @@ class SingleGameDataFragment : BaseFragment<SingleGameDataFragmentVM>(R.layout.f
 
     override fun bindVm() {
         super.bindVm()
-        val gameData: GameData = Json.decodeFromString(arguments?.getString(SERIALIZED_GAME_KEY)!!)
+        val gameData: GameData = arguments?.getParcelable(SERIALIZED_GAME_KEY)!!
         viewModel.gameItemLiveData().observe(viewLifecycleOwner, {
             if (it.data == null) {
                 when (it.progressIndicatorVisibility) {

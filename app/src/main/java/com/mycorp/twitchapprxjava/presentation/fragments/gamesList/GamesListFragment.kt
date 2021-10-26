@@ -14,8 +14,6 @@ import com.mycorp.twitchapprxjava.presentation.fragments.SERIALIZED_GAME_KEY
 import com.mycorp.twitchapprxjava.presentation.fragments.gamesList.RecyclerTouchListener.ClickListener
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListVM
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GamesListFragment : BaseFragment<GamesListVM>(R.layout.fragment_games_list) {
@@ -53,16 +51,14 @@ class GamesListFragment : BaseFragment<GamesListVM>(R.layout.fragment_games_list
                     object : ClickListener {
                         override fun onClick(view: View?, position: Int) {
                             val bundle = Bundle()
-                            val gameDataJson = Json.encodeToString(gamesList[position])
-                            bundle.putString(SERIALIZED_GAME_KEY, gameDataJson)
-                            findNavController().navigate(R.id.gameItemFragment, bundle)
+                            bundle.putParcelable(SERIALIZED_GAME_KEY, gamesList[position])
+                            findNavController().navigate(R.id.singleGameDataFragment, bundle)
                         }
 
                         override fun onLongClick(view: View?, position: Int) {
                             val bundle = Bundle()
-                            val gameDataJson = Json.encodeToString(gamesList[position])
-                            bundle.putString(SERIALIZED_GAME_KEY, gameDataJson)
-                            findNavController().navigate(R.id.gameItemFragment, bundle)
+                            bundle.putParcelable(SERIALIZED_GAME_KEY, gamesList[position])
+                            findNavController().navigate(R.id.singleGameDataFragment, bundle)
                         }
                     })
             )

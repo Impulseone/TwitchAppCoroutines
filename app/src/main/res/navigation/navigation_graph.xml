@@ -16,7 +16,7 @@
             app:popUpTo="@id/gamesListFragment" />
         <action
             android:id="@+id/action_gamesListFragment_to_gameItemFragment"
-            app:destination="@id/gameItemFragment" />
+            app:destination="@id/singleGameDataFragment" />
     </fragment>
     <fragment
         android:id="@+id/ratingFragment"
@@ -24,7 +24,7 @@
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
     <fragment
-        android:id="@+id/gameItemFragment"
+        android:id="@+id/singleGameDataFragment"
         android:name="com.mycorp.twitchapprxjava.presentation.fragments.SingleGameDataFragment"
         android:label="fragment_game_item"
         tools:layout="@layout/fragment_single_game_data" >

@@ -9,8 +9,6 @@ import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentFollowersListBinding
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.FollowersListVM
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val GAME_ID = "gameId"
@@ -41,7 +39,7 @@ class FollowersListFragment : BaseFragment<FollowersListVM>(R.layout.fragment_fo
             changeProgressbarVisibility(it.progressIndicatorVisibility)
             followersListAdapter.submitList(it.data)
         })
-        viewModel.getFollowersFromServer(Json.decodeFromString(arguments?.getString(GAME_ID)!!))
+        viewModel.getFollowersFromServer(arguments?.getParcelable(GAME_ID)!!)
     }
 
     private fun changeProgressbarVisibility(visibility: Boolean) {
