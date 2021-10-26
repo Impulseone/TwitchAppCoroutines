@@ -10,8 +10,7 @@
     <string name="game_name">Game: %1$s</string>
     <string name="channels">Channels: %1$s</string>
     <string name="watchers">Watchers: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="followers_count">followers count:</string>
+    <string name="followers_count">followers count: %1$s</string>
     <string name="game_item_fragment">game_item_fragment</string>
 </resources>

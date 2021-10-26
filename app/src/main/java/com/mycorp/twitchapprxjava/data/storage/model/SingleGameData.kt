@@ -4,7 +4,7 @@ import com.mycorp.twitchapprxjava.data.storage.room.entities.GameItemDataEntity
 import kotlinx.serialization.Serializable
 
 @Serializable
-class GameItemData(
+class SingleGameData(
     val id: String,
     val name: String,
     val photoUrl: String,
@@ -12,8 +12,8 @@ class GameItemData(
     var isLiked: Boolean = false
 ) {
     companion object {
-        fun fromGameData(gameData: GameData, followers: List<FollowerInfo>): GameItemData {
-            return GameItemData(
+        fun fromGameData(gameData: GameData, followers: List<FollowerInfo>): SingleGameData {
+            return SingleGameData(
                 gameData.id.toString(),
                 gameData.name,
                 gameData.logoUrl,
@@ -21,8 +21,8 @@ class GameItemData(
             )
         }
 
-        fun fromGameItemDataEntity(gameItemDataEntity: GameItemDataEntity): GameItemData {
-            return GameItemData(
+        fun fromGameItemDataEntity(gameItemDataEntity: GameItemDataEntity): SingleGameData {
+            return SingleGameData(
                 gameItemDataEntity.id,
                 gameItemDataEntity.name,
                 gameItemDataEntity.photoUrl,

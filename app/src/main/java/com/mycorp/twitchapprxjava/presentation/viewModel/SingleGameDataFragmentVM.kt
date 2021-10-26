@@ -3,7 +3,7 @@ package com.mycorp.twitchapprxjava.presentation.viewModel
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.GameItemData
+import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
@@ -14,15 +14,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class GameItemFragmentVM(
+class SingleGameDataFragmentVM(
     private val getFromServerUseCase: GetFromServerUseCase,
     private val getFromDbUseCase: GetFromDbUseCase
 ) : BaseViewModel() {
 
-    private var gameItemLiveData: MutableLiveData<GameDataViewState<GameItemData>> =
+    private var singleGameLiveData: MutableLiveData<GameDataViewState<SingleGameData>> =
         MutableLiveData()
 
-    fun gameItemLiveData() = gameItemLiveData
+    fun gameItemLiveData() = singleGameLiveData
 
     fun getFollowersListFromServer(gameData: GameData) {
         getFromServerUseCase.getFollowersList(gameData.id.toString())
@@ -38,7 +38,7 @@ class GameItemFragmentVM(
         return object : SingleObserver<List<FollowerInfo>> {
 
             override fun onSuccess(followersList: List<FollowerInfo>) {
-                val gameItemData = GameItemData.fromGameData(
+                val gameItemData = SingleGameData.fromGameData(
                     gameData,
                     followersList
                 )
@@ -55,42 +55,42 @@ class GameItemFragmentVM(
                         .subscribe(insertObserver())
                 }
 
-                gameItemLiveData.postValue(GameDataViewState.success(gameItemData))
+                singleGameLiveData.postValue(GameDataViewState.success(gameItemData))
             }
 
             override fun onError(e: Throwable) {
                 handleException(e as Exception)
                 showToast(e.message!!)
-                gameItemLiveData.postValue(
+                singleGameLiveData.postValue(
                     GameDataViewState.error()
                 )
                 if (sourceType == SourceType.SERVER) getGameItemDataFromDb(gameData)
             }
 
             override fun onSubscribe(d: Disposable) {
-                gameItemLiveData.postValue(
+                singleGameLiveData.postValue(
                     GameDataViewState.loading()
                 )
             }
         }
     }
 
-    private fun gameItemDataFromDbObserver(): SingleObserver<GameItemData> {
-        return object : SingleObserver<GameItemData> {
+    private fun gameItemDataFromDbObserver(): SingleObserver<SingleGameData> {
+        return object : SingleObserver<SingleGameData> {
             override fun onSubscribe(d: Disposable) {
-                gameItemLiveData.postValue(
+                singleGameLiveData.postValue(
                     GameDataViewState.loading()
                 )
             }
 
-            override fun onSuccess(t: GameItemData) {
-                gameItemLiveData.postValue(GameDataViewState.success(t))
+            override fun onSuccess(t: SingleGameData) {
+                singleGameLiveData.postValue(GameDataViewState.success(t))
             }
 
             override fun onError(e: Throwable) {
                 handleException(e as Exception)
                 showToast(e.message!!)
-                gameItemLiveData.postValue(
+                singleGameLiveData.postValue(
                     GameDataViewState.error()
                 )
             }

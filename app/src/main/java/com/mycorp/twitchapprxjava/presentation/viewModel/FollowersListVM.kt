@@ -2,7 +2,7 @@ package com.mycorp.twitchapprxjava.presentation.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
-import com.mycorp.twitchapprxjava.data.storage.model.GameItemData
+import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
@@ -22,23 +22,23 @@ class FollowersListVM(
 
     fun followersLiveData() = followersLiveData
 
-    fun getFollowersFromServer(gameItemData: GameItemData) {
-        getFromServerUseCase.getFollowersList(gameItemData.id)
+    fun getFollowersFromServer(singleGameData: SingleGameData) {
+        getFromServerUseCase.getFollowersList(singleGameData.id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver(sourceType = SourceType.SERVER, gameItemData))
+            .subscribe(gameDataObserver(sourceType = SourceType.SERVER, singleGameData))
     }
 
-    private fun getFollowersFromDb(gameItemData: GameItemData) {
-        getFromDbUseCase.getFollowersListByIds(gameItemData.followersIds)
+    private fun getFollowersFromDb(singleGameData: SingleGameData) {
+        getFromDbUseCase.getFollowersListByIds(singleGameData.followersIds)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE, gameItemData))
+            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE, singleGameData))
     }
 
     private fun gameDataObserver(
         sourceType: SourceType,
-        gameItemData: GameItemData
+        singleGameData: SingleGameData
     ): SingleObserver<List<FollowerInfo>> {
         return object : SingleObserver<List<FollowerInfo>> {
             override fun onSuccess(gameData: List<FollowerInfo>) {
@@ -55,7 +55,7 @@ class FollowersListVM(
                     GameDataViewState.error()
                 )
                 handleException(e as Exception)
-                if (sourceType == SourceType.SERVER) getFollowersFromDb(gameItemData)
+                if (sourceType == SourceType.SERVER) getFollowersFromDb(singleGameData)
             }
 
             override fun onSubscribe(d: Disposable) {

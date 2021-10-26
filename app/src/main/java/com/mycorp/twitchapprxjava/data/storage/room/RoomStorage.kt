@@ -3,15 +3,13 @@ package com.mycorp.twitchapprxjava.data.storage.room
 import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.GameItemData
+import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 import com.mycorp.twitchapprxjava.data.storage.room.dao.FollowersDao
 import com.mycorp.twitchapprxjava.data.storage.room.dao.GameDataDao
 import com.mycorp.twitchapprxjava.data.storage.room.dao.GameItemDataDao
 import com.mycorp.twitchapprxjava.data.storage.room.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.data.storage.room.entities.GameDataEntity
 import com.mycorp.twitchapprxjava.data.storage.room.entities.GameItemDataEntity
-import io.reactivex.Completable
-import io.reactivex.Single
 
 class RoomStorage(
     private val gameDataDao: GameDataDao,
@@ -32,7 +30,7 @@ class RoomStorage(
     override fun insertFollowersData(followersData: List<FollowerInfo>) =
         followersDao.insertAll(followersData.map { FollowerInfoEntity.fromFollowerInfo(it) })
 
-    override fun insertGameItemData(gameItemData: GameItemData) =
-        gameItemDataDao.insert(GameItemDataEntity.fromGameItemData(gameItemData))
+    override fun insertGameItemData(singleGameData: SingleGameData) =
+        gameItemDataDao.insert(GameItemDataEntity.fromGameItemData(singleGameData))
 
 }

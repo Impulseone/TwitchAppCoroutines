@@ -14,7 +14,7 @@ import com.mycorp.twitchapprxjava.domain.repository.Repository
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.FollowersListVM
-import com.mycorp.twitchapprxjava.presentation.viewModel.GameItemFragmentVM
+import com.mycorp.twitchapprxjava.presentation.viewModel.SingleGameDataFragmentVM
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListVM
 import com.mycorp.twitchapprxjava.presentation.viewModel.RatingVM
 import org.koin.android.ext.koin.androidContext
@@ -52,7 +52,7 @@ val appModule = module {
 
     viewModel<RatingVM>()
 
-    viewModel<GameItemFragmentVM>()
+    viewModel<SingleGameDataFragmentVM>()
 
     viewModel<FollowersListVM>()
 }

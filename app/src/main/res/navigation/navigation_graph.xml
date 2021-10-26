@@ -25,9 +25,9 @@
         tools:layout="@layout/fragment_rating" />
     <fragment
         android:id="@+id/gameItemFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.GameItemFragment"
+        android:name="com.mycorp.twitchapprxjava.presentation.fragments.SingleGameDataFragment"
         android:label="fragment_game_item"
-        tools:layout="@layout/fragment_game_item" >
+        tools:layout="@layout/fragment_single_game_data" >
         <action
             android:id="@+id/action_gameItemFragment_to_followersListFragment"
             app:destination="@id/followersListFragment" />
