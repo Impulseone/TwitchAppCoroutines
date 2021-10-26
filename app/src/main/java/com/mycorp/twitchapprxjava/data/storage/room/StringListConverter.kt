@@ -5,12 +5,11 @@ import androidx.room.TypeConverter
 class StringListConverter {
 
     @TypeConverter
-    fun fromHobbies(hobbies: List<String>): String {
-        return hobbies.joinToString()
+    fun fromListToString(stringsList: List<String>): String {
+        return stringsList.joinToString()
     }
 
     @TypeConverter
-    fun toHobbies(data: String): List<String> {
-        return data.split(",").map { it.trim() }
-    }
+    fun toListFromString(data: String): List<String> = if(data=="") mutableListOf()
+    else data.split(",").map { it.trim() }
 }

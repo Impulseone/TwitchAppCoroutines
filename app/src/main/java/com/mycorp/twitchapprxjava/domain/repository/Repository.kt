@@ -13,7 +13,7 @@ interface Repository {
 
     fun getGamesDataFromDb(): Single<List<GameData>>
     fun getFollowersListFromDbByIds(followerIds:List<String>): Single<List<FollowerInfo>>
-    fun getGameItemDataFromDb(gameId:String): Single<SingleGameData>
+    fun getSingleGameDataFromDb(gameId:String): Single<SingleGameData>
 
     fun insertGamesDataToDb(gameDataEntities: List<GameData>): Completable
     fun insertFollowersToDb(followersList: List<FollowerInfo>): Completable

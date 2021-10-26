@@ -8,6 +8,6 @@ class GetFromDbUseCase(private val repository: Repository) {
 
     fun getFollowersListByIds(followerIds: List<String>) = repository.getFollowersListFromDbByIds(followerIds)
 
-    fun getGameItemData(gameId: String) = repository.getGameItemDataFromDb(gameId)
+    fun getSingleGameData(gameId: String) = repository.getSingleGameDataFromDb(gameId)
 
 }

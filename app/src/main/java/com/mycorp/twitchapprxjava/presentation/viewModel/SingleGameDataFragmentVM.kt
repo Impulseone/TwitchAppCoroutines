@@ -7,7 +7,6 @@ import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
-import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.SourceType
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -61,7 +60,7 @@ class SingleGameDataFragmentVM(
                 singleGameLiveData.postValue(
                     GameDataViewState.error()
                 )
-                getGameItemDataFromDb(gameData)
+                getSingleGameDataFromDb(gameData)
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -95,8 +94,8 @@ class SingleGameDataFragmentVM(
         }
     }
 
-    private fun getGameItemDataFromDb(gameData: GameData) {
-        getFromDbUseCase.getGameItemData(gameData.id.toString())
+    private fun getSingleGameDataFromDb(gameData: GameData) {
+        getFromDbUseCase.getSingleGameData(gameData.id.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(gameItemDataFromDbObserver())

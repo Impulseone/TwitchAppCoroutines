@@ -16,6 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SingleGameDataFragment :
     BaseFragment<SingleGameDataFragmentVM>(R.layout.fragment_single_game_data) {
+
     override val viewModel: SingleGameDataFragmentVM by viewModel()
     private val binding: FragmentSingleGameDataBinding by viewBinding()
 
@@ -24,7 +25,19 @@ class SingleGameDataFragment :
         bindVm()
     }
 
-    private fun initViews(singleGameData: SingleGameData) {
+    override fun bindVm() {
+        super.bindVm()
+        viewModel.gameItemLiveData().observe(viewLifecycleOwner, {
+            binding.progressIndicator.isVisible = it.progressIndicatorVisibility
+            if (it.data != null) {
+                binding.contentLayout.isVisible = true
+                setViews(it.data)
+            }
+        })
+        viewModel.getFollowersListFromServer(arguments?.getParcelable(PARCELIZE_GAME_KEY)!!)
+    }
+
+    private fun setViews(singleGameData: SingleGameData) {
         with(binding) {
             binding.gameName.text = singleGameData.name
             GlideApp.with(requireContext()).load(singleGameData.photoUrl).into(image)
@@ -36,19 +49,6 @@ class SingleGameDataFragment :
                 findNavController().navigate(R.id.followersListFragment, bundle)
             }
         }
-    }
-
-    override fun bindVm() {
-        super.bindVm()
-        val gameData: GameData = arguments?.getParcelable(PARCELIZE_GAME_KEY)!!
-        viewModel.gameItemLiveData().observe(viewLifecycleOwner, {
-            binding.progressIndicator.isVisible = it.progressIndicatorVisibility
-            if (it.data != null) {
-                binding.contentLayout.isVisible = true
-                initViews(it.data)
-            }
-        })
-        viewModel.getFollowersListFromServer(gameData)
     }
 
     companion object {

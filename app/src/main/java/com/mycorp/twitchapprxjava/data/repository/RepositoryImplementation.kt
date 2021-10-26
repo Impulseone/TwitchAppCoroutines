@@ -31,7 +31,7 @@ class RepositoryImplementation(
         storage.getFollowersFromDbByIds(followerIds)
             .map { it.map { FollowerInfo.fromFollowerInfoEntity(it) } }
 
-    override fun getGameItemDataFromDb(gameId: String) =
+    override fun getSingleGameDataFromDb(gameId: String) =
         storage.getGameItemData(gameId).map { SingleGameData.fromGameItemDataEntity(it) }
 
     override fun insertGamesDataToDb(gameDataEntities: List<GameData>) =
