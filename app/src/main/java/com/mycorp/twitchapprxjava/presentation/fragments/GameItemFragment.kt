@@ -3,6 +3,7 @@ package com.mycorp.twitchapprxjava.presentation.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
@@ -15,7 +16,7 @@ import com.mycorp.twitchapprxjava.databinding.FragmentGameItemBinding
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
 
-const val SERIALIZED_GAME_KEY: String = "game"
+const val SERIALIZED_GAME_KEY = "game"
 
 class GameItemFragment : BaseFragment<GameItemFragmentVM>(R.layout.fragment_game_item) {
     override val viewModel: GameItemFragmentVM by viewModel()
@@ -32,6 +33,11 @@ class GameItemFragment : BaseFragment<GameItemFragmentVM>(R.layout.fragment_game
             GlideApp.with(requireContext()).load(gameItemData.photoUrl).into(image)
             binding.followersCount.text =
                 "followers count: ${gameItemData.followersIds.size}"
+            binding.followersCount.setOnClickListener{
+                val bundle = Bundle()
+                bundle.putString(GAME_ID, gameItemData.id)
+                findNavController().navigate(R.id.followersListFragment, bundle)
+            }
         }
     }
 

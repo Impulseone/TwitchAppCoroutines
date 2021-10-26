@@ -10,15 +10,14 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesListBinding
-import com.mycorp.twitchapprxjava.presentation.gamesListView.GamesListAdapter
-import com.mycorp.twitchapprxjava.presentation.gamesListView.RecyclerTouchListener
-import com.mycorp.twitchapprxjava.presentation.gamesListView.RecyclerTouchListener.ClickListener
+import com.mycorp.twitchapprxjava.presentation.fragments.gamesListHelpers.GamesListAdapter
+import com.mycorp.twitchapprxjava.presentation.fragments.gamesListHelpers.RecyclerTouchListener
+import com.mycorp.twitchapprxjava.presentation.fragments.gamesListHelpers.RecyclerTouchListener.ClickListener
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListVM
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class GamesListFragment : BaseFragment<GamesListVM>(R.layout.fragment_games_list) {
 

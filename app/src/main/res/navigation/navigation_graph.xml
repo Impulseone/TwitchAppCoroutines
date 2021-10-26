@@ -27,5 +27,13 @@
         android:id="@+id/gameItemFragment"
         android:name="com.mycorp.twitchapprxjava.presentation.fragments.GameItemFragment"
         android:label="fragment_game_item"
-        tools:layout="@layout/fragment_game_item" />
+        tools:layout="@layout/fragment_game_item" >
+        <action
+            android:id="@+id/action_gameItemFragment_to_followersListFragment"
+            app:destination="@id/followersListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/followersListFragment"
+        android:name="com.mycorp.twitchapprxjava.presentation.fragments.FollowersListFragment"
+        android:label="FollowersListFragment" />
 </navigation>

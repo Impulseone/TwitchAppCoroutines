@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.gamesListView
+package com.mycorp.twitchapprxjava.presentation.fragments.gamesListHelpers
 
 import androidx.recyclerview.widget.DiffUtil
 import com.mycorp.twitchapprxjava.data.storage.model.GameData

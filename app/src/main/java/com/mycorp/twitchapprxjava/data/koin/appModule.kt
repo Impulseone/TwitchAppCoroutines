@@ -13,6 +13,7 @@ import com.mycorp.twitchapprxjava.data.storage.room.RoomStorage
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
+import com.mycorp.twitchapprxjava.presentation.viewModel.FollowersListVM
 import com.mycorp.twitchapprxjava.presentation.viewModel.GameItemFragmentVM
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListVM
 import com.mycorp.twitchapprxjava.presentation.viewModel.RatingVM
@@ -52,6 +53,8 @@ val appModule = module {
     viewModel<RatingVM>()
 
     viewModel<GameItemFragmentVM>()
+
+    viewModel<FollowersListVM>()
 }
 
 private fun provideRetrofit(): Retrofit {

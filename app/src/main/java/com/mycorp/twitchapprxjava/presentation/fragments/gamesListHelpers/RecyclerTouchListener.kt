@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.gamesListView
+package com.mycorp.twitchapprxjava.presentation.fragments.gamesListHelpers
 
 import android.content.Context
 import android.view.MotionEvent
