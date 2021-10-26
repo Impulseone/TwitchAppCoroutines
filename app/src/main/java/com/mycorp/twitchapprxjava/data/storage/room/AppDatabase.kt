@@ -1,36 +1,26 @@
 package com.mycorp.twitchapprxjava.data.storage.room
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
+import androidx.room.TypeConverters
+import com.mycorp.twitchapprxjava.data.storage.room.dao.FollowersDao
+import com.mycorp.twitchapprxjava.data.storage.room.dao.GameDataDao
+import com.mycorp.twitchapprxjava.data.storage.room.dao.GameItemDataDao
+import com.mycorp.twitchapprxjava.data.storage.room.entities.FollowerInfoEntity
+import com.mycorp.twitchapprxjava.data.storage.room.entities.GameDataEntity
+import com.mycorp.twitchapprxjava.data.storage.room.entities.GameItemDataEntity
 
-@Database(entities = [GameDataTable::class], version = 1, exportSchema = false)
+@Database(
+    entities = [GameDataEntity::class, FollowerInfoEntity::class, GameItemDataEntity::class],
+    version = 1,
+    exportSchema = false
+)
+@TypeConverters(StringListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract val gameDataDao : GameDataDao
+    abstract val gameDataDao: GameDataDao
 
-    companion object {
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
+    abstract val followersDao: FollowersDao
 
-        fun getInstance(context: Context): AppDatabase {
-            synchronized(this) {
-                var instance = INSTANCE
-
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        AppDatabase::class.java,
-                        "games_database")
-                        .build()
-
-                    INSTANCE = instance
-                }
-
-                return instance
-            }
-        }
-    }
+    abstract val gameItemDataDao:GameItemDataDao
 }

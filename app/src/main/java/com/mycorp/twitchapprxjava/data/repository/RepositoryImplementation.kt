@@ -2,65 +2,46 @@ package com.mycorp.twitchapprxjava.data.repository
 
 import com.mycorp.twitchapprxjava.data.network.NetworkController
 import com.mycorp.twitchapprxjava.data.storage.Storage
+import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.GameDataTable
-import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponse
+import com.mycorp.twitchapprxjava.data.storage.model.GameItemData
 import com.mycorp.twitchapprxjava.domain.repository.Repository
-import io.reactivex.Flowable
-import io.reactivex.Observable
+import io.reactivex.Completable
+import io.reactivex.Single
 
 class RepositoryImplementation(
     private val networkController: NetworkController,
     private val storage: Storage
 ) : Repository {
 
-    override fun getGamesDataFromNetwork(): Observable<List<GameData>> {
-        val gameData: Observable<List<GameData>> =
-            networkController.getDataFromNetwork().map { it: TwitchResponse ->
-                parseTwitchResponseToGameData(it)
-            }
-        return gameData
-    }
-
-    private fun parseTwitchResponseToGameData(response: TwitchResponse): List<GameData> {
-        val gamesData: MutableList<GameData> = mutableListOf()
-        for (item in response.top!!) {
-            gamesData.add(
-                GameData(
-                    item?.game?.id!!,
-                    item.game.name!!,
-                    item.game.box?.large!!,
-                    item.channels!!,
-                    item.viewers!!
-                )
-            )
+    override fun getGamesDataFromServer() =
+        networkController.getDataFromNetwork().map {
+            it.toListOfGameData()
         }
-        return gamesData
-    }
 
-    override fun getGamesDataFromDb(): Flowable<List<GameData>> {
-        val gameData:Flowable<List<GameData>> = storage.getGamesDataFromDb().map {
-            parseGameDataTableToGameData(it)
+    override fun getFollowersListFromServer(id: String): Single<List<FollowerInfo>> =
+        networkController.getGameItemDataFromNetwork(id).map {
+            it.follows?.map { FollowerInfo.fromFollowerDto(it!!) }
         }
-        return gameData
+
+    override fun getGamesDataFromDb() = storage.getGamesDataFromDb().map {
+        it.map { GameData.fromEntity(it) }
     }
 
-    private fun parseGameDataTableToGameData(gamesDataTables: List<GameDataTable>): List<GameData> {
-        val gamesData: MutableList<GameData> = mutableListOf()
-        for (item in gamesDataTables) {
-            gamesData.add(
-                GameData(
-                    item.id,
-                    item.name,
-                    item.logoUrl,
-                    item.channelsCount,
-                    item.watchersCount
-                )
-            )
-        }
-        return gamesData
-    }
+    override fun getFollowersListFromDb(): Single<List<FollowerInfo>> =
+        storage.getFollowersFromDb().map { it.map { FollowerInfo.fromFollowerInfoEntity(it) } }
 
-    override fun insertGamesDataToDb(gameDataTables: List<GameData>) =
-        storage.insertGamesData(gamesData = gameDataTables)
+    override fun getGameItemDataFromDb(gameId: String) =
+        storage.getGameItemData(gameId).map { GameItemData.fromGameItemDataEntity(it) }
+
+    override fun insertGamesDataToDb(gameDataEntities: List<GameData>) =
+        storage.insertGamesData(gamesData = gameDataEntities)
+
+    override fun insertFollowersToDb(followersList: List<FollowerInfo>) =
+        storage.insertFollowersData(followersList)
+
+    override fun insertGameItemDataToDb(gameItemData: GameItemData) =
+        storage.insertGameItemData(gameItemData)
+
+
 }

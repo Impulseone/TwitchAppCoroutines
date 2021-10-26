@@ -1,11 +1,10 @@
 package com.mycorp.twitchapprxjava.data.network
 
-import com.mycorp.twitchapprxjava.data.network.retrofit.Common
-import com.mycorp.twitchapprxjava.data.storage.model.TwitchResponse
-import io.reactivex.Observable
+import com.mycorp.twitchapprxjava.data.network.retrofit.ApiService
 
-class NetworkControllerImpl : NetworkController {
-    override fun getDataFromNetwork(): Observable<TwitchResponse> {
-        return Common.retrofitService.loadGames()
-    }
+class NetworkControllerImpl(private val apiService: ApiService) : NetworkController {
+
+    override fun getDataFromNetwork() = apiService.loadGames()
+
+    override fun getGameItemDataFromNetwork(id: String) = apiService.loadGameDataItem(id)
 }

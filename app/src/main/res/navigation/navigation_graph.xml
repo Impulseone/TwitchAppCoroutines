@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/gamesListFragment">
+
+    <fragment
+        android:id="@+id/gamesListFragment"
+        android:name="com.mycorp.twitchapprxjava.presentation.fragments.GamesListFragment"
+        android:label="fragment_games_list"
+        tools:layout="@layout/fragment_games_list">
+        <action
+            android:id="@+id/action_gamesListFragment_to_ratingFragment"
+            app:destination="@id/ratingFragment"
+            app:popUpTo="@id/gamesListFragment" />
+        <action
+            android:id="@+id/action_gamesListFragment_to_gameItemFragment"
+            app:destination="@id/gameItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="com.mycorp.twitchapprxjava.presentation.fragments.RatingFragment"
+        android:label="fragment_rating"
+        tools:layout="@layout/fragment_rating" />
+    <fragment
+        android:id="@+id/gameItemFragment"
+        android:name="com.mycorp.twitchapprxjava.presentation.fragments.GameItemFragment"
+        android:label="fragment_game_item"
+        tools:layout="@layout/fragment_game_item" />
+</navigation>
