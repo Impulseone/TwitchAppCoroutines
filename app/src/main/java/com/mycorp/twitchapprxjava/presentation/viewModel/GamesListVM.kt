@@ -43,7 +43,6 @@ class GamesListVM(
     private fun gameDataObserver(sourceType: SourceType): SingleObserver<List<GameData>> {
         return object : SingleObserver<List<GameData>> {
             override fun onSuccess(gameData: List<GameData>) {
-                showToast("get data success")
                 gamesLiveData.postValue(
                     GameDataViewState.success(
                         data = gameData,
