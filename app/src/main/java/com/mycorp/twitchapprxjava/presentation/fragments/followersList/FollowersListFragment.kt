@@ -7,11 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentFollowersListBinding
+import com.mycorp.twitchapprxjava.presentation.fragments.SingleGameDataFragment.Companion.PARCELIZE_GAME_KEY
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.FollowersListVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-const val GAME_ID = "gameId"
 
 class FollowersListFragment : BaseFragment<FollowersListVM>(R.layout.fragment_followers_list) {
 
@@ -39,7 +38,7 @@ class FollowersListFragment : BaseFragment<FollowersListVM>(R.layout.fragment_fo
             changeProgressbarVisibility(it.progressIndicatorVisibility)
             followersListAdapter.submitList(it.data)
         })
-        viewModel.getFollowersFromServer(arguments?.getParcelable(GAME_ID)!!)
+        viewModel.getFollowersFromServer(arguments?.getParcelable(PARCELIZE_GAME_KEY)!!)
     }
 
     private fun changeProgressbarVisibility(visibility: Boolean) {

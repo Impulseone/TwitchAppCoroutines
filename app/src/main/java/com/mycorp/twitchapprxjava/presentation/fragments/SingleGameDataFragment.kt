@@ -10,12 +10,9 @@ import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 import com.mycorp.twitchapprxjava.databinding.FragmentSingleGameDataBinding
-import com.mycorp.twitchapprxjava.presentation.fragments.followersList.GAME_ID
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.SingleGameDataFragmentVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
-const val SERIALIZED_GAME_KEY = "game"
 
 class SingleGameDataFragment :
     BaseFragment<SingleGameDataFragmentVM>(R.layout.fragment_single_game_data) {
@@ -35,7 +32,7 @@ class SingleGameDataFragment :
                 getString(R.string.followers_count, singleGameData.followersIds.size.toString())
             binding.followersCount.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putParcelable(GAME_ID, singleGameData)
+                bundle.putParcelable(PARCELIZE_GAME_KEY, singleGameData)
                 findNavController().navigate(R.id.followersListFragment, bundle)
             }
         }
@@ -43,32 +40,19 @@ class SingleGameDataFragment :
 
     override fun bindVm() {
         super.bindVm()
-        val gameData: GameData = arguments?.getParcelable(SERIALIZED_GAME_KEY)!!
+        val gameData: GameData = arguments?.getParcelable(PARCELIZE_GAME_KEY)!!
         viewModel.gameItemLiveData().observe(viewLifecycleOwner, {
-            if (it.data == null) {
-                when (it.progressIndicatorVisibility) {
-                    true -> changeContentVisibility(
-                        indicatorVisibility = true,
-                        contentVisibility = false
-                    )
-                    false -> changeContentVisibility(
-                        indicatorVisibility = false,
-                        contentVisibility = false
-                    )
-                }
-            } else {
-                changeContentVisibility(indicatorVisibility = false, contentVisibility = true)
-            }
+            binding.progressIndicator.isVisible = it.progressIndicatorVisibility
             if (it.data != null) {
+                binding.contentLayout.isVisible = true
                 initViews(it.data)
             }
         })
         viewModel.getFollowersListFromServer(gameData)
     }
 
-    private fun changeContentVisibility(indicatorVisibility: Boolean, contentVisibility: Boolean) {
-        binding.progressIndicator.isVisible = indicatorVisibility
-        binding.contentLayout.isVisible = contentVisibility
+    companion object {
+        const val PARCELIZE_GAME_KEY = "game"
     }
 
 }

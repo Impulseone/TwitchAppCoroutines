@@ -17,6 +17,6 @@ interface Repository {
 
     fun insertGamesDataToDb(gameDataEntities: List<GameData>): Completable
     fun insertFollowersToDb(followersList: List<FollowerInfo>): Completable
-    fun insertGameItemDataToDb(singleGameData: SingleGameData): Completable
+    fun saveSingleGameDataToDb(singleGameData: SingleGameData): Completable
 
 }

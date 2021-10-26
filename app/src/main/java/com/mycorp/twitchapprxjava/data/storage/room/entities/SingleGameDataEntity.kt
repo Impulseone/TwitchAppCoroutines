@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 
 @Entity
-class GameItemDataEntity(
+class SingleGameDataEntity(
     @PrimaryKey
     val id: String,
     val name: String,
@@ -14,8 +14,8 @@ class GameItemDataEntity(
     var isLiked: Boolean = false
 ) {
     companion object {
-        fun fromGameItemData(singleGameData: SingleGameData): GameItemDataEntity {
-            return GameItemDataEntity(
+        fun fromSingleGameData(singleGameData: SingleGameData): SingleGameDataEntity {
+            return SingleGameDataEntity(
                 singleGameData.id,
                 singleGameData.name,
                 singleGameData.photoUrl,

@@ -40,8 +40,8 @@ class RepositoryImplementation(
     override fun insertFollowersToDb(followersList: List<FollowerInfo>) =
         storage.insertFollowersData(followersList)
 
-    override fun insertGameItemDataToDb(singleGameData: SingleGameData) =
-        storage.insertGameItemData(singleGameData)
+    override fun saveSingleGameDataToDb(singleGameData: SingleGameData) =
+        storage.saveSingleGameData(singleGameData)
 
 
 }

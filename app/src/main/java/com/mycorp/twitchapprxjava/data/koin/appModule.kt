@@ -46,7 +46,7 @@ val appModule = module {
 
     single { get<AppDatabase>().followersDao}
 
-    single { get<AppDatabase>().gameItemDataDao}
+    single { get<AppDatabase>().singleGameDataDao}
 
     viewModel<GamesListVM>()
 

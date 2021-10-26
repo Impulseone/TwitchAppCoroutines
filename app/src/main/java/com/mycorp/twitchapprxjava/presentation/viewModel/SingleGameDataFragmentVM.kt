@@ -28,34 +28,31 @@ class SingleGameDataFragmentVM(
         getFromServerUseCase.getFollowersList(gameData.id.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(followersListObserver(sourceType = SourceType.SERVER, gameData))
+            .subscribe(followersListObserver(gameData))
     }
 
     private fun followersListObserver(
-        sourceType: SourceType,
         gameData: GameData
     ): SingleObserver<List<FollowerInfo>> {
         return object : SingleObserver<List<FollowerInfo>> {
 
             override fun onSuccess(followersList: List<FollowerInfo>) {
-                val gameItemData = SingleGameData.fromGameData(
+                val singleGameData = SingleGameData.fromGameData(
                     gameData,
                     followersList
                 )
 
-                if (sourceType == SourceType.SERVER) {
-                    getFromServerUseCase.saveFollowersToDb(followersList)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(insertObserver())
+                getFromServerUseCase.saveFollowersToDb(followersList)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(insertObserver())
 
-                    getFromServerUseCase.saveGameItemDataToDb(gameItemData)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(insertObserver())
-                }
+                getFromServerUseCase.saveSingleGameDataToDb(singleGameData)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(insertObserver())
 
-                singleGameLiveData.postValue(GameDataViewState.success(gameItemData))
+                singleGameLiveData.postValue(GameDataViewState.success(singleGameData))
             }
 
             override fun onError(e: Throwable) {
@@ -64,7 +61,7 @@ class SingleGameDataFragmentVM(
                 singleGameLiveData.postValue(
                     GameDataViewState.error()
                 )
-                if (sourceType == SourceType.SERVER) getGameItemDataFromDb(gameData)
+                getGameItemDataFromDb(gameData)
             }
 
             override fun onSubscribe(d: Disposable) {

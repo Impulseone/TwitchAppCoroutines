@@ -10,7 +10,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesListBinding
-import com.mycorp.twitchapprxjava.presentation.fragments.SERIALIZED_GAME_KEY
+import com.mycorp.twitchapprxjava.presentation.fragments.SingleGameDataFragment.Companion.PARCELIZE_GAME_KEY
 import com.mycorp.twitchapprxjava.presentation.fragments.gamesList.RecyclerTouchListener.ClickListener
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListVM
@@ -50,15 +50,11 @@ class GamesListFragment : BaseFragment<GamesListVM>(R.layout.fragment_games_list
                     gamesRv,
                     object : ClickListener {
                         override fun onClick(view: View?, position: Int) {
-                            val bundle = Bundle()
-                            bundle.putParcelable(SERIALIZED_GAME_KEY, gamesList[position])
-                            findNavController().navigate(R.id.singleGameDataFragment, bundle)
+                            navigateToSingleGameDataFragment(position)
                         }
 
                         override fun onLongClick(view: View?, position: Int) {
-                            val bundle = Bundle()
-                            bundle.putParcelable(SERIALIZED_GAME_KEY, gamesList[position])
-                            findNavController().navigate(R.id.singleGameDataFragment, bundle)
+                            navigateToSingleGameDataFragment(position)
                         }
                     })
             )
@@ -67,6 +63,12 @@ class GamesListFragment : BaseFragment<GamesListVM>(R.layout.fragment_games_list
                 Navigation.createNavigateOnClickListener(R.id.action_gamesListFragment_to_ratingFragment)
             )
         }
+    }
+
+    private fun navigateToSingleGameDataFragment(position: Int) {
+        val bundle = Bundle()
+        bundle.putParcelable(PARCELIZE_GAME_KEY, gamesList[position])
+        findNavController().navigate(R.id.singleGameDataFragment, bundle)
     }
 
     private fun changeProgressbarVisibility(visibility: Boolean) {

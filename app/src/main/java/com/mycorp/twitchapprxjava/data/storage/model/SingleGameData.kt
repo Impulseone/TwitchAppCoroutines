@@ -1,7 +1,7 @@
 package com.mycorp.twitchapprxjava.data.storage.model
 
 import android.os.Parcelable
-import com.mycorp.twitchapprxjava.data.storage.room.entities.GameItemDataEntity
+import com.mycorp.twitchapprxjava.data.storage.room.entities.SingleGameDataEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -22,13 +22,13 @@ class SingleGameData(
             )
         }
 
-        fun fromGameItemDataEntity(gameItemDataEntity: GameItemDataEntity): SingleGameData {
+        fun fromGameItemDataEntity(singleGameDataEntity: SingleGameDataEntity): SingleGameData {
             return SingleGameData(
-                gameItemDataEntity.id,
-                gameItemDataEntity.name,
-                gameItemDataEntity.photoUrl,
-                gameItemDataEntity.followersIds,
-                gameItemDataEntity.isLiked
+                singleGameDataEntity.id,
+                singleGameDataEntity.name,
+                singleGameDataEntity.photoUrl,
+                singleGameDataEntity.followersIds,
+                singleGameDataEntity.isLiked
             )
         }
     }

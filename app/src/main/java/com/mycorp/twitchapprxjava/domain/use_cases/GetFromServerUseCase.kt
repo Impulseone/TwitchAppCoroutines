@@ -14,5 +14,5 @@ class GetFromServerUseCase(private val repository: Repository) {
         repository.insertGamesDataToDb(gameData)
     fun saveFollowersToDb(followersList: List<FollowerInfo>) =
         repository.insertFollowersToDb(followersList)
-    fun saveGameItemDataToDb(singleGameData: SingleGameData) = repository.insertGameItemDataToDb(singleGameData)
+    fun saveSingleGameDataToDb(singleGameData: SingleGameData) = repository.saveSingleGameDataToDb(singleGameData)
 }
