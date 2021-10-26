@@ -2,12 +2,11 @@ package com.mycorp.twitchapprxjava.presentation.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
-import com.mycorp.twitchapprxjava.data.storage.model.GameData
+import com.mycorp.twitchapprxjava.data.storage.model.GameItemData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.SourceType
-import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -23,21 +22,24 @@ class FollowersListVM(
 
     fun followersLiveData() = followersLiveData
 
-    fun getFollowersFromServer(id: String) {
-        getFromServerUseCase.getFollowersList(id)
+    fun getFollowersFromServer(gameItemData: GameItemData) {
+        getFromServerUseCase.getFollowersList(gameItemData.id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver(sourceType = SourceType.SERVER))
+            .subscribe(gameDataObserver(sourceType = SourceType.SERVER, gameItemData))
     }
 
-//    private fun getGamesFromDb(followersIds:List<String>) {
-//        getFromDbUseCase.getFollowersData()
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))
-//    }
+    private fun getFollowersFromDb(gameItemData: GameItemData) {
+        getFromDbUseCase.getFollowersListByIds(gameItemData.followersIds)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE, gameItemData))
+    }
 
-    private fun gameDataObserver(sourceType: SourceType): SingleObserver<List<FollowerInfo>> {
+    private fun gameDataObserver(
+        sourceType: SourceType,
+        gameItemData: GameItemData
+    ): SingleObserver<List<FollowerInfo>> {
         return object : SingleObserver<List<FollowerInfo>> {
             override fun onSuccess(gameData: List<FollowerInfo>) {
                 followersLiveData.postValue(
@@ -45,12 +47,6 @@ class FollowersListVM(
                         data = gameData,
                     )
                 )
-//                if (sourceType == SourceType.SERVER) {
-//                    getFromServerUseCase.saveGamesToDb(gameData)
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(insertObserver())
-//                }
             }
 
             override fun onError(e: Throwable) {
@@ -59,7 +55,7 @@ class FollowersListVM(
                     GameDataViewState.error()
                 )
                 handleException(e as Exception)
-//                if (sourceType == SourceType.SERVER) getGamesFromDb()
+                if (sourceType == SourceType.SERVER) getFollowersFromDb(gameItemData)
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -69,20 +65,4 @@ class FollowersListVM(
             }
         }
     }
-
-    private fun insertObserver(): CompletableObserver {
-        return object : CompletableObserver {
-            override fun onSubscribe(d: Disposable) {
-            }
-
-            override fun onComplete() {
-            }
-
-            override fun onError(e: Throwable) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-
 }

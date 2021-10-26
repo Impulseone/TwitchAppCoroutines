@@ -12,7 +12,7 @@ import io.reactivex.Single
 interface Storage {
 
     fun getGamesDataFromDb(): Single<List<GameDataEntity>>
-    fun getFollowersFromDb(): Single<List<FollowerInfoEntity>>
+    fun getFollowersFromDbByIds(followerIds:List<String>): Single<List<FollowerInfoEntity>>
     fun getGameItemData(gameId:String): Single<GameItemDataEntity>
 
     fun insertGamesData(gamesData: List<GameData>): Completable

@@ -1,7 +1,9 @@
 package com.mycorp.twitchapprxjava.data.storage.model
 
 import com.mycorp.twitchapprxjava.data.storage.room.entities.GameItemDataEntity
+import kotlinx.serialization.Serializable
 
+@Serializable
 class GameItemData(
     val id: String,
     val name: String,

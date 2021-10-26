@@ -22,7 +22,7 @@ class RoomStorage(
 
     override fun getGamesDataFromDb() = gameDataDao.getAllGames()
 
-    override fun getFollowersFromDb() = followersDao.getAll()
+    override fun getFollowersFromDbByIds(followerIds: List<String>) = followersDao.getByIds(followerIds)
 
     override fun getGameItemData(gameId: String) = gameItemDataDao.getById(gameId)
 

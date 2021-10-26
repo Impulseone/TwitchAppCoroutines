@@ -13,6 +13,6 @@ interface FollowersDao {
     @Insert(onConflict = REPLACE)
     fun insertAll(objects: List<FollowerInfoEntity>): Completable
 
-    @Query("select * from FollowerInfoEntity")
-    fun getAll(): Single<List<FollowerInfoEntity>>
+    @Query("select * from FollowerInfoEntity where id in (:ids)")
+    fun getByIds(ids: List<String>): Single<List<FollowerInfoEntity>>
 }
