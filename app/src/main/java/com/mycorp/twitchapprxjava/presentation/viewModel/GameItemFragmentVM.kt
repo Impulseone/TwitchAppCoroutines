@@ -42,7 +42,6 @@ class GameItemFragmentVM(
                     gameData,
                     followersList
                 )
-                gameItemLiveData.postValue(GameDataViewState.success(gameItemData))
 
                 if (sourceType == SourceType.SERVER) {
                     getFromServerUseCase.saveFollowersToDb(followersList)
@@ -55,6 +54,8 @@ class GameItemFragmentVM(
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(insertObserver())
                 }
+
+                gameItemLiveData.postValue(GameDataViewState.success(gameItemData))
             }
 
             override fun onError(e: Throwable) {
@@ -63,7 +64,7 @@ class GameItemFragmentVM(
                 gameItemLiveData.postValue(
                     GameDataViewState.error()
                 )
-                if (sourceType == SourceType.SERVER) getFollowersFromDb(gameData)
+                if (sourceType == SourceType.SERVER) getGameItemDataFromDb(gameData)
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -74,11 +75,34 @@ class GameItemFragmentVM(
         }
     }
 
-    private fun getFollowersFromDb(gameData: GameData) {
-        getFromDbUseCase.getFollowersData(gameData.id.toString())
+    private fun gameItemDataFromDbObserver(): SingleObserver<GameItemData> {
+        return object : SingleObserver<GameItemData> {
+            override fun onSubscribe(d: Disposable) {
+                gameItemLiveData.postValue(
+                    GameDataViewState.loading()
+                )
+            }
+
+            override fun onSuccess(t: GameItemData) {
+                gameItemLiveData.postValue(GameDataViewState.success(t))
+            }
+
+            override fun onError(e: Throwable) {
+                handleException(e as Exception)
+                showToast(e.message!!)
+                gameItemLiveData.postValue(
+                    GameDataViewState.error()
+                )
+            }
+
+        }
+    }
+
+    private fun getGameItemDataFromDb(gameData: GameData) {
+        getFromDbUseCase.getGameItemData(gameData.id.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(followersListObserver(sourceType = SourceType.DATABASE, gameData))
+            .subscribe(gameItemDataFromDbObserver())
     }
 
     private fun insertObserver(): CompletableObserver {

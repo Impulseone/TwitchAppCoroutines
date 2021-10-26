@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/gamesListFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.GamesListFragment"
+        android:name="com.mycorp.twitchapprxjava.presentation.fragments.GamesListFragment"
         android:label="fragment_games_list"
         tools:layout="@layout/fragment_games_list">
         <action
@@ -20,12 +20,12 @@
     </fragment>
     <fragment
         android:id="@+id/ratingFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.RatingFragment"
+        android:name="com.mycorp.twitchapprxjava.presentation.fragments.RatingFragment"
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
     <fragment
         android:id="@+id/gameItemFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.GameItemFragment"
+        android:name="com.mycorp.twitchapprxjava.presentation.fragments.GameItemFragment"
         android:label="fragment_game_item"
         tools:layout="@layout/fragment_game_item" />
 </navigation>

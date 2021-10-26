@@ -1,10 +1,9 @@
-package com.mycorp.twitchapprxjava.presentation
+package com.mycorp.twitchapprxjava.presentation.fragments
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.bumptech.glide.Glide
 import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
@@ -40,7 +39,20 @@ class GameItemFragment : BaseFragment<GameItemFragmentVM>(R.layout.fragment_game
         super.bindVm()
         val gameData: GameData = Json.decodeFromString(arguments?.getString(SERIALIZED_GAME_KEY)!!)
         viewModel.gameItemLiveData().observe(viewLifecycleOwner, {
-            changeContentVisibility(it.progressIndicatorVisibility)
+            if (it.data == null) {
+                when (it.progressIndicatorVisibility) {
+                    true -> changeContentVisibility(
+                        indicatorVisibility = true,
+                        contentVisibility = false
+                    )
+                    false -> changeContentVisibility(
+                        indicatorVisibility = false,
+                        contentVisibility = false
+                    )
+                }
+            } else {
+                changeContentVisibility(indicatorVisibility = false, contentVisibility = true)
+            }
             if (it.data != null) {
                 initViews(it.data)
             }
@@ -48,9 +60,9 @@ class GameItemFragment : BaseFragment<GameItemFragmentVM>(R.layout.fragment_game
         viewModel.getFollowersListFromServer(gameData)
     }
 
-    private fun changeContentVisibility(visibility: Boolean) {
-        binding.progressIndicator.isVisible = visibility
-        binding.contentLayout.isVisible = !visibility
+    private fun changeContentVisibility(indicatorVisibility: Boolean, contentVisibility: Boolean) {
+        binding.progressIndicator.isVisible = indicatorVisibility
+        binding.contentLayout.isVisible = contentVisibility
     }
 
 }
