@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments
+package com.mycorp.twitchapprxjava.presentation.fragments.followersList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

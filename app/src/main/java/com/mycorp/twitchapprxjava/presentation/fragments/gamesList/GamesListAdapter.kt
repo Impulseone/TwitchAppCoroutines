@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments.gamesListHelpers
+package com.mycorp.twitchapprxjava.presentation.fragments.gamesList
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter

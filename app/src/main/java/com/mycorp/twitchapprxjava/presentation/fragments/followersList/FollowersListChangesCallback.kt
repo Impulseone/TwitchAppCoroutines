@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments
+package com.mycorp.twitchapprxjava.presentation.fragments.followersList
 
 import androidx.recyclerview.widget.DiffUtil
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo

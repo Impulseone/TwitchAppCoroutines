@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments
+package com.mycorp.twitchapprxjava.presentation.fragments.gamesList
 
 import android.os.Bundle
 import android.view.View
@@ -10,9 +10,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesListBinding
-import com.mycorp.twitchapprxjava.presentation.fragments.gamesListHelpers.GamesListAdapter
-import com.mycorp.twitchapprxjava.presentation.fragments.gamesListHelpers.RecyclerTouchListener
-import com.mycorp.twitchapprxjava.presentation.fragments.gamesListHelpers.RecyclerTouchListener.ClickListener
+import com.mycorp.twitchapprxjava.presentation.fragments.SERIALIZED_GAME_KEY
+import com.mycorp.twitchapprxjava.presentation.fragments.gamesList.RecyclerTouchListener.ClickListener
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListVM
 import kotlinx.serialization.encodeToString

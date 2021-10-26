@@ -2,10 +2,7 @@ package com.mycorp.twitchapprxjava.presentation.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.data.storage.model.GameItemData

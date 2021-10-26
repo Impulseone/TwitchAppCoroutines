@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments
+package com.mycorp.twitchapprxjava.presentation.fragments.followersList
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
