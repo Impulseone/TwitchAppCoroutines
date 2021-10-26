@@ -50,7 +50,7 @@ class GamesListVM(
                     )
                 )
                 if (sourceType == SourceType.SERVER) {
-                    getFromServerUseCase.insertGames(gameData)
+                    getFromServerUseCase.saveGamesToDb(gameData)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(insertObserver())

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.data.storage.model.GameItemData
@@ -29,7 +30,7 @@ class GameItemFragment : BaseFragment<GameItemFragmentVM>(R.layout.fragment_game
     private fun initViews(gameItemData: GameItemData) {
         with(binding) {
             binding.gameName.text = gameItemData.name
-            Glide.with(requireContext()).load(gameItemData.photoUrl).into(image)
+            GlideApp.with(requireContext()).load(gameItemData.photoUrl).into(image)
             binding.followersCount.text =
                 "followers count: ${gameItemData.followersIds.size}"
         }

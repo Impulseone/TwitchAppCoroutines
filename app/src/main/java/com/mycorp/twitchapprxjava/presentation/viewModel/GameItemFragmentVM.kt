@@ -36,17 +36,21 @@ class GameItemFragmentVM(
         gameData: GameData
     ): SingleObserver<List<FollowerInfo>> {
         return object : SingleObserver<List<FollowerInfo>> {
+
             override fun onSuccess(followersList: List<FollowerInfo>) {
-                gameItemLiveData.postValue(
-                    GameDataViewState.success(
-                        data = GameItemData.fromGameData(
-                            gameData,
-                            followersList
-                        )
-                    )
+                val gameItemData = GameItemData.fromGameData(
+                    gameData,
+                    followersList
                 )
+                gameItemLiveData.postValue(GameDataViewState.success(gameItemData))
+
                 if (sourceType == SourceType.SERVER) {
-                    getFromServerUseCase.insertFollowers(followersList)
+                    getFromServerUseCase.saveFollowersToDb(followersList)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(insertObserver())
+
+                    getFromServerUseCase.saveGameItemDataToDb(gameItemData)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(insertObserver())
@@ -86,6 +90,7 @@ class GameItemFragmentVM(
             }
 
             override fun onError(e: Throwable) {
+                showToast(e.message!!)
                 e.printStackTrace()
             }
         }

@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.data.storage.room
+package com.mycorp.twitchapprxjava.data.storage.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

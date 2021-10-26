@@ -2,6 +2,7 @@ package com.mycorp.twitchapprxjava.domain.use_cases
 
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
+import com.mycorp.twitchapprxjava.data.storage.model.GameItemData
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 
 class GetFromServerUseCase(private val repository: Repository) {
@@ -9,8 +10,9 @@ class GetFromServerUseCase(private val repository: Repository) {
     fun getGames() = repository.getGamesDataFromServer()
     fun getFollowersList(id: String) = repository.getFollowersListFromServer(id)
 
-    fun insertGames(gameData: List<GameData>) =
+    fun saveGamesToDb(gameData: List<GameData>) =
         repository.insertGamesDataToDb(gameData)
-    fun insertFollowers(followersList: List<FollowerInfo>) =
+    fun saveFollowersToDb(followersList: List<FollowerInfo>) =
         repository.insertFollowersToDb(followersList)
+    fun saveGameItemDataToDb(gameItemData: GameItemData) = repository.insertGameItemDataToDb(gameItemData)
 }
