@@ -15,4 +15,7 @@ interface SingleGameDataDao {
 
     @Query("SELECT * FROM SingleGameDataEntity where id=:id")
     fun getById(id: String): Single<SingleGameDataEntity>
+
+    @Query("SELECT * FROM SingleGameDataEntity where isLiked is 1")
+    fun getFavorites(): Single<List<SingleGameDataEntity>>
 }

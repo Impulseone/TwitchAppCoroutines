@@ -10,4 +10,6 @@ class GetFromDbUseCase(private val repository: Repository) {
 
     fun getSingleGameData(gameId: String) = repository.getSingleGameDataFromDb(gameId)
 
+    fun getFavoriteGames() = repository.getFavoriteGamesFromDb()
+
 }

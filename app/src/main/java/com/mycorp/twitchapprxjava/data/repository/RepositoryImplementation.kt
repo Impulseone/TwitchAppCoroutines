@@ -6,6 +6,7 @@ import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 import com.mycorp.twitchapprxjava.domain.repository.Repository
+import io.reactivex.Completable
 import io.reactivex.Single
 
 class RepositoryImplementation(
@@ -27,12 +28,15 @@ class RepositoryImplementation(
         it.map { GameData.fromEntity(it) }
     }
 
-    override fun getFollowersListFromDbByIds(followerIds:List<String>) =
+    override fun getFollowersListFromDbByIds(followerIds: List<String>) =
         storage.getFollowersFromDbByIds(followerIds)
             .map { it.map { FollowerInfo.fromFollowerInfoEntity(it) } }
 
     override fun getSingleGameDataFromDb(gameId: String) =
         storage.getGameItemData(gameId).map { SingleGameData.fromGameItemDataEntity(it) }
+
+    override fun getFavoriteGamesFromDb() = storage.getFavoriteGamesFromDb()
+        .map { it.map { SingleGameData.fromGameItemDataEntity(it) } }
 
     override fun insertGamesDataToDb(gameDataEntities: List<GameData>) =
         storage.insertGamesData(gamesData = gameDataEntities)

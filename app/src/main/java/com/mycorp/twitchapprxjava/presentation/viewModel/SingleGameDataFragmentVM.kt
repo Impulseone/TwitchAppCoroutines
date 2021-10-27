@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 
 class SingleGameDataFragmentVM(
     private val getFromServerUseCase: GetFromServerUseCase,
-    private val getFromDbUseCase: GetFromDbUseCase
+    private val getFromDbUseCase: GetFromDbUseCase,
 ) : BaseViewModel() {
 
     private var singleGameLiveData: MutableLiveData<GameDataViewState<SingleGameData>> =
@@ -28,6 +28,13 @@ class SingleGameDataFragmentVM(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(followersListObserver(gameData))
+    }
+
+    fun updateSingleGameData(singleGameData: SingleGameData){
+        getFromServerUseCase.saveSingleGameDataToDb(singleGameData)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(insertObserver(singleGameData))
     }
 
     private fun followersListObserver(
@@ -44,12 +51,12 @@ class SingleGameDataFragmentVM(
                 getFromServerUseCase.saveFollowersToDb(followersList)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(insertObserver())
+                    .subscribe(insertObserver(singleGameData))
 
                 getFromServerUseCase.saveSingleGameDataToDb(singleGameData)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(insertObserver())
+                    .subscribe(insertObserver(singleGameData))
 
                 singleGameLiveData.postValue(GameDataViewState.success(singleGameData))
             }
@@ -101,12 +108,13 @@ class SingleGameDataFragmentVM(
             .subscribe(gameItemDataFromDbObserver())
     }
 
-    private fun insertObserver(): CompletableObserver {
+    private fun insertObserver(singleGameData: SingleGameData): CompletableObserver {
         return object : CompletableObserver {
             override fun onSubscribe(d: Disposable) {
             }
 
             override fun onComplete() {
+                singleGameLiveData.postValue(GameDataViewState(false,singleGameData))
             }
 
             override fun onError(e: Throwable) {

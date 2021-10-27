@@ -14,6 +14,7 @@ interface Storage {
     fun getGamesDataFromDb(): Single<List<GameDataEntity>>
     fun getFollowersFromDbByIds(followerIds:List<String>): Single<List<FollowerInfoEntity>>
     fun getGameItemData(gameId:String): Single<SingleGameDataEntity>
+    fun getFavoriteGamesFromDb(): Single<List<SingleGameDataEntity>>
 
     fun insertGamesData(gamesData: List<GameData>): Completable
     fun insertFollowersData(followersData: List<FollowerInfo>): Completable
