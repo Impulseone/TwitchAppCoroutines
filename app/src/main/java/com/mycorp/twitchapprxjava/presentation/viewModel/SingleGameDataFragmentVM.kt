@@ -52,7 +52,7 @@ class SingleGameDataFragmentVM(
                 getFromServerUseCase.saveFollowersToDb(followersList)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(insertObserver(singleGameData))
+                    .subscribe(insertObserver(null))
 
                 getFromDbUseCase.getSingleGameData(gameData.id.toString())
                     .subscribeOn(Schedulers.io())
@@ -119,13 +119,18 @@ class SingleGameDataFragmentVM(
         }
     }
 
-    private fun insertObserver(singleGameData: SingleGameData): CompletableObserver {
+    private fun insertObserver(singleGameData: SingleGameData?): CompletableObserver {
         return object : CompletableObserver {
             override fun onSubscribe(d: Disposable) {
             }
 
             override fun onComplete() {
-                singleGameLiveData.postValue(GameDataViewState(false, singleGameData))
+                if (singleGameData != null) singleGameLiveData.postValue(
+                    GameDataViewState(
+                        false,
+                        singleGameData
+                    )
+                )
             }
 
             override fun onError(e: Throwable) {
