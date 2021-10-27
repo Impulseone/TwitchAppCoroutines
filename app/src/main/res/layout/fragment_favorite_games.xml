@@ -5,10 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".presentation.fragments.favoriteGames.FavoriteGamesFragment">
 
-    <TextView
+    <ProgressBar
+        android:id="@+id/progress_indicator"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gamesRv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="favorite games fragment" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
