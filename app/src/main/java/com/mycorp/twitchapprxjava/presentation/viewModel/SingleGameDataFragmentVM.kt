@@ -21,7 +21,7 @@ class SingleGameDataFragmentVM(
     private var singleGameLiveData: MutableLiveData<GameDataViewState<SingleGameData>> =
         MutableLiveData()
 
-    fun gameItemLiveData() = singleGameLiveData
+    fun singleGameLiveData() = singleGameLiveData
 
     fun getFollowersListFromServer(gameData: GameData) {
         getFromServerUseCase.getFollowersList(gameData.id.toString())
@@ -30,7 +30,7 @@ class SingleGameDataFragmentVM(
             .subscribe(followersListObserver(gameData))
     }
 
-    fun updateSingleGameData(singleGameData: SingleGameData){
+    fun updateSingleGameData(singleGameData: SingleGameData) {
         getFromServerUseCase.saveSingleGameDataToDb(singleGameData)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -43,6 +43,7 @@ class SingleGameDataFragmentVM(
         return object : SingleObserver<List<FollowerInfo>> {
 
             override fun onSuccess(followersList: List<FollowerInfo>) {
+
                 val singleGameData = SingleGameData.fromGameData(
                     gameData,
                     followersList
@@ -53,21 +54,20 @@ class SingleGameDataFragmentVM(
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(insertObserver(singleGameData))
 
-                getFromServerUseCase.saveSingleGameDataToDb(singleGameData)
+                getFromDbUseCase.getSingleGameData(gameData.id.toString())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(insertObserver(singleGameData))
+                    .subscribe(singleGameDataFromDbObserver(singleGameData))
 
-                singleGameLiveData.postValue(GameDataViewState.success(singleGameData))
             }
 
             override fun onError(e: Throwable) {
                 handleException(e as Exception)
                 showToast(e.message!!)
-                singleGameLiveData.postValue(
-                    GameDataViewState.error()
-                )
-                getSingleGameDataFromDb(gameData)
+                getFromDbUseCase.getSingleGameData(gameData.id.toString())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(singleGameDataFromDbObserver(null))
             }
 
             override fun onSubscribe(d: Disposable) {
@@ -78,7 +78,7 @@ class SingleGameDataFragmentVM(
         }
     }
 
-    private fun gameItemDataFromDbObserver(): SingleObserver<SingleGameData> {
+    private fun singleGameDataFromDbObserver(singleGameDataFromServer: SingleGameData?): SingleObserver<SingleGameData> {
         return object : SingleObserver<SingleGameData> {
             override fun onSubscribe(d: Disposable) {
                 singleGameLiveData.postValue(
@@ -86,26 +86,37 @@ class SingleGameDataFragmentVM(
                 )
             }
 
-            override fun onSuccess(t: SingleGameData) {
-                singleGameLiveData.postValue(GameDataViewState.success(t))
+            override fun onSuccess(singleGameDataFromDb: SingleGameData) {
+                if (singleGameDataFromServer != null) {
+                    val singleGameData = SingleGameData(
+                        id = singleGameDataFromServer.id,
+                        name = singleGameDataFromServer.name,
+                        photoUrl = singleGameDataFromServer.photoUrl,
+                        followersIds = singleGameDataFromServer.followersIds,
+                        isLiked = singleGameDataFromDb.isLiked
+                    )
+                    singleGameLiveData.postValue(GameDataViewState.success(singleGameData))
+                    getFromServerUseCase.saveSingleGameDataToDb(singleGameData)
+                } else {
+                    singleGameLiveData.postValue(GameDataViewState.success(singleGameDataFromDb))
+                }
             }
 
             override fun onError(e: Throwable) {
                 handleException(e as Exception)
                 showToast(e.message!!)
-                singleGameLiveData.postValue(
-                    GameDataViewState.error()
-                )
+                if (singleGameDataFromServer != null) {
+                    singleGameLiveData.postValue(
+                        GameDataViewState.success(singleGameDataFromServer)
+                    )
+                    getFromServerUseCase.saveSingleGameDataToDb(singleGameDataFromServer)
+                } else
+                    singleGameLiveData.postValue(
+                        GameDataViewState.error()
+                    )
             }
 
         }
-    }
-
-    private fun getSingleGameDataFromDb(gameData: GameData) {
-        getFromDbUseCase.getSingleGameData(gameData.id.toString())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameItemDataFromDbObserver())
     }
 
     private fun insertObserver(singleGameData: SingleGameData): CompletableObserver {
@@ -114,7 +125,7 @@ class SingleGameDataFragmentVM(
             }
 
             override fun onComplete() {
-                singleGameLiveData.postValue(GameDataViewState(false,singleGameData))
+                singleGameLiveData.postValue(GameDataViewState(false, singleGameData))
             }
 
             override fun onError(e: Throwable) {

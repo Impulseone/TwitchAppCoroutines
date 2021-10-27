@@ -27,7 +27,7 @@ class SingleGameDataFragment :
 
     override fun bindVm() {
         super.bindVm()
-        viewModel.gameItemLiveData().observe(viewLifecycleOwner, {
+        viewModel.singleGameLiveData().observe(viewLifecycleOwner, {
             binding.progressIndicator.isVisible = it.progressIndicatorVisibility
             if (it.data != null) {
                 binding.contentLayout.isVisible = true
