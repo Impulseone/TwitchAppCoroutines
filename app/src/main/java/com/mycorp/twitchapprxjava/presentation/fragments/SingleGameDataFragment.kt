@@ -11,13 +11,13 @@ import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 import com.mycorp.twitchapprxjava.databinding.FragmentSingleGameDataBinding
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
-import com.mycorp.twitchapprxjava.presentation.viewModel.SingleGameDataFragmentVM
+import com.mycorp.twitchapprxjava.presentation.viewModel.SingleGameDataVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SingleGameDataFragment :
-    BaseFragment<SingleGameDataFragmentVM>(R.layout.fragment_single_game_data) {
+    BaseFragment<SingleGameDataVM>(R.layout.fragment_single_game_data) {
 
-    override val viewModel: SingleGameDataFragmentVM by viewModel()
+    override val viewModel: SingleGameDataVM by viewModel()
     private val binding: FragmentSingleGameDataBinding by viewBinding()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
