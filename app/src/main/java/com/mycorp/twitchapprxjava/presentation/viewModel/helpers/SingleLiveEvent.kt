@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.viewModel
+package com.mycorp.twitchapprxjava.presentation.viewModel.helpers
 
 import android.util.Log
 import androidx.annotation.MainThread

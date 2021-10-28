@@ -1,7 +1,8 @@
-package com.mycorp.twitchapprxjava.data.storage.model
+package com.mycorp.twitchapprxjava.data.storage.room.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.mycorp.twitchapprxjava.data.storage.model.GameData
 
 @Entity
 data class GameDataEntity(
@@ -12,26 +13,16 @@ data class GameDataEntity(
     val channelsCount: Int,
     val watchersCount: Int
 ) {
-    fun toGameData(): GameData {
-        return GameData(
-            id,
-            name,
-            logoUrl,
-            channelsCount,
-            watchersCount
-        )
-    }
-
     companion object {
-        fun toGameDataEntity(gameData: GameData): GameDataEntity {
-            return GameDataEntity(
+        fun fromGameData(gameData: GameData) =
+            GameDataEntity(
                 gameData.id,
                 gameData.name,
                 gameData.logoUrl,
                 gameData.channelsCount,
                 gameData.watchersCount
             )
-        }
+
     }
 
 }

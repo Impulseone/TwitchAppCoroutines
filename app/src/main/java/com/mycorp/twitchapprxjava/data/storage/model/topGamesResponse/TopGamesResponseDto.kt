@@ -1,8 +1,9 @@
-package com.mycorp.twitchapprxjava.data.storage.model
+package com.mycorp.twitchapprxjava.data.storage.model.topGamesResponse
 
 import com.google.gson.annotations.SerializedName
+import com.mycorp.twitchapprxjava.data.storage.model.GameData
 
-class TwitchResponseDto(
+class TopGamesResponseDto(
     @field:SerializedName("top")
     val top: List<TopItem?>? = null
 ) {

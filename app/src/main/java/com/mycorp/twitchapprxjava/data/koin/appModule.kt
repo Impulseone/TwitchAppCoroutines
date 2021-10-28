@@ -1,7 +1,6 @@
 package com.mycorp.twitchapprxjava.data.koin
 
 import android.content.Context
-import androidx.room.Dao
 import androidx.room.Room
 import com.mycorp.twitchapprxjava.BuildConfig
 import com.mycorp.twitchapprxjava.data.network.NetworkController
@@ -14,8 +13,10 @@ import com.mycorp.twitchapprxjava.data.storage.room.RoomStorage
 import com.mycorp.twitchapprxjava.domain.repository.Repository
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
-import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListViewModel
-import com.mycorp.twitchapprxjava.presentation.viewModel.RatingViewModel
+import com.mycorp.twitchapprxjava.presentation.viewModel.FollowersListVM
+import com.mycorp.twitchapprxjava.presentation.viewModel.SingleGameDataFragmentVM
+import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListVM
+import com.mycorp.twitchapprxjava.presentation.viewModel.RatingVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -27,7 +28,7 @@ val appModule = module {
 
     single<NetworkController> { NetworkControllerImpl(get()) }
 
-    single<Storage> { RoomStorage(get()) }
+    single<Storage> { RoomStorage(get(), get(), get()) }
 
     single<Repository> { RepositoryImplementation(get(), get()) }
 
@@ -43,9 +44,17 @@ val appModule = module {
 
     single { get<AppDatabase>().gameDataDao}
 
-    viewModel<GamesListViewModel>()
+    single { get<AppDatabase>().followersDao}
 
-    viewModel<RatingViewModel>()
+    single { get<AppDatabase>().singleGameDataDao}
+
+    viewModel<GamesListVM>()
+
+    viewModel<RatingVM>()
+
+    viewModel<SingleGameDataFragmentVM>()
+
+    viewModel<FollowersListVM>()
 }
 
 private fun provideRetrofit(): Retrofit {

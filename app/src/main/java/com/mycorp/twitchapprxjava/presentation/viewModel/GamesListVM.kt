@@ -4,13 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
+import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.SourceType
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class GamesListViewModel(
+class GamesListVM(
     private val getFromServerUseCase: GetFromServerUseCase,
     private val getFromDbUseCase: GetFromDbUseCase
 ) : BaseViewModel() {
@@ -32,7 +34,7 @@ class GamesListViewModel(
     }
 
     private fun getGamesFromDb() {
-        getFromDbUseCase.execute()
+        getFromDbUseCase.getGamesData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))
@@ -41,14 +43,13 @@ class GamesListViewModel(
     private fun gameDataObserver(sourceType: SourceType): SingleObserver<List<GameData>> {
         return object : SingleObserver<List<GameData>> {
             override fun onSuccess(gameData: List<GameData>) {
-                showToast("get data success")
                 gamesLiveData.postValue(
                     GameDataViewState.success(
                         data = gameData,
                     )
                 )
                 if (sourceType == SourceType.SERVER) {
-                    getFromServerUseCase.insertGames(gameData)
+                    getFromServerUseCase.saveGamesToDb(gameData)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(insertObserver())
