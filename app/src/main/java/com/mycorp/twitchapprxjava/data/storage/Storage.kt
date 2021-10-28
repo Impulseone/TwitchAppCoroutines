@@ -10,6 +10,7 @@ import com.mycorp.twitchapprxjava.data.storage.room.entities.GameDataEntity
 import com.mycorp.twitchapprxjava.data.storage.room.entities.SingleGameDataEntity
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 
@@ -19,7 +20,7 @@ interface Storage {
     fun getFollowersFromDbByIds(followerIds: List<String>): Single<List<FollowerInfoEntity>>
     fun getGameItemData(gameId: String): Single<SingleGameDataEntity>
     fun getFavoriteGamesFromDb(): Single<List<SingleGameDataEntity>>
-    fun getPagedFavoriteGamesFromDb(): Flow<PagingData<SingleGameDataEntity>>
+    fun getPagedFavoriteGamesFromDb(): Observable<PagingData<SingleGameDataEntity>>
 
     fun insertGamesData(gamesData: List<GameData>): Completable
     fun insertFollowersData(followersData: List<FollowerInfo>): Completable
