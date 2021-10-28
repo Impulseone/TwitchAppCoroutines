@@ -1,13 +1,14 @@
 package com.mycorp.twitchapprxjava.data.repository
 
+import androidx.paging.map
 import com.mycorp.twitchapprxjava.data.network.NetworkController
 import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
 import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 import com.mycorp.twitchapprxjava.domain.repository.Repository
-import io.reactivex.Completable
 import io.reactivex.Single
+import kotlinx.coroutines.flow.map
 
 class RepositoryImplementation(
     private val networkController: NetworkController,
@@ -36,6 +37,9 @@ class RepositoryImplementation(
         storage.getGameItemData(gameId).map { SingleGameData.fromGameItemDataEntity(it) }
 
     override fun getFavoriteGamesFromDb() = storage.getFavoriteGamesFromDb()
+        .map { it.map { SingleGameData.fromGameItemDataEntity(it) } }
+
+    override fun getPagedFavoriteGamesFromDb() = storage.getPagedFavoriteGamesFromDb()
         .map { it.map { SingleGameData.fromGameItemDataEntity(it) } }
 
     override fun insertGamesDataToDb(gameDataEntities: List<GameData>) =

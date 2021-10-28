@@ -13,4 +13,6 @@ class GetFromDbUseCase(private val repository: Repository) {
 
     fun getFavoriteGames() = repository.getFavoriteGamesFromDb()
 
+    fun getPagedFavoriteGames() = repository.getPagedFavoriteGamesFromDb()
+
 }

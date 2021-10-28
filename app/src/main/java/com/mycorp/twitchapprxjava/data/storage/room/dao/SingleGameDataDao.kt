@@ -1,5 +1,6 @@
 package com.mycorp.twitchapprxjava.data.storage.room.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -18,4 +19,7 @@ interface SingleGameDataDao {
 
     @Query("SELECT * FROM SingleGameDataEntity where isLiked is 1")
     fun getFavorites(): Single<List<SingleGameDataEntity>>
+
+    @Query("SELECT * FROM SingleGameDataEntity where isLiked is 1")
+    fun getFavoritesPaging(): PagingSource<Int, SingleGameDataEntity>
 }

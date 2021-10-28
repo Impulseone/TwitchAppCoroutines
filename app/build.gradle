@@ -54,6 +54,8 @@ ext {
     rxjava = "2.2.9"
     koin = "3.1.2"
     navigation = "2.3.5"
+    paging_version = "3.0.1"
+    coroutines_version = "1.5.2"
 }
 
 dependencies {
@@ -105,4 +107,13 @@ dependencies {
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+
+    //Pagination
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    testImplementation "androidx.paging:paging-common:$paging_version"
+    implementation "androidx.paging:paging-rxjava2:$paging_version"
+
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 }

@@ -1,5 +1,7 @@
 package com.mycorp.twitchapprxjava.data.storage.room
 
+import androidx.paging.*
+import androidx.paging.rxjava2.flowable
 import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
@@ -10,7 +12,10 @@ import com.mycorp.twitchapprxjava.data.storage.room.dao.SingleGameDataDao
 import com.mycorp.twitchapprxjava.data.storage.room.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.data.storage.room.entities.GameDataEntity
 import com.mycorp.twitchapprxjava.data.storage.room.entities.SingleGameDataEntity
-import io.reactivex.Single
+
+import io.reactivex.Flowable
+import kotlinx.coroutines.flow.Flow
+
 
 class RoomStorage(
     private val gameDataDao: GameDataDao,
@@ -27,6 +32,17 @@ class RoomStorage(
     override fun getGameItemData(gameId: String) = singleGameDataDao.getById(gameId)
 
     override fun getFavoriteGamesFromDb() = singleGameDataDao.getFavorites()
+
+    override fun getPagedFavoriteGamesFromDb(): Flow<PagingData<SingleGameDataEntity>> {
+        return Pager(config = PagingConfig(
+            pageSize = 7,
+            enablePlaceholders = true,
+            maxSize = 20,
+            prefetchDistance = 3,
+            initialLoadSize = 10
+        ),
+            pagingSourceFactory = { singleGameDataDao.getFavoritesPaging() }).flow
+    }
 
     override fun insertGamesData(gamesData: List<GameData>) =
         gameDataDao.insertAll(gamesData.map { GameDataEntity.fromGameData(it) })

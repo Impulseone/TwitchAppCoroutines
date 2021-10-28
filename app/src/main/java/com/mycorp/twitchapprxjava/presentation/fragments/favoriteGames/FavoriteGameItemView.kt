@@ -11,11 +11,11 @@ import com.mycorp.twitchapprxjava.databinding.FavoriteGameItemViewBinding
 class FavoriteGameItemView(private val binding: FavoriteGameItemViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(gameData: SingleGameData) {
+    fun bind(gameData: SingleGameData?) {
         with(binding) {
-            GlideApp.with(itemView.context).load(gameData.photoUrl).into(image)
+            GlideApp.with(itemView.context).load(gameData?.photoUrl).into(image)
             with(itemView.context) {
-                gameName.text = getString(R.string.game_name, gameData.name)
+                gameName.text = getString(R.string.game_name, gameData?.name)
             }
         }
     }
