@@ -18,7 +18,6 @@ class FavoriteGamesFragment : BaseFragment<FavoriteGamesVM>(R.layout.fragment_fa
     override val viewModel: FavoriteGamesVM by viewModel()
     private val binding: FragmentFavoriteGamesBinding by viewBinding()
     private var favoriteGamesListAdapter: FavoriteGamesListAdapter = FavoriteGamesListAdapter()
-    private val mDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,16 +35,13 @@ class FavoriteGamesFragment : BaseFragment<FavoriteGamesVM>(R.layout.fragment_fa
 
     override fun bindVm() {
         super.bindVm()
+
         viewModel.gamesLiveData().observe(viewLifecycleOwner, {
-            if (it.data != null)
-                lifecycleScope.launch {
+            if (it.data != null) {
+                viewLifecycleOwner.lifecycleScope.launch {
                     favoriteGamesListAdapter.submitData(it.data)
                 }
+            }
         })
-    }
-
-    override fun onDestroyView() {
-        mDisposable.dispose()
-        super.onDestroyView()
     }
 }
