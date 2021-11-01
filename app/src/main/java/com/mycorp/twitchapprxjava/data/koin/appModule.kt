@@ -8,6 +8,7 @@ import com.mycorp.twitchapprxjava.data.network.NetworkControllerImpl
 import com.mycorp.twitchapprxjava.data.network.retrofit.ApiService
 import com.mycorp.twitchapprxjava.data.repository.RepositoryImplementation
 import com.mycorp.twitchapprxjava.data.storage.Storage
+import com.mycorp.twitchapprxjava.data.storage.model.topGamesResponse.TopGamesSourceFactory
 import com.mycorp.twitchapprxjava.data.storage.room.AppDatabase
 import com.mycorp.twitchapprxjava.data.storage.room.RoomStorage
 import com.mycorp.twitchapprxjava.domain.repository.Repository
@@ -18,6 +19,7 @@ import com.mycorp.twitchapprxjava.presentation.viewModel.FollowersListVM
 import com.mycorp.twitchapprxjava.presentation.viewModel.SingleGameDataVM
 import com.mycorp.twitchapprxjava.presentation.viewModel.GamesListVM
 import com.mycorp.twitchapprxjava.presentation.viewModel.RatingVM
+import io.reactivex.disposables.CompositeDisposable
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -43,11 +45,15 @@ val appModule = module {
 
     single { provideRoomDb(androidContext()) }
 
-    single { get<AppDatabase>().gameDataDao}
+    single { get<AppDatabase>().gameDataDao }
 
-    single { get<AppDatabase>().followersDao}
+    single { get<AppDatabase>().followersDao }
 
-    single { get<AppDatabase>().singleGameDataDao}
+    single { get<AppDatabase>().singleGameDataDao }
+
+    single { CompositeDisposable() }
+
+    single { TopGamesSourceFactory(get(), get()) }
 
     viewModel<GamesListVM>()
 

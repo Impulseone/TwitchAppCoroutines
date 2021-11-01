@@ -1,18 +1,24 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagingData
+import androidx.paging.PagedList
+import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class FavoriteGamesVM(private val getFromDbUseCase: GetFromDbUseCase) : BaseViewModel() {
+class FavoriteGamesVM(
+    private val getFromDbUseCase: GetFromDbUseCase,
+    private val disposable: CompositeDisposable
+) : BaseViewModel() {
 
-    private var gamesLiveData: MutableLiveData<GameDataViewState<PagingData<SingleGameData>>>
+    private var gamesLiveData: MutableLiveData<GameDataViewState<PagedList<SingleGameData>>>
 
     init {
         gamesLiveData = MutableLiveData()
@@ -22,38 +28,26 @@ class FavoriteGamesVM(private val getFromDbUseCase: GetFromDbUseCase) : BaseView
     fun gamesLiveData() = gamesLiveData
 
     private fun getGames() {
-        getFromDbUseCase.getPagedFavoriteGames().subscribeOn(Schedulers.io())
+
+        val eventPagedList = RxPagedListBuilder(getFromDbUseCase.getFavoriteGames(), 7)
+            .setFetchScheduler(Schedulers.io())
+            .buildObservable()
+            .cache()
+
+       disposable.add( eventPagedList
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver())
-    }
-
-    private fun gameDataObserver(): Observer<PagingData<SingleGameData>> {
-        return object : Observer<PagingData<SingleGameData>> {
-            override fun onSubscribe(d: Disposable) {
-                gamesLiveData.postValue(
-                    GameDataViewState.loading()
-                )
-            }
-
-            override fun onNext(t: PagingData<SingleGameData>) {
+            .distinctUntilChanged()
+            .doOnSubscribe {
+            }.subscribe({
                 gamesLiveData.postValue(
                     GameDataViewState.success(
-                        data = t,
+                        data = it,
                     )
                 )
-            }
-
-            override fun onError(e: Throwable) {
-                showToast(e.message!!)
-                gamesLiveData.postValue(
-                    GameDataViewState.error()
-                )
-                handleException(e as Exception)
-            }
-
-            override fun onComplete() {
-            }
-
-        }
+            }, {
+                Log.e("error", it.message.toString())
+            })
+       )
     }
 }

@@ -39,7 +39,7 @@ class FavoriteGamesFragment : BaseFragment<FavoriteGamesVM>(R.layout.fragment_fa
         viewModel.gamesLiveData().observe(viewLifecycleOwner, {
             if (it.data != null) {
                 viewLifecycleOwner.lifecycleScope.launch {
-                    favoriteGamesListAdapter.submitData(it.data)
+                    favoriteGamesListAdapter.submitList(it.data)
                 }
             }
         })
