@@ -1,5 +1,6 @@
 package com.mycorp.twitchapprxjava.data.storage.room
 
+import androidx.paging.DataSource
 import com.mycorp.twitchapprxjava.data.storage.Storage
 import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
 import com.mycorp.twitchapprxjava.data.storage.model.GameData
@@ -20,9 +21,12 @@ class RoomStorage(
 
     override fun getGamesDataFromDb() = gameDataDao.getAllGames()
 
-    override fun getFollowersFromDbByIds(followerIds: List<String>) = followersDao.getByIds(followerIds)
+    override fun getFollowersFromDbByIds(followerIds: List<String>) =
+        followersDao.getByIds(followerIds)
 
     override fun getGameItemData(gameId: String) = singleGameDataDao.getById(gameId)
+
+    override fun getFavoriteGamesFromDb() = singleGameDataDao.getFavorites()
 
     override fun insertGamesData(gamesData: List<GameData>) =
         gameDataDao.insertAll(gamesData.map { GameDataEntity.fromGameData(it) })

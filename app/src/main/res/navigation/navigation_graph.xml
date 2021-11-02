@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_gamesListFragment_to_gameItemFragment"
             app:destination="@id/singleGameDataFragment" />
+        <action
+            android:id="@+id/action_gamesListFragment_to_favoriteGamesFragment"
+            app:destination="@id/favoriteGamesFragment" />
     </fragment>
     <fragment
         android:id="@+id/ratingFragment"
@@ -36,4 +39,9 @@
         android:id="@+id/followersListFragment"
         android:name="com.mycorp.twitchapprxjava.presentation.fragments.followersList.FollowersListFragment"
         android:label="FollowersListFragment" />
+    <fragment
+        android:id="@+id/favoriteGamesFragment"
+        android:name="com.mycorp.twitchapprxjava.presentation.fragments.favoriteGames.FavoriteGamesFragment"
+        android:label="fragment_favorite_games"
+        tools:layout="@layout/fragment_favorite_games" />
 </navigation>

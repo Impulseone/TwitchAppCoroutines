@@ -27,12 +27,17 @@ class RepositoryImplementation(
         it.map { GameData.fromEntity(it) }
     }
 
-    override fun getFollowersListFromDbByIds(followerIds:List<String>) =
+    override fun getFollowersListFromDbByIds(followerIds: List<String>) =
         storage.getFollowersFromDbByIds(followerIds)
             .map { it.map { FollowerInfo.fromFollowerInfoEntity(it) } }
 
     override fun getSingleGameDataFromDb(gameId: String) =
         storage.getGameItemData(gameId).map { SingleGameData.fromGameItemDataEntity(it) }
+
+    override fun getFavoriteGamesFromDb() = storage.getFavoriteGamesFromDb()
+        .map {
+            SingleGameData.fromGameItemDataEntity(it)
+        }
 
     override fun insertGamesDataToDb(gameDataEntities: List<GameData>) =
         storage.insertGamesData(gamesData = gameDataEntities)

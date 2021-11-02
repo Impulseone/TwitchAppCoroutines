@@ -10,6 +10,6 @@ class StringListConverter {
     }
 
     @TypeConverter
-    fun toListFromString(data: String): List<String> = if(data=="") mutableListOf()
+    fun toListFromString(data: String): List<String> = if (data == "") mutableListOf()
     else data.split(",").map { it.trim() }
 }

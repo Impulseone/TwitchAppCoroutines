@@ -13,4 +13,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="followers_count">followers count: %1$s</string>
     <string name="game_item_fragment">game_item_fragment</string>
+    <string name="all_bottom_ic_text">All</string>
+    <string name="favorite_bottom_nav_text">Favorite</string>
 </resources>
