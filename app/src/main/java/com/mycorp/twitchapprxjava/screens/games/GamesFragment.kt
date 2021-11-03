@@ -2,6 +2,7 @@ package com.mycorp.twitchapprxjava.screens.games
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
@@ -28,6 +29,7 @@ class GamesFragment : BaseFragment<GamesVM>(R.layout.fragment_games) {
     override fun bindVm() {
         super.bindVm()
         viewModel.pagedGamesLiveData.observe(viewLifecycleOwner, {
+            binding.progressIndicator.isVisible = it.progressIndicatorVisibility
             pagedAdapter?.submitList(it.data)
         })
         viewModel.launchGameScreenCommand.observe(viewLifecycleOwner, {
