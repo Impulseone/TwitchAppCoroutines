@@ -1,8 +1,9 @@
 package com.mycorp.twitchapprxjava.presentation.viewModel
 
 import androidx.lifecycle.MutableLiveData
-import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
-import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
+import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
+import com.mycorp.twitchapprxjava.database.model.FollowerInfo
+import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState

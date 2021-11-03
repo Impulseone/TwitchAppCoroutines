@@ -2,7 +2,7 @@ package com.mycorp.twitchapprxjava.presentation.fragments.gamesList
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.mycorp.twitchapprxjava.data.storage.model.GameData
+import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.presentation.fragments.BaseItemCallback
 
 class GamesListAdapter :

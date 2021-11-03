@@ -4,13 +4,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
-import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
+import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
+import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class FavoriteGamesVM(

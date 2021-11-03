@@ -2,7 +2,7 @@ package com.mycorp.twitchapprxjava.presentation.fragments.favoriteGames
 
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
+import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.presentation.fragments.BaseItemCallback
 
 class FavoriteGamesListAdapter :

@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.data.storage.model.GameData
+import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesListBinding
 import com.mycorp.twitchapprxjava.presentation.fragments.SingleGameDataFragment.Companion.PARCELIZE_GAME_KEY
 import com.mycorp.twitchapprxjava.presentation.fragments.gamesList.RecyclerTouchListener.ClickListener

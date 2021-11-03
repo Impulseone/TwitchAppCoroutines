@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.data.storage.model.GameData
+import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.databinding.GameItemViewBinding
 
 class GameItemView(private val binding: GameItemViewBinding) :

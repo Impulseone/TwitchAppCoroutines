@@ -3,6 +3,7 @@ package com.mycorp.twitchapprxjava.presentation.viewModel
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 
 @SuppressLint("ResourceType")
 abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layoutId) {

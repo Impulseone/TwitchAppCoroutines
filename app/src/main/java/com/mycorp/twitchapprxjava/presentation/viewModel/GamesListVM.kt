@@ -3,8 +3,9 @@ package com.mycorp.twitchapprxjava.presentation.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
-import com.mycorp.twitchapprxjava.data.storage.model.GameData
-import com.mycorp.twitchapprxjava.data.storage.model.topGamesResponse.TopGamesSourceFactory
+import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
+import com.mycorp.twitchapprxjava.database.model.GameData
+import com.mycorp.twitchapprxjava.database.model.topGamesResponse.TopGamesSourceFactory
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mycorp.twitchapprxjava.GlideApp
-import com.mycorp.twitchapprxjava.data.storage.model.FollowerInfo
+import com.mycorp.twitchapprxjava.database.model.FollowerInfo
 import com.mycorp.twitchapprxjava.databinding.FollowerItemViewBinding
 
 class FollowerItemView(private val binding: FollowerItemViewBinding) :

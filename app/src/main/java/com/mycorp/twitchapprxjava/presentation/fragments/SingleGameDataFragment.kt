@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
+import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.databinding.FragmentSingleGameDataBinding
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.SingleGameDataVM

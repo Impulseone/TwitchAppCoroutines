@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.data.storage.model.SingleGameData
+import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.databinding.FavoriteGameItemViewBinding
 
 class FavoriteGameItemView(private val binding: FavoriteGameItemViewBinding) :
