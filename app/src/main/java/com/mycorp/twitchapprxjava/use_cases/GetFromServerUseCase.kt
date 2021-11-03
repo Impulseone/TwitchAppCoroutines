@@ -1,9 +1,9 @@
-package com.mycorp.twitchapprxjava.domain.use_cases
+package com.mycorp.twitchapprxjava.use_cases
 
 import com.mycorp.twitchapprxjava.database.model.FollowerInfo
 import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
-import com.mycorp.twitchapprxjava.domain.repository.Repository
+import com.mycorp.twitchapprxjava.repository.Repository
 
 class GetFromServerUseCase(private val repository: Repository) {
 

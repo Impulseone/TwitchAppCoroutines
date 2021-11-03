@@ -5,8 +5,8 @@ import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.FollowerInfo
 import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
-import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
-import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
+import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
+import com.mycorp.twitchapprxjava.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver

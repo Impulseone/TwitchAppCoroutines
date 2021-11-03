@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/gamesListFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.gamesList.GamesListFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.games.GamesFragment"
         android:label="fragment_games_list"
-        tools:layout="@layout/fragment_games_list">
+        tools:layout="@layout/fragment_games">
         <action
             android:id="@+id/action_gamesListFragment_to_ratingFragment"
             app:destination="@id/ratingFragment"

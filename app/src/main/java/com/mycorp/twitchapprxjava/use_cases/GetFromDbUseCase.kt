@@ -1,6 +1,6 @@
-package com.mycorp.twitchapprxjava.domain.use_cases
+package com.mycorp.twitchapprxjava.use_cases
 
-import com.mycorp.twitchapprxjava.domain.repository.Repository
+import com.mycorp.twitchapprxjava.repository.Repository
 
 class GetFromDbUseCase(private val repository: Repository) {
 

@@ -1,58 +1,58 @@
-package com.mycorp.twitchapprxjava.presentation.viewModel
+package com.mycorp.twitchapprxjava.screens.games
 
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
+import com.mycorp.twitchapprxjava.common.PagedDataList
+import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.GameData
-import com.mycorp.twitchapprxjava.database.model.topGamesResponse.TopGamesSourceFactory
-import com.mycorp.twitchapprxjava.domain.use_cases.GetFromDbUseCase
-import com.mycorp.twitchapprxjava.domain.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.SourceType
+import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
+import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
+import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
+import com.mycorp.twitchapprxjava.use_cases.GetFromServerUseCase
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.net.UnknownHostException
 
-class GamesListVM(
+class GamesVM(
     private val getFromServerUseCase: GetFromServerUseCase,
     private val getFromDbUseCase: GetFromDbUseCase,
     private val topGamesSourceFactory: TopGamesSourceFactory,
-    private val disposable: CompositeDisposable
 ) : BaseViewModel() {
 
-    private var pagedGamesLiveData: MutableLiveData<GameDataViewState<PagedList<GameData>>>
+    private val pagedListConfig = PagedList.Config.Builder()
+        .setEnablePlaceholders(false)
+        .setPageSize(PAGED_LIST_PAGE_SIZE)
+        .build()
 
-    init {
-        pagedGamesLiveData = MutableLiveData()
-        initPaging()
+    val pagedGamesLiveData = PagedDataList<GameListItem>()
+    val launchGameScreenCommand = TCommand<Any>()
+
+    fun init() {
+        RxPagedListBuilder(topGamesSourceFactory, pagedListConfig)
+            .buildObservable()
+            .subscribe({
+                pagedGamesLiveData.value = GameDataViewState.success(data = it)
+            }, {
+                when (it) {
+                    is UnknownHostException -> {
+                        getGamesFromDb()
+                    }
+                    else -> handleException(it)
+                }
+            })
+            .addToSubscription()
     }
 
-    fun gamesLiveData() = pagedGamesLiveData
-
-    private fun initPaging() {
-        val eventPagedList = RxPagedListBuilder(topGamesSourceFactory, 20)
-            .setFetchScheduler(Schedulers.io())
-            .buildObservable()
-            .cache()
-
-        disposable.add(eventPagedList
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .distinctUntilChanged()
-            .doOnSubscribe {
-            }.subscribe({
-                pagedGamesLiveData.postValue(GameDataViewState.success(
-                    data = it,
-                ))
-            }, {
-                showToast(it.message!!)
-                getGamesFromDb()
-            })
-        )
+    fun gameItemClicked(position: Int) {
+        //testToast
+        showToast("Game item clicked")
+        launchGameScreenCommand.value = position
     }
 
     private fun getGamesFromDb() {
@@ -102,6 +102,10 @@ class GamesListVM(
                 e.printStackTrace()
             }
         }
+    }
+
+    companion object {
+        private const val PAGED_LIST_PAGE_SIZE = 20
     }
 
 

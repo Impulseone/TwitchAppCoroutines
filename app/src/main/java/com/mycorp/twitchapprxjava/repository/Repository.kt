@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.domain.repository
+package com.mycorp.twitchapprxjava.repository
 
 import androidx.paging.DataSource
 import com.mycorp.twitchapprxjava.database.model.FollowerInfo

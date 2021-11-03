@@ -5,7 +5,6 @@ import com.mycorp.twitchapprxjava.database.Storage
 import com.mycorp.twitchapprxjava.database.model.FollowerInfo
 import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
-import com.mycorp.twitchapprxjava.domain.repository.Repository
 import io.reactivex.Single
 
 class RepositoryImplementation(
