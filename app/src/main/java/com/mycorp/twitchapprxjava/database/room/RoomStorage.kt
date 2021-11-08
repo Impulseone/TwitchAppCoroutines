@@ -10,6 +10,7 @@ import com.mycorp.twitchapprxjava.database.room.dao.SingleGameDataDao
 import com.mycorp.twitchapprxjava.database.room.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity
 import com.mycorp.twitchapprxjava.database.room.entities.SingleGameDataEntity
+import io.reactivex.Single
 
 class RoomStorage(
     private val gameDataDao: GameDataDao,
@@ -20,10 +21,12 @@ class RoomStorage(
 
     override fun getGamesDataFromDb() = gameDataDao.getAllGames()
 
+    override fun getGameDataEntityById(id: String) = gameDataDao.getGameById(id)
+
     override fun getFollowersFromDbByIds(followerIds: List<String>) =
         followersDao.getByIds(followerIds)
 
-    override fun getGameItemData(gameId: String) = singleGameDataDao.getById(gameId)
+    override fun getSingleGameDataEntityById(gameId: String) = singleGameDataDao.getById(gameId)
 
     override fun getFavoriteGamesFromDb() = singleGameDataDao.getFavorites()
 

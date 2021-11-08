@@ -8,14 +8,14 @@ import kotlinx.parcelize.Parcelize
 class SingleGameData(
     val id: String,
     val name: String,
-    val photoUrl: String,
+    val logoUrl: String,
     var followersIds: List<String> = mutableListOf(),
     var isLiked: Boolean = false
 ) : Parcelable {
     companion object {
         fun fromGameData(gameData: GameData, followers: List<FollowerInfo>): SingleGameData {
             return SingleGameData(
-                gameData.id.toString(),
+                gameData.id,
                 gameData.name,
                 gameData.logoUrl,
                 followers.map { it.followerId }

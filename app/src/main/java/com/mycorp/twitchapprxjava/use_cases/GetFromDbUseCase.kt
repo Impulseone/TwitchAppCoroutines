@@ -4,7 +4,9 @@ import com.mycorp.twitchapprxjava.repository.Repository
 
 class GetFromDbUseCase(private val repository: Repository) {
 
-    fun getGamesData() = repository.getGamesDataFromDb()
+    fun getGamesDataList() = repository.getGamesDataFromDb()
+
+    fun getGameDataById(id: String) = repository.getGameDataById(id)
 
     fun getFollowersListByIds(followerIds: List<String>) =
         repository.getFollowersListFromDbByIds(followerIds)

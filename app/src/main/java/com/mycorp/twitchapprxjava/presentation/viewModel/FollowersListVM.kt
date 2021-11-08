@@ -6,8 +6,8 @@ import com.mycorp.twitchapprxjava.database.model.FollowerInfo
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.use_cases.GetFromServerUseCase
-import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
-import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.SourceType
+import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.common.helpers.SourceType
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

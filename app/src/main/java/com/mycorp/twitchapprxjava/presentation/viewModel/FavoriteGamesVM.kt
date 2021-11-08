@@ -7,7 +7,7 @@ import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
-import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

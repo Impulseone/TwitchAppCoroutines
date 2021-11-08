@@ -1,11 +1,10 @@
 package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.mycorp.twitchapprxjava.api.ApiService
-import com.mycorp.twitchapprxjava.database.model.GameData
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.PublishSubject
 
 class TopGamesSourceFactory(
     private val context: Context,
@@ -13,8 +12,16 @@ class TopGamesSourceFactory(
 ) : DataSource.Factory<Int, GameListItem>() {
 
     private val compositeDisposable = CompositeDisposable()
+    private val throwableStateSubject: PublishSubject<Throwable> = PublishSubject.create()
+
+    fun getThrowableSubject() = throwableStateSubject
 
     override fun create(): DataSource<Int, GameListItem> {
-        return TopGamesResponseSource(context, apiService, compositeDisposable)
+        return TopGamesResponseSource(
+            context,
+            apiService,
+            compositeDisposable,
+            throwableStateSubject
+        )
     }
 }

@@ -13,7 +13,7 @@ class FavoriteGameItemView(private val binding: FavoriteGameItemViewBinding) :
 
     fun bind(gameData: SingleGameData?) {
         with(binding) {
-            GlideApp.with(itemView.context).load(gameData?.photoUrl).into(image)
+            GlideApp.with(itemView.context).load(gameData?.logoUrl).into(image)
             with(itemView.context) {
                 gameName.text = getString(R.string.game_name, gameData?.name)
             }

@@ -2,20 +2,21 @@ package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.content.Context
 import android.util.Log
-import androidx.paging.PageKeyedDataSource
 import androidx.paging.PositionalDataSource
 import com.mycorp.twitchapprxjava.api.ApiService
-import com.mycorp.twitchapprxjava.database.model.GameData
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
 class TopGamesResponseSource(
     private val context: Context,
     private val apiService: ApiService,
-    private val compositeDisposable: CompositeDisposable
+    private val compositeDisposable: CompositeDisposable,
+    private val throwableStateSubject: PublishSubject<Throwable>
 ) : PositionalDataSource<GameListItem>() {
-
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<GameListItem>) {
+    override fun loadInitial(
+        params: LoadInitialParams,
+        callback: LoadInitialCallback<GameListItem>
+    ) {
         compositeDisposable.add(
             apiService.loadGames(
                 limit = params.pageSize,
@@ -28,7 +29,7 @@ class TopGamesResponseSource(
                     DEFAULT_START_POSITION
                 )
             }, {
-                Log.d(RESPONSE_SOURCE_TAG, "$it")
+                throwableStateSubject.onNext(it)
             })
         )
     }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/padding_10_dp"
-    tools:context=".presentation.fragments.SingleGameDataFragment">
+    tools:context=".screens.game.SingleGameDataFragment">
 
     <ProgressBar
         android:id="@+id/progress_indicator"

@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation
+package com.mycorp.twitchapprxjava
 
 import android.os.Bundle
 import android.view.MenuItem

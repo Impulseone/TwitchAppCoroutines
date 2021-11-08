@@ -6,8 +6,8 @@ import com.mycorp.twitchapprxjava.common.PagedDataList
 import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.GameData
-import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
-import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.SourceType
+import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.common.helpers.SourceType
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
 import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
@@ -34,29 +34,28 @@ class GamesVM(
     val launchGameScreenCommand = TCommand<Any>()
 
     fun init() {
+        topGamesSourceFactory.getThrowableSubject()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                showToast(it.message!!)
+                getGamesFromDb()
+            }.addToSubscription()
+
         RxPagedListBuilder(topGamesSourceFactory, pagedListConfig)
             .buildObservable()
-            .subscribe({
+            .subscribe {
                 pagedGamesLiveData.value = GameDataViewState.success(data = it)
-            }, {
-                when (it) {
-                    is UnknownHostException -> {
-                        getGamesFromDb()
-                    }
-                    else -> handleException(it)
-                }
-            })
+            }
             .addToSubscription()
     }
 
     fun gameItemClicked(position: Int) {
-        //testToast
-        showToast("Game item clicked")
         launchGameScreenCommand.value = position
     }
 
     private fun getGamesFromDb() {
-        getFromDbUseCase.getGamesData()
+        getFromDbUseCase.getGamesDataList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))

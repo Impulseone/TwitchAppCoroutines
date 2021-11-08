@@ -1,7 +1,6 @@
 package com.mycorp.twitchapprxjava.screens.games
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.Navigation
@@ -10,7 +9,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.common.extensions.setIgnoreLastDivider
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesBinding
-import com.mycorp.twitchapprxjava.presentation.fragments.SingleGameDataFragment
+import com.mycorp.twitchapprxjava.screens.game.SingleGameDataFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.screens.games.adapter.PagedGamesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel

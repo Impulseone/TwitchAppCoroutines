@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments
+package com.mycorp.twitchapprxjava.screens.game
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,6 @@ import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.databinding.FragmentSingleGameDataBinding
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
-import com.mycorp.twitchapprxjava.presentation.viewModel.SingleGameDataVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SingleGameDataFragment :
@@ -34,13 +33,13 @@ class SingleGameDataFragment :
                 setViews(it.data)
             }
         })
-        viewModel.getFollowersListFromServer(arguments?.getParcelable(PARCELIZE_GAME_KEY)!!)
+        viewModel.getGameById(arguments?.getString(PARCELIZE_GAME_KEY)!!)
     }
 
     private fun setViews(singleGameData: SingleGameData) {
         with(binding) {
             gameName.text = singleGameData.name
-            GlideApp.with(requireContext()).load(singleGameData.photoUrl).into(image)
+            GlideApp.with(requireContext()).load(singleGameData.logoUrl).into(image)
             followersCount.text =
                 getString(R.string.followers_count, singleGameData.followersIds.size.toString())
             followersCount.setOnClickListener {
@@ -62,7 +61,7 @@ class SingleGameDataFragment :
     }
 
     companion object {
-        const val PARCELIZE_GAME_KEY = "game"
+        const val PARCELIZE_GAME_KEY = "gameId"
     }
 
 }

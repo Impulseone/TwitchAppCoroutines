@@ -18,7 +18,7 @@ class SingleGameDataEntity(
             return SingleGameDataEntity(
                 singleGameData.id,
                 singleGameData.name,
-                singleGameData.photoUrl,
+                singleGameData.logoUrl,
                 singleGameData.followersIds,
                 singleGameData.isLiked
             )

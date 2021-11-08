@@ -13,4 +13,7 @@ interface GameDataDao {
 
     @Query("SELECT * FROM GameDataEntity")
     fun getAllGames(): Single<List<GameDataEntity>>
+
+    @Query("SELECT * FROM GameDataEntity where id=:id")
+    fun getGameById(id: String): Single<GameDataEntity>
 }

@@ -1,13 +1,13 @@
-package com.mycorp.twitchapprxjava.presentation.viewModel
+package com.mycorp.twitchapprxjava.screens.game
 
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.FollowerInfo
-import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.use_cases.GetFromServerUseCase
-import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.database.model.GameData
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,6 +24,13 @@ class SingleGameDataVM(
 
     fun singleGameLiveData() = singleGameLiveData
 
+    fun getGameById(gameId: String) {
+        getFromDbUseCase.getGameDataById(gameId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(gameDataObserver())
+    }
+
     fun getFollowersListFromServer(gameData: GameData) {
         getFromServerUseCase.getFollowersList(gameData.id)
             .subscribeOn(Schedulers.io())
@@ -36,6 +43,24 @@ class SingleGameDataVM(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(insertObserver(singleGameData))
+    }
+
+    private fun gameDataObserver(): SingleObserver<GameData> {
+        return object : SingleObserver<GameData> {
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onSuccess(t: GameData) {
+                getFollowersListFromServer(t)
+            }
+
+            override fun onError(e: Throwable) {
+                showToast(e.message!!)
+                e.printStackTrace()
+            }
+
+        }
     }
 
     private fun followersListObserver(
@@ -55,7 +80,7 @@ class SingleGameDataVM(
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(insertObserver(null))
 
-                getFromDbUseCase.getSingleGameData(gameData.id.toString())
+                getFromDbUseCase.getSingleGameData(gameData.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(singleGameDataFromDbObserver(singleGameData))
@@ -65,7 +90,7 @@ class SingleGameDataVM(
             override fun onError(e: Throwable) {
                 handleException(e as Exception)
                 showToast(e.message!!)
-                getFromDbUseCase.getSingleGameData(gameData.id.toString())
+                getFromDbUseCase.getSingleGameData(gameData.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(singleGameDataFromDbObserver(null))
@@ -92,7 +117,7 @@ class SingleGameDataVM(
                     val singleGameData = SingleGameData(
                         id = singleGameDataFromServer.id,
                         name = singleGameDataFromServer.name,
-                        photoUrl = singleGameDataFromServer.photoUrl,
+                        logoUrl = singleGameDataFromServer.logoUrl,
                         followersIds = singleGameDataFromServer.followersIds,
                         isLiked = singleGameDataFromDb.isLiked
                     )

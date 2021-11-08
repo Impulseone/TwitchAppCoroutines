@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.viewModel.helpers
+package com.mycorp.twitchapprxjava.common.helpers
 
 data class GameDataViewState<out T>(val progressIndicatorVisibility: Boolean, val data: T?) {
     companion object {

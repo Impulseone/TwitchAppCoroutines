@@ -4,7 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.mycorp.twitchapprxjava.database.model.topGamesResponse.ConvertDtoException
-import com.mycorp.twitchapprxjava.presentation.viewModel.helpers.SingleLiveEvent
+import com.mycorp.twitchapprxjava.common.helpers.SingleLiveEvent
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 

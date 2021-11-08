@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentFollowersListBinding
-import com.mycorp.twitchapprxjava.presentation.fragments.SingleGameDataFragment.Companion.PARCELIZE_GAME_KEY
+import com.mycorp.twitchapprxjava.screens.game.SingleGameDataFragment.Companion.PARCELIZE_GAME_KEY
 import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
 import com.mycorp.twitchapprxjava.presentation.viewModel.FollowersListVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
