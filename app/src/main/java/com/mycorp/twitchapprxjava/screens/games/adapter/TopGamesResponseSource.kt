@@ -3,48 +3,51 @@ package com.mycorp.twitchapprxjava.screens.games.adapter
 import android.content.Context
 import android.util.Log
 import androidx.paging.PositionalDataSource
-import com.mycorp.twitchapprxjava.api.ApiService
+import com.mycorp.twitchapprxjava.repository.GamesRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 
 class TopGamesResponseSource(
     private val context: Context,
-    private val apiService: ApiService,
     private val compositeDisposable: CompositeDisposable,
-    private val throwableStateSubject: PublishSubject<Throwable>
+    private val throwableStateSubject: PublishSubject<Throwable>,
+    private val gamesRepository: GamesRepository
 ) : PositionalDataSource<GameListItem>() {
     override fun loadInitial(
         params: LoadInitialParams,
         callback: LoadInitialCallback<GameListItem>
     ) {
         compositeDisposable.add(
-            apiService.loadGames(
+            gamesRepository.getGamesDataListFromServer(
                 limit = params.pageSize,
                 offset = params.requestedStartPosition
-            ).subscribe({
-                callback.onResult(
-                    it.toListOfGameData().map { game ->
-                        GameListItem(context, game)
-                    },
-                    DEFAULT_START_POSITION
-                )
-            }, {
-                throwableStateSubject.onNext(it)
-            })
+            )
+                .subscribe({
+                    callback.onResult(
+                        it.map { game ->
+                            GameListItem(context, game)
+                        },
+                        DEFAULT_START_POSITION
+                    )
+                    gamesRepository.insertGamesDataToDb(it)
+                }, {
+                    throwableStateSubject.onNext(it)
+                })
         )
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<GameListItem>) {
         compositeDisposable.add(
-            apiService.loadGames(
+            gamesRepository.getGamesDataListFromServer(
                 limit = params.loadSize,
                 offset = params.startPosition
             ).subscribe({
                 callback.onResult(
-                    it.toListOfGameData().map { game ->
+                    it.map { game ->
                         GameListItem(context, game)
                     }
                 )
+                gamesRepository.insertGamesDataToDb(it)
             }, {
                 Log.d(RESPONSE_SOURCE_TAG, "$it")
             })

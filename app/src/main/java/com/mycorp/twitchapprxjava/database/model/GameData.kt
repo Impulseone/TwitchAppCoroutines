@@ -12,7 +12,7 @@ data class GameData(
     val logoUrl: String,
     val channelsCount: Int,
     val watchersCount: Int,
-):Parcelable {
+) : Parcelable {
     companion object {
         fun fromEntity(gameDataEntity: GameDataEntity): GameData {
             return GameData(

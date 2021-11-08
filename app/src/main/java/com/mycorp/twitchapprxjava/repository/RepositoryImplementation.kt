@@ -12,8 +12,8 @@ class RepositoryImplementation(
     private val storage: Storage
 ) : Repository {
 
-    override fun getGamesDataFromServer() =
-        networkController.getDataFromNetwork().map {
+    override fun getGamesDataListFromServer(limit: Int, offset: Int) =
+        networkController.getDataFromNetwork(limit, offset).map {
             it.toListOfGameData()
         }
 

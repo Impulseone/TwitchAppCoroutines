@@ -9,17 +9,19 @@ import io.reactivex.Single
 
 interface Repository {
 
-    fun getGamesDataFromServer(): Single<List<GameData>>
-    fun getFollowersListFromServer(id: String): Single<List<FollowerInfo>>
-
+    //TODO: Remove from here to GamesRepository
+    fun getGamesDataListFromServer(limit: Int, offset: Int): Single<List<GameData>>
     fun getGamesDataFromDb(): Single<List<GameData>>
     fun getGameDataById(id: String): Single<GameData>
-    fun getFollowersListFromDbByIds(followerIds: List<String>): Single<List<FollowerInfo>>
-    fun getSingleGameDataFromDb(gameId: String): Single<SingleGameData>
+    fun insertGamesDataToDb(gameDataEntities: List<GameData>): Completable
+
     fun getFavoriteGamesFromDb(): DataSource.Factory<Int, SingleGameData>
 
-    fun insertGamesDataToDb(gameDataEntities: List<GameData>): Completable
-    fun insertFollowersToDb(followersList: List<FollowerInfo>): Completable
+    fun getSingleGameDataFromDb(gameId: String): Single<SingleGameData>
     fun saveSingleGameDataToDb(singleGameData: SingleGameData): Completable
 
+    //TODO: Remove from here to FollowersRepository
+    fun getFollowersListFromDbByIds(followerIds: List<String>): Single<List<FollowerInfo>>
+    fun getFollowersListFromServer(id: String): Single<List<FollowerInfo>>
+    fun insertFollowersToDb(followersList: List<FollowerInfo>): Completable
 }

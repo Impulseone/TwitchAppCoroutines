@@ -5,6 +5,6 @@ import com.mycorp.twitchapprxjava.database.model.topGamesResponse.TopGamesRespon
 import io.reactivex.Single
 
 interface NetworkController {
-   fun getDataFromNetwork(): Single<TopGamesResponseDto>
-   fun getGameItemDataFromNetwork(id:String): Single<GameItemDataDto>
+    fun getDataFromNetwork(limit: Int, offset: Int): Single<TopGamesResponseDto>
+    fun getGameItemDataFromNetwork(id: String): Single<GameItemDataDto>
 }

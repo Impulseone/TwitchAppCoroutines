@@ -7,7 +7,6 @@ import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
-import com.mycorp.twitchapprxjava.common.helpers.SourceType
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
 import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
@@ -17,10 +16,8 @@ import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.net.UnknownHostException
 
 class GamesVM(
-    private val getFromServerUseCase: GetFromServerUseCase,
     private val getFromDbUseCase: GetFromDbUseCase,
     private val topGamesSourceFactory: TopGamesSourceFactory,
 ) : BaseViewModel() {
@@ -58,18 +55,13 @@ class GamesVM(
         getFromDbUseCase.getGamesDataList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))
+            .subscribe(gamesFromDbObserver())
     }
 
-    private fun gameDataObserver(sourceType: SourceType): SingleObserver<List<GameData>> {
+    private fun gamesFromDbObserver(): SingleObserver<List<GameData>> {
         return object : SingleObserver<List<GameData>> {
             override fun onSuccess(gameData: List<GameData>) {
-                if (sourceType == SourceType.SERVER) {
-                    getFromServerUseCase.saveGamesToDb(gameData)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(insertObserver())
-                }
+
             }
 
             override fun onError(e: Throwable) {
@@ -78,27 +70,12 @@ class GamesVM(
                     GameDataViewState.error()
                 )
                 handleException(e as Exception)
-                if (sourceType == SourceType.SERVER) getGamesFromDb()
             }
 
             override fun onSubscribe(d: Disposable) {
                 pagedGamesLiveData.postValue(
                     GameDataViewState.loading()
                 )
-            }
-        }
-    }
-
-    private fun insertObserver(): CompletableObserver {
-        return object : CompletableObserver {
-            override fun onSubscribe(d: Disposable) {
-            }
-
-            override fun onComplete() {
-            }
-
-            override fun onError(e: Throwable) {
-                e.printStackTrace()
             }
         }
     }
