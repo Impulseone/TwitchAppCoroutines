@@ -2,11 +2,12 @@ package com.mycorp.twitchapprxjava.database.model
 
 import android.os.Parcelable
 import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity
+import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GameData(
-    val id: Int,
+    val id: String,
     val name: String,
     val logoUrl: String,
     val channelsCount: Int,

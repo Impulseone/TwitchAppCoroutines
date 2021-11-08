@@ -25,7 +25,7 @@ class SingleGameDataVM(
     fun singleGameLiveData() = singleGameLiveData
 
     fun getFollowersListFromServer(gameData: GameData) {
-        getFromServerUseCase.getFollowersList(gameData.id.toString())
+        getFromServerUseCase.getFollowersList(gameData.id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(followersListObserver(gameData))

@@ -7,7 +7,7 @@ import com.mycorp.twitchapprxjava.database.model.GameData
 @Entity
 data class GameDataEntity(
     @PrimaryKey
-    val id: Int,
+    val id: String,
     val name: String,
     val logoUrl: String,
     val channelsCount: Int,

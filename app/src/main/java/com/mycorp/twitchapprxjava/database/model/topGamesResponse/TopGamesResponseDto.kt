@@ -10,7 +10,7 @@ class TopGamesResponseDto(
     fun toListOfGameData(): List<GameData> {
         return top?.map {
             GameData(
-                it?.game?.id ?: throw ConvertDtoException(),
+                it?.game?.id?.toString() ?: throw ConvertDtoException(),
                 it.game.name ?: throw ConvertDtoException(),
                 it.game.box?.large ?: throw ConvertDtoException(),
                 it.channels ?: throw ConvertDtoException(),
