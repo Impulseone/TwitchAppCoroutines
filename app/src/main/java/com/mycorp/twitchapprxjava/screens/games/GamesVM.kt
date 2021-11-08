@@ -1,5 +1,6 @@
 package com.mycorp.twitchapprxjava.screens.games
 
+import android.util.Log
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.PagedDataList
@@ -7,6 +8,7 @@ import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.repository.GamesRepository
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
 import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
@@ -18,7 +20,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class GamesVM(
-    private val getFromDbUseCase: GetFromDbUseCase,
+    private val gamesRepository: GamesRepository,
     private val topGamesSourceFactory: TopGamesSourceFactory,
 ) : BaseViewModel() {
 
@@ -52,7 +54,7 @@ class GamesVM(
     }
 
     private fun getGamesFromDb() {
-        getFromDbUseCase.getGamesDataList()
+        gamesRepository.getGamesDataFromDb()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(gamesFromDbObserver())
@@ -61,7 +63,8 @@ class GamesVM(
     private fun gamesFromDbObserver(): SingleObserver<List<GameData>> {
         return object : SingleObserver<List<GameData>> {
             override fun onSuccess(gameData: List<GameData>) {
-
+                //TODO: getPagedDataList from db
+                Log.i("gameList","got it")
             }
 
             override fun onError(e: Throwable) {
