@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.viewModel
+package com.mycorp.twitchapprxjava.screens.followers
 
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
@@ -12,8 +12,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class FollowersListVM(
-    private val followersRepository: FollowersRepository,
+class FollowersVM(
+    private val followersRepository: FollowersRepository
 ) : BaseViewModel() {
 
     private var followersLiveData: MutableLiveData<GameDataViewState<List<FollowerInfo>>> =

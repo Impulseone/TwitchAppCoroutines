@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments
+package com.mycorp.twitchapprxjava.common.helpers
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil

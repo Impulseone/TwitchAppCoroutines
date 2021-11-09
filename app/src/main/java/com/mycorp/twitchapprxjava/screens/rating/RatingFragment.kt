@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments
+package com.mycorp.twitchapprxjava.screens.rating
 
 import android.os.Bundle
 import android.view.View
@@ -7,8 +7,7 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentRatingBinding
-import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
-import com.mycorp.twitchapprxjava.presentation.viewModel.RatingVM
+import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RatingFragment : BaseFragment<RatingVM>(R.layout.fragment_rating) {

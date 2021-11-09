@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.viewModel
+package com.mycorp.twitchapprxjava.screens.rating
 
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 

@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments.followersList
+package com.mycorp.twitchapprxjava.screens.followers
 
 import android.os.Bundle
 import android.view.View
@@ -8,15 +8,15 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentFollowersListBinding
 import com.mycorp.twitchapprxjava.screens.game.SingleGameDataFragment.Companion.PARCELIZE_GAME_KEY
-import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
-import com.mycorp.twitchapprxjava.presentation.viewModel.FollowersListVM
+import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
+import com.mycorp.twitchapprxjava.screens.followers.adapter.FollowersAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FollowersListFragment : BaseFragment<FollowersListVM>(R.layout.fragment_followers_list) {
+class FollowersFragment : BaseFragment<FollowersVM>(R.layout.fragment_followers_list) {
 
-    override val viewModel: FollowersListVM by viewModel()
+    override val viewModel: FollowersVM by viewModel()
     private val binding: FragmentFollowersListBinding by viewBinding()
-    private val followersListAdapter: FollowersListAdapter = FollowersListAdapter()
+    private val followersAdapter: FollowersAdapter = FollowersAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,7 +28,7 @@ class FollowersListFragment : BaseFragment<FollowersListVM>(R.layout.fragment_fo
         with(binding) {
             followersRv.layoutManager =
                 LinearLayoutManager(context)
-            followersRv.adapter = followersListAdapter
+            followersRv.adapter = followersAdapter
         }
     }
 
@@ -36,7 +36,7 @@ class FollowersListFragment : BaseFragment<FollowersListVM>(R.layout.fragment_fo
         super.bindVm()
         viewModel.followersLiveData().observe(viewLifecycleOwner, {
             changeProgressbarVisibility(it.progressIndicatorVisibility)
-            followersListAdapter.submitList(it.data)
+            followersAdapter.submitList(it.data)
         })
         viewModel.getFollowersFromServer(arguments?.getParcelable(PARCELIZE_GAME_KEY)!!)
     }

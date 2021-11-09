@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.viewModel
+package com.mycorp.twitchapprxjava.common.fragment
 
 import android.annotation.SuppressLint
 import android.widget.Toast

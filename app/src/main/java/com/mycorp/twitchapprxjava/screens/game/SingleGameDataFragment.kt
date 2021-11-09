@@ -10,7 +10,7 @@ import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.databinding.FragmentSingleGameDataBinding
-import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
+import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SingleGameDataFragment :

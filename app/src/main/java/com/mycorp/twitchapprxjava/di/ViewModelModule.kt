@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.di
 
-import com.mycorp.twitchapprxjava.presentation.viewModel.FavoriteGamesVM
-import com.mycorp.twitchapprxjava.presentation.viewModel.FollowersListVM
-import com.mycorp.twitchapprxjava.presentation.viewModel.RatingVM
+import com.mycorp.twitchapprxjava.screens.favoriteGames.FavoriteGamesVM
+import com.mycorp.twitchapprxjava.screens.followers.FollowersVM
+import com.mycorp.twitchapprxjava.screens.rating.RatingVM
 import com.mycorp.twitchapprxjava.screens.game.SingleGameDataVM
 import com.mycorp.twitchapprxjava.screens.games.GamesVM
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -12,6 +12,6 @@ val viewModelModule = module {
     viewModel<GamesVM>()
     viewModel<RatingVM>()
     viewModel<SingleGameDataVM>()
-    viewModel<FollowersListVM>()
+    viewModel<FollowersVM>()
     viewModel<FavoriteGamesVM>()
 }

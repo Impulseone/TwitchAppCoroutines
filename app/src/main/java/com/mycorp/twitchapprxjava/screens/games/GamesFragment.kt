@@ -10,7 +10,7 @@ import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.common.extensions.setIgnoreLastDivider
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesBinding
 import com.mycorp.twitchapprxjava.screens.game.SingleGameDataFragment
-import com.mycorp.twitchapprxjava.presentation.viewModel.BaseFragment
+import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
 import com.mycorp.twitchapprxjava.screens.games.adapter.PagedGamesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.presentation.fragments.favoriteGames
+package com.mycorp.twitchapprxjava.screens.favoriteGames.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.databinding.FavoriteGameItemViewBinding
 
-class FavoriteGameItemView(private val binding: FavoriteGameItemViewBinding) :
+class FavoriteGameViewHolder(private val binding: FavoriteGameItemViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(gameData: SingleGameData?) {
@@ -21,8 +21,8 @@ class FavoriteGameItemView(private val binding: FavoriteGameItemViewBinding) :
     }
 
     companion object {
-        fun from(parent: ViewGroup): FavoriteGameItemView {
-            return FavoriteGameItemView(
+        fun from(parent: ViewGroup): FavoriteGameViewHolder {
+            return FavoriteGameViewHolder(
                 FavoriteGameItemViewBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
