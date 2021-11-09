@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.FollowerInfo
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
-import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
-import com.mycorp.twitchapprxjava.use_cases.GetFromServerUseCase
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.database.model.GameData
+import com.mycorp.twitchapprxjava.repository.FollowersRepository
+import com.mycorp.twitchapprxjava.repository.GamesRepository
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,8 +15,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class SingleGameDataVM(
-    private val getFromServerUseCase: GetFromServerUseCase,
-    private val getFromDbUseCase: GetFromDbUseCase,
+    private val followersRepository: FollowersRepository,
+    private val gamesRepository: GamesRepository,
 ) : BaseViewModel() {
 
     private var singleGameLiveData: MutableLiveData<GameDataViewState<SingleGameData>> =
@@ -25,21 +25,21 @@ class SingleGameDataVM(
     fun singleGameLiveData() = singleGameLiveData
 
     fun getGameById(gameId: String) {
-        getFromDbUseCase.getGameDataById(gameId)
+        gamesRepository.getGameDataById(gameId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(gameDataObserver())
     }
 
     fun getFollowersListFromServer(gameData: GameData) {
-        getFromServerUseCase.getFollowersList(gameData.id)
+        followersRepository.getFollowersListFromServer(gameData.id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(followersListObserver(gameData))
     }
 
     fun updateSingleGameData(singleGameData: SingleGameData) {
-        getFromServerUseCase.saveSingleGameDataToDb(singleGameData)
+        gamesRepository.insertSingleGameDataToDb(singleGameData)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(insertObserver(singleGameData))
@@ -75,12 +75,12 @@ class SingleGameDataVM(
                     followersList
                 )
 
-                getFromServerUseCase.saveFollowersToDb(followersList)
+                followersRepository.insertFollowersToDb(followersList)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(insertObserver(null))
 
-                getFromDbUseCase.getSingleGameData(gameData.id)
+                gamesRepository.getSingleGameDataById(gameData.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(singleGameDataFromDbObserver(singleGameData))
@@ -90,7 +90,7 @@ class SingleGameDataVM(
             override fun onError(e: Throwable) {
                 handleException(e as Exception)
                 showToast(e.message!!)
-                getFromDbUseCase.getSingleGameData(gameData.id)
+                gamesRepository.getSingleGameDataById(gameData.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(singleGameDataFromDbObserver(null))
@@ -122,7 +122,7 @@ class SingleGameDataVM(
                         isLiked = singleGameDataFromDb.isLiked
                     )
                     singleGameLiveData.postValue(GameDataViewState.success(singleGameData))
-                    getFromServerUseCase.saveSingleGameDataToDb(singleGameData)
+                    gamesRepository.insertSingleGameDataToDb(singleGameData)
                 } else {
                     singleGameLiveData.postValue(GameDataViewState.success(singleGameDataFromDb))
                 }
@@ -135,7 +135,7 @@ class SingleGameDataVM(
                     singleGameLiveData.postValue(
                         GameDataViewState.success(singleGameDataFromServer)
                     )
-                    getFromServerUseCase.saveSingleGameDataToDb(singleGameDataFromServer)
+                    gamesRepository.insertSingleGameDataToDb(singleGameDataFromServer)
                 } else
                     singleGameLiveData.postValue(
                         GameDataViewState.error()

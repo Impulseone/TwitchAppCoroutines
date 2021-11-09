@@ -4,6 +4,7 @@ import android.content.Context
 import com.mycorp.twitchapprxjava.api.controllers.NetworkController
 import com.mycorp.twitchapprxjava.database.Storage
 import com.mycorp.twitchapprxjava.database.model.GameData
+import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 
 class GamesRepositoryImplementation(
@@ -25,6 +26,14 @@ class GamesRepositoryImplementation(
             GameData.fromEntity(it)
         }
 
+    override fun getSingleGameDataById(id: String) =
+        storage.getSingleGameDataEntityById(id).map { SingleGameData.fromSingleGameDataEntity(it) }
+
+
     override fun insertGamesDataToDb(gameDataList: List<GameData>) =
         storage.insertGamesData(gamesData = gameDataList)
+
+    override fun insertSingleGameDataToDb(singleGameData: SingleGameData) =
+        storage.saveSingleGameData(singleGameData)
+
 }

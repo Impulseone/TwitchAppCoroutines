@@ -22,7 +22,7 @@ class SingleGameData(
             )
         }
 
-        fun fromGameItemDataEntity(singleGameDataEntity: SingleGameDataEntity): SingleGameData {
+        fun fromSingleGameDataEntity(singleGameDataEntity: SingleGameDataEntity): SingleGameData {
             return SingleGameData(
                 singleGameDataEntity.id,
                 singleGameDataEntity.name,

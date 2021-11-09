@@ -17,7 +17,6 @@ class App : Application(){
                 dbModule,
                 networkModule,
                 repositoriesModule,
-                useCaseModule,
                 viewModelModule,
                 pagingModule,
             ))

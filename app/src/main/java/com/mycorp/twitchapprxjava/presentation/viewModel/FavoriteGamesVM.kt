@@ -6,14 +6,14 @@ import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.SingleGameData
-import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class FavoriteGamesVM(
-    private val getFromDbUseCase: GetFromDbUseCase,
+    private val favoriteGamesRepository: FavoriteGamesRepository,
     private val disposable: CompositeDisposable
 ) : BaseViewModel() {
 
@@ -28,7 +28,7 @@ class FavoriteGamesVM(
 
     private fun getGames() {
 
-        val eventPagedList = RxPagedListBuilder(getFromDbUseCase.getFavoriteGames(), 7)
+        val eventPagedList = RxPagedListBuilder(favoriteGamesRepository.getFavoriteGamesFromDb(), 7)
             .setFetchScheduler(Schedulers.io())
             .buildObservable()
             .cache()

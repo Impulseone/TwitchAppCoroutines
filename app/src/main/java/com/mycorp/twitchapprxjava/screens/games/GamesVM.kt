@@ -86,5 +86,4 @@ class GamesVM(
         private const val PAGED_LIST_PAGE_SIZE = 20
     }
 
-
 }
