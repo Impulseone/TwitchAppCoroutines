@@ -1,5 +1,6 @@
 package com.mycorp.twitchapprxjava.database.room.dao
 
+import androidx.paging.DataSource
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity
@@ -12,7 +13,7 @@ interface GameDataDao {
     fun insertAll(objects: List<GameDataEntity>): Completable
 
     @Query("SELECT * FROM GameDataEntity")
-    fun getAllGames(): Single<List<GameDataEntity>>
+    fun getAllGames(): DataSource.Factory<Int, GameDataEntity>
 
     @Query("SELECT * FROM GameDataEntity where id=:id")
     fun getGameById(id: String): Single<GameDataEntity>

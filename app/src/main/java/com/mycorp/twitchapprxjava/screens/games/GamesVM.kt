@@ -1,20 +1,15 @@
 package com.mycorp.twitchapprxjava.screens.games
 
-import android.util.Log
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.PagedDataList
 import com.mycorp.twitchapprxjava.common.TCommand
-import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
+import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
-import com.mycorp.twitchapprxjava.use_cases.GetFromDbUseCase
-import com.mycorp.twitchapprxjava.use_cases.GetFromServerUseCase
-import io.reactivex.CompletableObserver
-import io.reactivex.SingleObserver
+import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -54,17 +49,23 @@ class GamesVM(
     }
 
     private fun getGamesFromDb() {
-        gamesRepository.getGamesDataFromDb()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        val dataSourceFactory = gamesRepository.getGamesDataFromDb()
+        RxPagedListBuilder(dataSourceFactory, pagedListConfig)
+            .buildObservable()
             .subscribe(gamesFromDbObserver())
     }
 
-    private fun gamesFromDbObserver(): SingleObserver<List<GameData>> {
-        return object : SingleObserver<List<GameData>> {
-            override fun onSuccess(gameData: List<GameData>) {
-                //TODO: getPagedDataList from db
-                Log.i("gameList","got it")
+    private fun gamesFromDbObserver(): Observer<PagedList<GameListItem>> {
+        return object : Observer<PagedList<GameListItem>> {
+
+            override fun onSubscribe(d: Disposable) {
+                pagedGamesLiveData.postValue(
+                    GameDataViewState.loading()
+                )
+            }
+
+            override fun onNext(t: PagedList<GameListItem>) {
+                pagedGamesLiveData.value = GameDataViewState.success(data = t)
             }
 
             override fun onError(e: Throwable) {
@@ -75,10 +76,8 @@ class GamesVM(
                 handleException(e as Exception)
             }
 
-            override fun onSubscribe(d: Disposable) {
-                pagedGamesLiveData.postValue(
-                    GameDataViewState.loading()
-                )
+            override fun onComplete() {
+
             }
         }
     }

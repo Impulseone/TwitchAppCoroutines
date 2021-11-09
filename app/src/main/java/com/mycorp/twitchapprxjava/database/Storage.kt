@@ -12,7 +12,7 @@ import io.reactivex.Single
 
 interface Storage {
 
-    fun getGamesDataFromDb(): Single<List<GameDataEntity>>
+    fun getGamesDataFromDb(): DataSource.Factory<Int, GameDataEntity>
     fun getGameDataEntityById(id: String): Single<GameDataEntity>
     fun getFollowersFromDbByIds(followerIds: List<String>): Single<List<FollowerInfoEntity>>
     fun getSingleGameDataEntityById(gameId: String): Single<SingleGameDataEntity>

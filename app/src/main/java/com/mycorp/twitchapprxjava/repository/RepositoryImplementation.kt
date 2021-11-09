@@ -12,19 +12,10 @@ class RepositoryImplementation(
     private val storage: Storage
 ) : Repository {
 
-    override fun getGamesDataListFromServer(limit: Int, offset: Int) =
-        networkController.getDataFromNetwork(limit, offset).map {
-            it.toListOfGameData()
-        }
-
     override fun getFollowersListFromServer(id: String): Single<List<FollowerInfo>> =
         networkController.getGameItemDataFromNetwork(id).map {
             it.follows?.map { FollowerInfo.fromFollowerDto(it!!) }
         }
-
-    override fun getGamesDataFromDb() = storage.getGamesDataFromDb().map {
-        it.map { GameData.fromEntity(it) }
-    }
 
     override fun getGameDataById(id: String) =
         storage.getGameDataEntityById(id).map {
@@ -43,9 +34,6 @@ class RepositoryImplementation(
         .map {
             SingleGameData.fromGameItemDataEntity(it)
         }
-
-    override fun insertGamesDataToDb(gameDataEntities: List<GameData>) =
-        storage.insertGamesData(gamesData = gameDataEntities)
 
     override fun insertFollowersToDb(followersList: List<FollowerInfo>) =
         storage.insertFollowersData(followersList)

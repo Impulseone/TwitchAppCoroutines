@@ -41,8 +41,6 @@ class TopGamesResponseSource(
         )
     }
 
-
-
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<GameListItem>) {
         compositeDisposable.add(
             gamesRepository.getGamesDataListFromServer(
