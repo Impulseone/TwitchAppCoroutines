@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/gamesListFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.gamesList.GamesListFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.games.GamesFragment"
         android:label="fragment_games_list"
-        tools:layout="@layout/fragment_games_list">
+        tools:layout="@layout/fragment_games">
         <action
             android:id="@+id/action_gamesListFragment_to_ratingFragment"
             app:destination="@id/ratingFragment"
@@ -23,12 +23,12 @@
     </fragment>
     <fragment
         android:id="@+id/ratingFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.RatingFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.rating.RatingFragment"
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
     <fragment
         android:id="@+id/singleGameDataFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.SingleGameDataFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.game.SingleGameDataFragment"
         android:label="fragment_game_item"
         tools:layout="@layout/fragment_single_game_data" >
         <action
@@ -37,11 +37,11 @@
     </fragment>
     <fragment
         android:id="@+id/followersListFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.followersList.FollowersListFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.followers.FollowersFragment"
         android:label="FollowersListFragment" />
     <fragment
         android:id="@+id/favoriteGamesFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.favoriteGames.FavoriteGamesFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.favoriteGames.FavoriteGamesFragment"
         android:label="fragment_favorite_games"
         tools:layout="@layout/fragment_favorite_games" />
 </navigation>
