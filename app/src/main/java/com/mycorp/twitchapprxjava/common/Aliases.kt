@@ -7,3 +7,5 @@ import com.mycorp.twitchapprxjava.common.helpers.SingleLiveEvent
 
 typealias PagedDataList<T> = MutableLiveData<GameDataViewState<PagedList<T>>>
 typealias TCommand<T> = SingleLiveEvent<T>
+typealias Data<T> = MutableLiveData<T>
+typealias Text<String> = MutableLiveData<String>

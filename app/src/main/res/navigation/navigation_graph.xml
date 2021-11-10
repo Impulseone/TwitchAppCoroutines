@@ -16,7 +16,11 @@
             app:popUpTo="@id/gamesListFragment" />
         <action
             android:id="@+id/action_gamesListFragment_to_gameItemFragment"
-            app:destination="@id/singleGameDataFragment" />
+            app:destination="@id/singleGameDataFragment" >
+            <argument
+                android:name="gameId"
+                app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_gamesListFragment_to_favoriteGamesFragment"
             app:destination="@id/favoriteGamesFragment" />
@@ -28,9 +32,12 @@
         tools:layout="@layout/fragment_rating" />
     <fragment
         android:id="@+id/singleGameDataFragment"
-        android:name="com.mycorp.twitchapprxjava.screens.game.SingleGameDataFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.game.GameFragment"
         android:label="fragment_game_item"
         tools:layout="@layout/fragment_single_game_data" >
+        <argument
+            android:name="gameId"
+            app:argType="string" />
         <action
             android:id="@+id/action_gameItemFragment_to_followersListFragment"
             app:destination="@id/followersListFragment" />

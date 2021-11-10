@@ -6,8 +6,11 @@ import androidx.fragment.app.Fragment
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 
 @SuppressLint("ResourceType")
-abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layoutId) {
+abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layoutId), FragmentScene {
     abstract val viewModel: VM
+
+    override val self: Fragment
+        get() = this
 
     open fun bindVm() {
         viewModel.showToast.observe(this, {
