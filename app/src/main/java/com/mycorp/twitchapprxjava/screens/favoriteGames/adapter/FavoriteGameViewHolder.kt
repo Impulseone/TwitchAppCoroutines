@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.database.model.SingleGameData
+import com.mycorp.twitchapprxjava.database.model.FavoriteGameData
 import com.mycorp.twitchapprxjava.databinding.FavoriteGameItemViewBinding
 
 class FavoriteGameViewHolder(private val binding: FavoriteGameItemViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(gameData: SingleGameData?) {
+    fun bind(gameData: FavoriteGameData?) {
         with(binding) {
             GlideApp.with(itemView.context).load(gameData?.logoUrl).into(image)
             with(itemView.context) {

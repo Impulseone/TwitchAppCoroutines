@@ -55,7 +55,7 @@ class GameFragment :
     private fun initViews() {
         with(binding) {
             like.setOnClickListener {
-                viewModel.onLikeClicked()
+                viewModel.onLikeClicked(viewModel.singleGameLiveData().value?.data!!)
             }
             followersCount.setOnClickListener {
 //                val bundle = Bundle()

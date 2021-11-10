@@ -38,7 +38,6 @@ class FollowersFragment : BaseFragment<FollowersVM>(R.layout.fragment_followers_
             changeProgressbarVisibility(it.progressIndicatorVisibility)
             followersAdapter.submitList(it.data)
         })
-        viewModel.getFollowersFromServer(arguments?.getParcelable(PARCELIZE_GAME_KEY)!!)
     }
 
     private fun changeProgressbarVisibility(visibility: Boolean) {

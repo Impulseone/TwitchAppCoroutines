@@ -3,7 +3,6 @@ package com.mycorp.twitchapprxjava.screens.followers
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.FollowerInfo
-import com.mycorp.twitchapprxjava.database.model.SingleGameData
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.helpers.SourceType
 import com.mycorp.twitchapprxjava.repository.FollowersRepository
@@ -21,23 +20,22 @@ class FollowersVM(
 
     fun followersLiveData() = followersLiveData
 
-    fun getFollowersFromServer(singleGameData: SingleGameData) {
-        followersRepository.getFollowersListFromServer(singleGameData.id)
+    fun getFollowersFromServer(gameId: String) {
+        followersRepository.getFollowersListFromServer(gameId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver(sourceType = SourceType.SERVER, singleGameData))
+            .subscribe(gameDataObserver(sourceType = SourceType.SERVER))
     }
 
-    private fun getFollowersFromDb(singleGameData: SingleGameData) {
-        followersRepository.getFollowersListFromDbByIds(singleGameData.followersIds)
+    private fun getFollowersFromDb(followersIds: List<String>) {
+        followersRepository.getFollowersListFromDbByIds(followersIds)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE, singleGameData))
+            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))
     }
 
     private fun gameDataObserver(
         sourceType: SourceType,
-        singleGameData: SingleGameData
     ): SingleObserver<List<FollowerInfo>> {
         return object : SingleObserver<List<FollowerInfo>> {
             override fun onSuccess(gameData: List<FollowerInfo>) {
@@ -54,7 +52,7 @@ class FollowersVM(
                     GameDataViewState.error()
                 )
                 handleException(e as Exception)
-                if (sourceType == SourceType.SERVER) getFollowersFromDb(singleGameData)
+                if (sourceType == SourceType.SERVER) getFollowersFromDb(mutableListOf())
             }
 
             override fun onSubscribe(d: Disposable) {
