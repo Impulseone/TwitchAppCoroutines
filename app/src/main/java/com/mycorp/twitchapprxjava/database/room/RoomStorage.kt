@@ -12,6 +12,9 @@ import com.mycorp.twitchapprxjava.database.room.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameFollowersEntity
 import io.reactivex.Completable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class RoomStorage(
     private val gameDataDao: GameDataDao,
@@ -41,6 +44,9 @@ class RoomStorage(
         gameId: String
     ): Completable {
         gameFollowersDao.insert(GameFollowersEntity(followersData, gameId))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
         return followersDao.insertAll(followersData.map { FollowerInfoEntity.fromFollowerInfo(it) })
     }
 

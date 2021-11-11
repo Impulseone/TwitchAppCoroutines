@@ -15,55 +15,55 @@ class FollowersVM(
     private val followersRepository: FollowersRepository
 ) : BaseViewModel() {
 
+    private lateinit var gameId: String
+
     private var followersLiveData: MutableLiveData<GameDataViewState<List<FollowerInfo>>> =
         MutableLiveData()
 
     fun followersLiveData() = followersLiveData
 
     fun init(gameId: String) {
-        getFollowersFromServer(gameId)
+        this.gameId = gameId
+        getFollowersFromServer()
     }
 
-    private fun getFollowersFromServer(gameId: String) {
+    private fun getFollowersFromServer() {
         followersRepository.getFollowersListFromServer(gameId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver(sourceType = SourceType.SERVER))
+            .subscribe({
+                followersLiveData.value =
+                    GameDataViewState.success(
+                        data = it,
+                    )
+            }, {
+                handleException(it)
+                getFollowersIdFromDb()
+            }).addToSubscription()
+    }
+
+    private fun getFollowersIdFromDb() {
+        followersRepository.getFollowersIdFromDbByGameId(gameId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                getFollowersFromDb(it)
+            }, {
+                handleException(it)
+            }).addToSubscription()
     }
 
     private fun getFollowersFromDb(followersIds: List<String>) {
         followersRepository.getFollowersListFromDbByIds(followersIds)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(gameDataObserver(sourceType = SourceType.DATABASE))
-    }
-
-    private fun gameDataObserver(
-        sourceType: SourceType,
-    ): SingleObserver<List<FollowerInfo>> {
-        return object : SingleObserver<List<FollowerInfo>> {
-            override fun onSuccess(gameData: List<FollowerInfo>) {
-                followersLiveData.postValue(
+            .subscribe({
+                followersLiveData.value =
                     GameDataViewState.success(
-                        data = gameData,
+                        data = it,
                     )
-                )
-            }
-
-            override fun onError(e: Throwable) {
-                showToast(e.message!!)
-                followersLiveData.postValue(
-                    GameDataViewState.error()
-                )
-                handleException(e as Exception)
-                if (sourceType == SourceType.SERVER) getFollowersFromDb(mutableListOf())
-            }
-
-            override fun onSubscribe(d: Disposable) {
-                followersLiveData.postValue(
-                    GameDataViewState.loading()
-                )
-            }
-        }
+            }, {
+                handleException(it)
+            }).addToSubscription()
     }
 }

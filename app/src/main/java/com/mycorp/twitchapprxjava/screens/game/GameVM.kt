@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
+import com.mycorp.twitchapprxjava.database.model.FollowerInfo
 import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
 import com.mycorp.twitchapprxjava.repository.FollowersRepository
@@ -55,11 +56,18 @@ class GameVM(
                 followersIdLiveData.value = it.map {
                     it.followerId
                 }
-                followersRepository.insertFollowersToDb(it, gameId)
+                saveFollowersToDb(it)
             }, {
                 handleException(it)
                 getFollowersFromDb()
             }).addToSubscription()
+    }
+
+    private fun saveFollowersToDb(followersInfo: List<FollowerInfo>) {
+        followersRepository.insertFollowersToDb(followersInfo, gameId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 
     private fun getFollowersFromDb() {
