@@ -6,13 +6,17 @@ import com.mycorp.twitchapprxjava.database.model.GameData
 import com.mycorp.twitchapprxjava.database.room.dao.FavoriteGameDataDao
 import com.mycorp.twitchapprxjava.database.room.dao.FollowersDao
 import com.mycorp.twitchapprxjava.database.room.dao.GameDataDao
+import com.mycorp.twitchapprxjava.database.room.dao.GameFollowersDao
 import com.mycorp.twitchapprxjava.database.room.entities.FavoriteGameDataEntity
 import com.mycorp.twitchapprxjava.database.room.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity
+import com.mycorp.twitchapprxjava.database.room.entities.GameFollowersEntity
+import io.reactivex.Completable
 
 class RoomStorage(
     private val gameDataDao: GameDataDao,
     private val followersDao: FollowersDao,
+    private val gameFollowersDao: GameFollowersDao,
     private val favoriteGameDataDao: FavoriteGameDataDao
 ) :
     Storage {
@@ -24,13 +28,21 @@ class RoomStorage(
     override fun getFollowersFromDbByIds(followerIds: List<String>) =
         followersDao.getByIds(followerIds)
 
+    override fun getFollowersIdFromDbByGameId(gameId: String) =
+        gameFollowersDao.getGameFollowersById(gameId).map { it.followersId }
+
     override fun getFavoriteGamesFromDb() = favoriteGameDataDao.getAll()
 
     override fun insertGamesData(gamesData: List<GameData>) =
         gameDataDao.insertAll(gamesData.map { GameDataEntity.fromGameData(it) })
 
-    override fun insertFollowersData(followersData: List<FollowerInfo>) =
-        followersDao.insertAll(followersData.map { FollowerInfoEntity.fromFollowerInfo(it) })
+    override fun insertFollowersData(
+        followersData: List<FollowerInfo>,
+        gameId: String
+    ): Completable {
+        gameFollowersDao.insert(GameFollowersEntity(followersData, gameId))
+        return followersDao.insertAll(followersData.map { FollowerInfoEntity.fromFollowerInfo(it) })
+    }
 
     override fun checkIsFavorite(gameId: String) = favoriteGameDataDao.checkExist(gameId)
 
@@ -38,6 +50,6 @@ class RoomStorage(
         FavoriteGameDataEntity(gameData)
     )
 
-    override fun deleteByGameId(gameId: String) = favoriteGameDataDao.deleteByGameId(gameId)
+    override fun deleteFavoriteByGameId(gameId: String) = favoriteGameDataDao.deleteByGameId(gameId)
 
 }

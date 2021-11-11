@@ -17,6 +17,8 @@ class GameVM(
     private val favoriteGamesRepository: FavoriteGamesRepository
 ) : BaseViewModel() {
 
+    private lateinit var gameId: String
+
     private val gameLiveData = MutableLiveData<GameDataViewState<GameData>>()
     private val followersIdLiveData = MutableLiveData<List<String>>()
     private val isFavoriteLiveData = MutableLiveData<Boolean>()
@@ -27,12 +29,13 @@ class GameVM(
     fun favoriteStateLiveData() = isFavoriteLiveData
 
     fun init(gameId: String) {
-        getGameData(gameId)
-        getFollowersListFromServer(gameId)
-        checkIsFavorite(gameId)
+        this.gameId = gameId
+        getGameData()
+        getFollowersListFromServer()
+        checkIsFavorite()
     }
 
-    private fun getGameData(gameId: String) {
+    private fun getGameData() {
         gamesRepository.getGameDataById(gameId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -44,7 +47,7 @@ class GameVM(
             .addToSubscription()
     }
 
-    private fun getFollowersListFromServer(gameId: String) {
+    private fun getFollowersListFromServer() {
         followersRepository.getFollowersListFromServer(gameId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -52,12 +55,24 @@ class GameVM(
                 followersIdLiveData.value = it.map {
                     it.followerId
                 }
+                followersRepository.insertFollowersToDb(it, gameId)
             }, {
                 handleException(it)
+                getFollowersFromDb()
             }).addToSubscription()
     }
 
-    private fun checkIsFavorite(gameId: String) {
+    private fun getFollowersFromDb() {
+        followersRepository.getFollowersIdFromDbByGameId(gameId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                followersIdLiveData.value = it
+            }, {
+                handleException(it as Exception)
+            }).addToSubscription()
+    }
+
+    private fun checkIsFavorite() {
         favoriteGamesRepository.checkIsFavorite(gameId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

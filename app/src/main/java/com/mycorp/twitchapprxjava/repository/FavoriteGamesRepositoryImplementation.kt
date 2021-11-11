@@ -16,6 +16,6 @@ class FavoriteGamesRepositoryImplementation(
 
     override fun insertFavoriteGame(gameData: GameData) = storage.insertFavoriteGame(gameData)
 
-    override fun deleteByGameId(gameId: String) = storage.deleteByGameId(gameId)
+    override fun deleteByGameId(gameId: String) = storage.deleteFavoriteByGameId(gameId)
 
 }

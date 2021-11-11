@@ -14,12 +14,13 @@ interface Storage {
     fun getGamesDataFromDb(): DataSource.Factory<Int, GameDataEntity>
     fun getGameDataEntityById(id: String): Single<GameDataEntity>
     fun getFollowersFromDbByIds(followerIds: List<String>): Single<List<FollowerInfoEntity>>
+    fun getFollowersIdFromDbByGameId(gameId: String): Single<List<String>>
     fun getFavoriteGamesFromDb(): DataSource.Factory<Int, FavoriteGameDataEntity>
 
     fun insertGamesData(gamesData: List<GameData>): Completable
-    fun insertFollowersData(followersData: List<FollowerInfo>): Completable
+    fun insertFollowersData(followersData: List<FollowerInfo>, gameId: String): Completable
 
     fun checkIsFavorite(gameId: String): Single<Int>
     fun insertFavoriteGame(gameData: GameData): Completable
-    fun deleteByGameId(gameId: String): Completable
+    fun deleteFavoriteByGameId(gameId: String): Completable
 }

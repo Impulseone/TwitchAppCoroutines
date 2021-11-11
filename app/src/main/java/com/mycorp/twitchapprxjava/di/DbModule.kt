@@ -17,7 +17,7 @@ val dbModule = module {
             .fallbackToDestructiveMigration()
             .build()
     }
-    single<Storage> { RoomStorage(get(), get(), get()) }
+    single<Storage> { RoomStorage(get(), get(), get(), get()) }
     single { get<AppDatabase>().gameDataDao }
     single { get<AppDatabase>().followersDao }
     single { get<AppDatabase>().favoriteGameDataDao }
