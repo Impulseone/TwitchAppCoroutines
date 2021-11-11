@@ -10,7 +10,6 @@ import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentFollowersListBinding
 import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
 import com.mycorp.twitchapprxjava.screens.followers.adapter.FollowersAdapter
-import com.mycorp.twitchapprxjava.screens.game.GameFragmentArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FollowersFragment : BaseFragment<FollowersVM>(R.layout.fragment_followers_list) {
