@@ -27,17 +27,6 @@ class GamesFragment : BaseFragment<GamesVM>(R.layout.fragment_games) {
         viewModel.init()
     }
 
-    override fun bindVm() {
-        super.bindVm()
-        viewModel.pagedGamesLiveData.observe(viewLifecycleOwner, {
-            binding.progressIndicator.isVisible = it.progressIndicatorVisibility
-            pagedAdapter?.submitList(it.data)
-        })
-        viewModel.launchGameScreenCommand.observe(viewLifecycleOwner, {
-            navigateToSingleGameDataFragment(viewModel.pagedGamesLiveData.value!!.data?.get(it as Int)?.id!!)
-        })
-    }
-
     private fun initViews() {
         with(binding) {
             pagedAdapter = PagedGamesAdapter {
@@ -51,6 +40,17 @@ class GamesFragment : BaseFragment<GamesVM>(R.layout.fragment_games) {
                 Navigation.createNavigateOnClickListener(R.id.action_gamesFragment_to_ratingFragment)
             )
         }
+    }
+
+    override fun bindVm() {
+        super.bindVm()
+        viewModel.pagedGamesLiveData.observe(viewLifecycleOwner, {
+            binding.progressIndicator.isVisible = it.progressIndicatorVisibility
+            pagedAdapter?.submitList(it.data)
+        })
+        viewModel.launchGameScreenCommand.observe(viewLifecycleOwner, {
+            navigateToSingleGameDataFragment(viewModel.pagedGamesLiveData.value!!.data?.get(it as Int)?.id!!)
+        })
     }
 
     private fun navigateToSingleGameDataFragment(id: String) {

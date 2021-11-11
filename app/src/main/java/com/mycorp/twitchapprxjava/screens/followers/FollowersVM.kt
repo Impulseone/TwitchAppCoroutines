@@ -20,7 +20,11 @@ class FollowersVM(
 
     fun followersLiveData() = followersLiveData
 
-    fun getFollowersFromServer(gameId: String) {
+    fun init(gameId: String) {
+        getFollowersFromServer(gameId)
+    }
+
+    private fun getFollowersFromServer(gameId: String) {
         followersRepository.getFollowersListFromServer(gameId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

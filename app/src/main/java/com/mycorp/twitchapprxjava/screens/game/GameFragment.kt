@@ -28,6 +28,17 @@ class GameFragment :
         viewModel.init(navArgs.gameId)
     }
 
+    private fun initViews() {
+        with(binding) {
+            like.setOnClickListener {
+                viewModel.onLikeClicked(viewModel.singleGameLiveData().value?.data!!)
+            }
+            followersCount.setOnClickListener {
+                viewModel.launchFollowerScreen(viewModel.singleGameLiveData().value?.data?.id!!)
+            }
+        }
+    }
+
     override fun bindVm() {
         super.bindVm()
         with(binding) {
@@ -54,17 +65,6 @@ class GameFragment :
             viewModel.launchFollowerScreenCommand.observe(viewLifecycleOwner, {
                 navigateToFollowersFragment(viewModel.singleGameLiveData().value?.data?.id!!)
             })
-        }
-    }
-
-    private fun initViews() {
-        with(binding) {
-            like.setOnClickListener {
-                viewModel.onLikeClicked(viewModel.singleGameLiveData().value?.data!!)
-            }
-            followersCount.setOnClickListener {
-                viewModel.launchFollowerScreen(viewModel.singleGameLiveData().value?.data?.id!!)
-            }
         }
     }
 

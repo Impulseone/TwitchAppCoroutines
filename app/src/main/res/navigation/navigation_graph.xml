@@ -49,7 +49,11 @@
     <fragment
         android:id="@+id/followersFragment"
         android:name="com.mycorp.twitchapprxjava.screens.followers.FollowersFragment"
-        android:label="FollowersListFragment" />
+        android:label="FollowersListFragment">
+        <argument
+            android:name="gameId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteGamesFragment"
         android:name="com.mycorp.twitchapprxjava.screens.favoriteGames.FavoriteGamesFragment"

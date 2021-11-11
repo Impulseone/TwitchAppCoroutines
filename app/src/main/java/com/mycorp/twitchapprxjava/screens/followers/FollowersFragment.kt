@@ -3,12 +3,14 @@ package com.mycorp.twitchapprxjava.screens.followers
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentFollowersListBinding
 import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
 import com.mycorp.twitchapprxjava.screens.followers.adapter.FollowersAdapter
+import com.mycorp.twitchapprxjava.screens.game.GameFragmentArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FollowersFragment : BaseFragment<FollowersVM>(R.layout.fragment_followers_list) {
@@ -16,11 +18,13 @@ class FollowersFragment : BaseFragment<FollowersVM>(R.layout.fragment_followers_
     override val viewModel: FollowersVM by viewModel()
     private val binding: FragmentFollowersListBinding by viewBinding()
     private val followersAdapter: FollowersAdapter = FollowersAdapter()
+    private val navArgs by navArgs<FollowersFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         bindVm()
+        viewModel.init(navArgs.gameId)
     }
 
     private fun initViews() {
