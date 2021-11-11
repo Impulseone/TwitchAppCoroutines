@@ -1,6 +1,7 @@
 package com.mycorp.twitchapprxjava.screens.game
 
 import androidx.lifecycle.MutableLiveData
+import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.GameData
@@ -19,6 +20,7 @@ class GameVM(
     private val gameLiveData = MutableLiveData<GameDataViewState<GameData>>()
     private val followersIdLiveData = MutableLiveData<List<String>>()
     private val isFavoriteLiveData = MutableLiveData<Boolean>()
+    val launchFollowerScreenCommand = TCommand<Any>()
 
     fun singleGameLiveData() = gameLiveData
     fun followersIdLiveData() = followersIdLiveData
@@ -82,4 +84,9 @@ class GameVM(
         }
 
     }
+
+    fun launchFollowerScreen(gameId: String) {
+        launchFollowerScreenCommand.value = gameId
+    }
+
 }

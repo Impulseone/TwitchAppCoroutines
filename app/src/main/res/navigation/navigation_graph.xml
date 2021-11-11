@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/gamesListFragment">
+    app:startDestination="@id/gamesFragment">
 
     <fragment
-        android:id="@+id/gamesListFragment"
+        android:id="@+id/gamesFragment"
         android:name="com.mycorp.twitchapprxjava.screens.games.GamesFragment"
         android:label="fragment_games_list"
         tools:layout="@layout/fragment_games">
         <action
-            android:id="@+id/action_gamesListFragment_to_ratingFragment"
+            android:id="@+id/action_gamesFragment_to_ratingFragment"
             app:destination="@id/ratingFragment"
-            app:popUpTo="@id/gamesListFragment" />
+            app:popUpTo="@id/gamesFragment" />
         <action
-            android:id="@+id/action_gamesListFragment_to_gameItemFragment"
-            app:destination="@id/singleGameDataFragment" >
+            android:id="@+id/action_gamesFragment_to_gameFragment"
+            app:destination="@id/gameFragment">
             <argument
                 android:name="gameId"
                 app:argType="string" />
         </action>
         <action
-            android:id="@+id/action_gamesListFragment_to_favoriteGamesFragment"
+            android:id="@+id/action_gamesFragment_to_favoriteGamesFragment"
             app:destination="@id/favoriteGamesFragment" />
     </fragment>
     <fragment
@@ -31,19 +31,23 @@
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
     <fragment
-        android:id="@+id/singleGameDataFragment"
+        android:id="@+id/gameFragment"
         android:name="com.mycorp.twitchapprxjava.screens.game.GameFragment"
         android:label="fragment_game_item"
-        tools:layout="@layout/fragment_single_game_data" >
+        tools:layout="@layout/fragment_single_game_data">
         <argument
             android:name="gameId"
             app:argType="string" />
         <action
-            android:id="@+id/action_gameItemFragment_to_followersListFragment"
-            app:destination="@id/followersListFragment" />
+            android:id="@+id/action_gameFragment_to_followersFragment"
+            app:destination="@id/followersFragment">
+            <argument
+                android:name="gameId"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
-        android:id="@+id/followersListFragment"
+        android:id="@+id/followersFragment"
         android:name="com.mycorp.twitchapprxjava.screens.followers.FollowersFragment"
         android:label="FollowersListFragment" />
     <fragment

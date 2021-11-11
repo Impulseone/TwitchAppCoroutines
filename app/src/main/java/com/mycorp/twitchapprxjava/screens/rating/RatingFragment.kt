@@ -30,10 +30,10 @@ class RatingFragment : BaseFragment<RatingVM>(R.layout.fragment_rating) {
                 }
 
             sendReportBtn.setOnClickListener {
-                findNavController().navigate(R.id.gamesListFragment)
+                findNavController().navigate(R.id.gamesFragment)
             }
             backBtn.setOnClickListener {
-                findNavController().navigate(R.id.gamesListFragment)
+                findNavController().navigate(R.id.gamesFragment)
             }
         }
     }

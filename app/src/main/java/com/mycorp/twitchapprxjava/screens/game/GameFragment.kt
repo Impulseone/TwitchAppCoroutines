@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentSingleGameDataBinding
 import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
+import com.mycorp.twitchapprxjava.screens.games.GamesFragmentDirections
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameFragment :
@@ -49,6 +51,9 @@ class GameFragment :
                     )
                 )
             }
+            viewModel.launchFollowerScreenCommand.observe(viewLifecycleOwner, {
+                navigateToFollowersFragment(viewModel.singleGameLiveData().value?.data?.id!!)
+            })
         }
     }
 
@@ -58,15 +63,17 @@ class GameFragment :
                 viewModel.onLikeClicked(viewModel.singleGameLiveData().value?.data!!)
             }
             followersCount.setOnClickListener {
-//                val bundle = Bundle()
-//                bundle.putParcelable(PARCELIZE_GAME_KEY, singleGameData)
-//                findNavController().navigate(R.id.followersListFragment, bundle)
+                viewModel.launchFollowerScreen(viewModel.singleGameLiveData().value?.data?.id!!)
             }
         }
     }
 
-    companion object {
-        const val PARCELIZE_GAME_KEY = "gameId"
+    private fun navigateToFollowersFragment(gameId: String) {
+        findNavController().navigate(
+            GameFragmentDirections.actionGameFragmentToFollowersFragment(
+                gameId
+            )
+        )
     }
 
 }

@@ -9,7 +9,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.common.extensions.setIgnoreLastDivider
 import com.mycorp.twitchapprxjava.databinding.FragmentGamesBinding
-import com.mycorp.twitchapprxjava.screens.game.GameFragment
 import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
 import com.mycorp.twitchapprxjava.screens.games.adapter.PagedGamesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,12 +48,12 @@ class GamesFragment : BaseFragment<GamesVM>(R.layout.fragment_games) {
                 adapter = this@GamesFragment.pagedAdapter
             }
             rateButton.setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_gamesListFragment_to_ratingFragment)
+                Navigation.createNavigateOnClickListener(R.id.action_gamesFragment_to_ratingFragment)
             )
         }
     }
 
     private fun navigateToSingleGameDataFragment(id: String) {
-        findNavController().navigate(GamesFragmentDirections.actionGamesListFragmentToGameItemFragment(id))
+        findNavController().navigate(GamesFragmentDirections.actionGamesFragmentToGameFragment(id))
     }
 }

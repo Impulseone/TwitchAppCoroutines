@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-    <item android:id="@+id/gamesListFragment"
+    <item android:id="@+id/gamesFragment"
         android:title="@string/all_bottom_ic_text"
         app:showAsAction="always"
         android:orderInCategory="1"
