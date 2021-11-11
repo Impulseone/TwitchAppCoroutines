@@ -21,4 +21,5 @@ val dbModule = module {
     single { get<AppDatabase>().gameDataDao }
     single { get<AppDatabase>().followersDao }
     single { get<AppDatabase>().favoriteGameDataDao }
+    single { get<AppDatabase>().gameFollowersDao }
 }
