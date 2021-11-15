@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.database.room
 
 import com.mycorp.twitchapprxjava.database.Storage
-import com.mycorp.twitchapprxjava.model.FollowerInfo
-import com.mycorp.twitchapprxjava.model.GameData
+import com.mycorp.twitchapprxjava.models.FollowerInfo
+import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.database.room.dao.FavoriteGameDataDao
 import com.mycorp.twitchapprxjava.database.room.dao.FollowersDao
 import com.mycorp.twitchapprxjava.database.room.dao.GameDataDao

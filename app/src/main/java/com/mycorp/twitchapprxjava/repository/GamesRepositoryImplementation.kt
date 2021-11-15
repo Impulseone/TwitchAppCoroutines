@@ -3,7 +3,7 @@ package com.mycorp.twitchapprxjava.repository
 import android.content.Context
 import com.mycorp.twitchapprxjava.api.controllers.NetworkController
 import com.mycorp.twitchapprxjava.database.Storage
-import com.mycorp.twitchapprxjava.model.GameData
+import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 
 class GamesRepositoryImplementation(

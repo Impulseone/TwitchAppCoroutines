@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.database
 
 import androidx.paging.DataSource
-import com.mycorp.twitchapprxjava.model.FollowerInfo
-import com.mycorp.twitchapprxjava.model.GameData
+import com.mycorp.twitchapprxjava.models.FollowerInfo
+import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.database.room.entities.FavoriteGameDataEntity
 import com.mycorp.twitchapprxjava.database.room.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity

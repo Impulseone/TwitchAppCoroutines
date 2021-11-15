@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.repository
 
 import com.mycorp.twitchapprxjava.database.Storage
-import com.mycorp.twitchapprxjava.model.FavoriteGameData
-import com.mycorp.twitchapprxjava.model.GameData
+import com.mycorp.twitchapprxjava.models.FavoriteGameData
+import com.mycorp.twitchapprxjava.models.GameData
 
 class FavoriteGamesRepositoryImplementation(
     private val storage: Storage

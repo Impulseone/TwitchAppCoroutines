@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.repository
 
 import androidx.paging.DataSource
-import com.mycorp.twitchapprxjava.model.FavoriteGameData
-import com.mycorp.twitchapprxjava.model.GameData
+import com.mycorp.twitchapprxjava.models.FavoriteGameData
+import com.mycorp.twitchapprxjava.models.GameData
 import io.reactivex.Completable
 import io.reactivex.Single
 

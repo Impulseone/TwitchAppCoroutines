@@ -1,7 +1,7 @@
 package com.mycorp.twitchapprxjava.api.controllers
 
-import com.mycorp.twitchapprxjava.api.model.gameItemDataResponse.GameItemDataDto
-import com.mycorp.twitchapprxjava.api.model.topGamesResponse.TopGamesResponseDto
+import com.mycorp.twitchapprxjava.api.dto.gameItemDataResponse.GameItemDataDto
+import com.mycorp.twitchapprxjava.api.dto.topGamesResponse.TopGamesResponseDto
 import io.reactivex.Single
 
 interface NetworkController {

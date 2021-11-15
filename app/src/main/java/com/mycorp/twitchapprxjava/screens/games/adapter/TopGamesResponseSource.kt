@@ -3,10 +3,12 @@ package com.mycorp.twitchapprxjava.screens.games.adapter
 import android.content.Context
 import androidx.paging.PositionalDataSource
 import com.mycorp.twitchapprxjava.repository.GamesRepository
+import io.reactivex.Observable.fromIterable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import java.util.*
 
 class TopGamesResponseSource(
     private val context: Context,
@@ -33,7 +35,7 @@ class TopGamesResponseSource(
                     gamesRepository.insertGamesData(it)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe()
+                        .subscribe({}, {}).dispose()
                 }, {
                     throwableStateSubject.onNext(it)
                 })
@@ -52,6 +54,9 @@ class TopGamesResponseSource(
                     }
                 )
                 gamesRepository.insertGamesData(it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({}, {}).dispose()
             }, {
                 throwableStateSubject.onNext(it)
             })

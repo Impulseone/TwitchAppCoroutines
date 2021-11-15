@@ -1,7 +1,7 @@
 package com.mycorp.twitchapprxjava.repository
 
 import androidx.paging.DataSource
-import com.mycorp.twitchapprxjava.model.GameData
+import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import io.reactivex.Completable
 import io.reactivex.Single

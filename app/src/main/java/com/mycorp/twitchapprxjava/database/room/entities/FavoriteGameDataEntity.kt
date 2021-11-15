@@ -2,7 +2,7 @@ package com.mycorp.twitchapprxjava.database.room.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.mycorp.twitchapprxjava.model.GameData
+import com.mycorp.twitchapprxjava.models.GameData
 
 @Entity
 class FavoriteGameDataEntity(

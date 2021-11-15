@@ -2,7 +2,7 @@ package com.mycorp.twitchapprxjava.screens.followers
 
 import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.model.FollowerInfo
+import com.mycorp.twitchapprxjava.models.FollowerInfo
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.repository.FollowersRepository
 import io.reactivex.android.schedulers.AndroidSchedulers

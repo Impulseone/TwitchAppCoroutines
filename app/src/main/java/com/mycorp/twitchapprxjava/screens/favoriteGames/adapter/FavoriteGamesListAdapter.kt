@@ -3,7 +3,7 @@ package com.mycorp.twitchapprxjava.screens.favoriteGames.adapter
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import com.mycorp.twitchapprxjava.common.helpers.BaseItemCallback
-import com.mycorp.twitchapprxjava.model.FavoriteGameData
+import com.mycorp.twitchapprxjava.models.FavoriteGameData
 
 class FavoriteGamesListAdapter :
     PagedListAdapter<FavoriteGameData, FavoriteGameViewHolder>(BaseItemCallback()) {

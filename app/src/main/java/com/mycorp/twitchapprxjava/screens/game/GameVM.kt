@@ -6,7 +6,7 @@ import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.model.GameData
+import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
 import com.mycorp.twitchapprxjava.repository.FollowersRepository
 import com.mycorp.twitchapprxjava.repository.GamesRepository
@@ -93,25 +93,16 @@ class GameVM(
 
     fun onLikeClicked() {
         isFavoriteLiveData.value = !isFavoriteLiveData.value!!
-        if (isFavoriteLiveData.value!!) {
-            favoriteResLiveData.value = R.drawable.like_filled_icon
+        favoriteResLiveData.value = if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+        (if (isFavoriteLiveData.value!!) {
             favoriteGamesRepository.insertFavoriteGame(gameLiveData.value?.data!!)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({}, {
-                    handleException(it)
-                }).addToSubscription()
         } else {
-            favoriteResLiveData.value = R.drawable.like_outlined_icon
-            gameId?.let {
-                favoriteGamesRepository.deleteByGameId(it)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({}, {
-                        handleException(it)
-                    }).addToSubscription()
-            }
-        }
+            favoriteGamesRepository.deleteByGameId(gameId!!)
+        }).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, {
+                handleException(it)
+            }).addToSubscription()
 
     }
 

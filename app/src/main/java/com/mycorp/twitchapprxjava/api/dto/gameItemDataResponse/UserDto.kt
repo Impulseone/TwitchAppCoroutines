@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.api.model.gameItemDataResponse
+package com.mycorp.twitchapprxjava.api.dto.gameItemDataResponse
 
 data class UserDto(
     val updated_at: String? = null,
