@@ -1,6 +1,5 @@
 package com.mycorp.twitchapprxjava.screens.favoriteGames
 
-import android.util.Log
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.Data
@@ -44,7 +43,7 @@ class FavoriteGamesVM(
                     )
                 )
             }, {
-                Log.e("error", it.message.toString())
+                handleException(it)
             }).addToSubscription()
     }
 

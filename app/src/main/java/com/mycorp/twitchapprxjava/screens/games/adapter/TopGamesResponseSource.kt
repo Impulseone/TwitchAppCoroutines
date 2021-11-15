@@ -35,7 +35,8 @@ class TopGamesResponseSource(
                     gamesRepository.insertGamesData(it)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({}, {}).dispose()
+                        .subscribe({}, {})
+                        .dispose()
                 }, {
                     throwableStateSubject.onNext(it)
                 })

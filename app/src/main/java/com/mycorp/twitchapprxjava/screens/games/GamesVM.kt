@@ -30,8 +30,7 @@ class GamesVM(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                showToast(it.message!!)
-                getGames()
+                handleException(it)
             }.addToSubscription()
 
         RxPagedListBuilder(topGamesSourceFactory, pagedListConfig)
@@ -40,6 +39,10 @@ class GamesVM(
                 pagedGamesLiveData.value = GameDataViewState.success(data = it)
             }
             .addToSubscription()
+    }
+
+    override fun getDataFromDb() {
+        getGames()
     }
 
     fun gameItemClicked(position: Int) {
@@ -57,7 +60,7 @@ class GamesVM(
                 pagedGamesLiveData.postValue(
                     GameDataViewState.error()
                 )
-                handleException(it as Exception)
+                handleException(it)
             }).addToSubscription()
     }
 

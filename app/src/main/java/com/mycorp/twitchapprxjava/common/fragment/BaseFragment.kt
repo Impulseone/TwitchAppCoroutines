@@ -16,11 +16,9 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
         viewModel.showToast.observe(this, {
             if (it == null) return@observe
             val (text, length) = it
-
             Toast.makeText(requireContext(), text, length).show()
         })
     }
-
 }
 
 

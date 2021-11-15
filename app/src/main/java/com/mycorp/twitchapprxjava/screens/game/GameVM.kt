@@ -34,6 +34,10 @@ class GameVM(
         checkIsFavorite()
     }
 
+    override fun getDataFromDb() {
+        getFollowers()
+    }
+
     private fun getGameData() {
         gameId?.let {
             gamesRepository.getGameDataById(it)
@@ -59,7 +63,6 @@ class GameVM(
                     }
                 }, {
                     handleException(it)
-                    getFollowers()
                 }).addToSubscription()
         }
     }

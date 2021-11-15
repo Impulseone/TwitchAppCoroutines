@@ -44,7 +44,6 @@ class GamesFragment : BaseFragment<GamesVM>(R.layout.fragment_games) {
 
     override fun bindVm() {
         super.bindVm()
-
         bindData(viewModel.pagedGamesLiveData) {
             binding.progressIndicator.isVisible = it.progressIndicatorVisibility
             pagedAdapter?.submitList(it.data)

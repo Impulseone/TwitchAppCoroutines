@@ -24,6 +24,10 @@ class FollowersVM(
         fetchFollowers()
     }
 
+    override fun getDataFromDb() {
+        getFollowersId()
+    }
+
     private fun fetchFollowers() {
         gameId?.let {
             followersRepository.fetchFollowers(it)
@@ -36,7 +40,6 @@ class FollowersVM(
                         )
                 }, {
                     handleException(it)
-                    getFollowersId()
                 }).addToSubscription()
         }
     }
