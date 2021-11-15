@@ -3,13 +3,10 @@ package com.mycorp.twitchapprxjava
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.databinding.ActivityMainBinding
-import androidx.navigation.ui.NavigationUI
-
-import androidx.navigation.fragment.NavHostFragment
-import com.mycorp.twitchapprxjava.R
 
 class MainActivity : AppCompatActivity() {
 
