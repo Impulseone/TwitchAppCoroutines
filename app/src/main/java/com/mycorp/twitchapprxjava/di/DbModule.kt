@@ -14,10 +14,12 @@ val dbModule = module {
             AppDatabase::class.java,
             "games_database"
         )
+            .fallbackToDestructiveMigration()
             .build()
     }
-    single<Storage> { RoomStorage(get(), get(), get()) }
+    single<Storage> { RoomStorage(get(), get(), get(), get()) }
     single { get<AppDatabase>().gameDataDao }
     single { get<AppDatabase>().followersDao }
-    single { get<AppDatabase>().singleGameDataDao }
+    single { get<AppDatabase>().favoriteGameDataDao }
+    single { get<AppDatabase>().gameFollowersDao }
 }

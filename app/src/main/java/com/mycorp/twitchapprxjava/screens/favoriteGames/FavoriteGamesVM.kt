@@ -6,7 +6,7 @@ import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.database.model.SingleGameData
+import com.mycorp.twitchapprxjava.database.model.FavoriteGameData
 import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -20,7 +20,7 @@ class FavoriteGamesVM(
         .setPageSize(PAGED_LIST_PAGE_SIZE)
         .build()
 
-    private var gamesLiveData: MutableLiveData<GameDataViewState<PagedList<SingleGameData>>>
+    private var gamesLiveData: MutableLiveData<GameDataViewState<PagedList<FavoriteGameData>>>
 
     init {
         gamesLiveData = MutableLiveData()

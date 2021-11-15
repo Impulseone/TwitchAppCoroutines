@@ -52,34 +52,14 @@ class GamesVM(
         val dataSourceFactory = gamesRepository.getGamesDataFromDb()
         RxPagedListBuilder(dataSourceFactory, pagedListConfig)
             .buildObservable()
-            .subscribe(gamesFromDbObserver())
-    }
-
-    private fun gamesFromDbObserver(): Observer<PagedList<GameListItem>> {
-        return object : Observer<PagedList<GameListItem>> {
-
-            override fun onSubscribe(d: Disposable) {
-                pagedGamesLiveData.postValue(
-                    GameDataViewState.loading()
-                )
-            }
-
-            override fun onNext(t: PagedList<GameListItem>) {
-                pagedGamesLiveData.value = GameDataViewState.success(data = t)
-            }
-
-            override fun onError(e: Throwable) {
-                showToast(e.message!!)
+            .subscribe({
+                pagedGamesLiveData.value = GameDataViewState.success(data = it)
+            }, {
                 pagedGamesLiveData.postValue(
                     GameDataViewState.error()
                 )
-                handleException(e as Exception)
-            }
-
-            override fun onComplete() {
-
-            }
-        }
+                handleException(it as Exception)
+            }).addToSubscription()
     }
 
     companion object {
