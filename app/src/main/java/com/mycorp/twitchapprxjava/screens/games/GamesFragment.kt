@@ -44,16 +44,19 @@ class GamesFragment : BaseFragment<GamesVM>(R.layout.fragment_games) {
 
     override fun bindVm() {
         super.bindVm()
-        viewModel.pagedGamesLiveData.observe(viewLifecycleOwner, {
+
+        bindData(viewModel.pagedGamesLiveData) {
             binding.progressIndicator.isVisible = it.progressIndicatorVisibility
             pagedAdapter?.submitList(it.data)
-        })
-        viewModel.launchGameScreenCommand.observe(viewLifecycleOwner, {
-            navigateToSingleGameDataFragment(viewModel.pagedGamesLiveData.value!!.data?.get(it as Int)?.id!!)
-        })
-    }
-
-    private fun navigateToSingleGameDataFragment(id: String) {
-        findNavController().navigate(GamesFragmentDirections.actionGamesFragmentToGameFragment(id))
+        }
+        bindCommand(viewModel.launchGameScreenCommand) {
+            it?.let {
+                findNavController().navigate(
+                    GamesFragmentDirections.actionGamesFragmentToGameFragment(
+                        it
+                    )
+                )
+            }
+        }
     }
 }
