@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class FavoriteGamesVM(
-    private val favoriteGamesRepository: FavoriteGamesRepository,
+    private val favoriteGamesRepository: FavoriteGamesRepository
 ) : BaseViewModel() {
 
     private val pagedListConfig = PagedList.Config.Builder()

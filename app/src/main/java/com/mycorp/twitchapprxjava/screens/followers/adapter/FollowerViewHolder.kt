@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.database.model.FollowerInfo
-import com.mycorp.twitchapprxjava.databinding.FollowerItemViewBinding
+import com.mycorp.twitchapprxjava.databinding.ItemFollowerBinding
 
-class FollowerViewHolder(private val binding: FollowerItemViewBinding) :
+class FollowerViewHolder(private val binding: ItemFollowerBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(followerInfo: FollowerInfo) {
@@ -20,7 +20,7 @@ class FollowerViewHolder(private val binding: FollowerItemViewBinding) :
     companion object {
         fun from(parent: ViewGroup): FollowerViewHolder {
             return FollowerViewHolder(
-                FollowerItemViewBinding.inflate(
+                ItemFollowerBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
