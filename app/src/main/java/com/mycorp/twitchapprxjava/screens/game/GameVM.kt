@@ -18,16 +18,12 @@ class GameVM(
     private val favoriteGamesRepository: FavoriteGamesRepository
 ) : BaseViewModel() {
 
-    private lateinit var gameId: String
+    private var gameId: String? = null
 
-    private val gameLiveData = MutableLiveData<GameDataViewState<GameData>>()
-    private val followersIdLiveData = MutableLiveData<List<String>>()
-    private val isFavoriteLiveData = MutableLiveData<Boolean>()
-    val launchFollowerScreenCommand = TCommand<Any>()
-
-    fun singleGameLiveData() = gameLiveData
-    fun followersIdLiveData() = followersIdLiveData
-    fun favoriteStateLiveData() = isFavoriteLiveData
+    val gameLiveData = MutableLiveData<GameDataViewState<GameData>>()
+    val followersIdLiveData = MutableLiveData<List<String>>()
+    val isFavoriteLiveData = MutableLiveData<Boolean>()
+    val launchFollowerScreenCommand = TCommand<String?>()
 
     fun init(gameId: String) {
         this.gameId = gameId
@@ -37,78 +33,93 @@ class GameVM(
     }
 
     private fun getGameData() {
-        gamesRepository.getGameDataById(gameId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                gameLiveData.value = GameDataViewState.success(it)
-            }, {
-                handleException(it)
-            })
-            .addToSubscription()
+        gameId?.let {
+            gamesRepository.getGameDataById(it)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    gameLiveData.value = GameDataViewState.success(it)
+                }, {
+                    handleException(it)
+                })
+                .addToSubscription()
+        }
     }
 
     private fun getFollowersListFromServer() {
-        followersRepository.getFollowersListFromServer(gameId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                followersIdLiveData.value = it.map {
-                    it.followerId
-                }
-                saveFollowersToDb(it)
-            }, {
-                handleException(it)
-                getFollowersFromDb()
-            }).addToSubscription()
+        gameId?.let {
+            followersRepository.getFollowersListFromServer(it)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    followersIdLiveData.value = it.map {
+                        it.followerId
+                    }
+                    saveFollowersToDb(it)
+                }, {
+                    handleException(it)
+                    getFollowersFromDb()
+                }).addToSubscription()
+        }
     }
 
     private fun saveFollowersToDb(followersInfo: List<FollowerInfo>) {
-        followersRepository.insertFollowersToDb(followersInfo, gameId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+        gameId?.let {
+            followersRepository.insertFollowersToDb(followersInfo, it)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        }
     }
 
     private fun getFollowersFromDb() {
-        followersRepository.getFollowersIdFromDbByGameId(gameId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe({
-                followersIdLiveData.value = it
-            }, {
-                handleException(it as Exception)
-            }).addToSubscription()
+        gameId?.let {
+            followersRepository.getFollowersIdFromDbByGameId(it)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                    followersIdLiveData.value = it
+                }, {
+                    handleException(it as Exception)
+                }).addToSubscription()
+        }
     }
 
     private fun checkIsFavorite() {
-        favoriteGamesRepository.checkIsFavorite(gameId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                isFavoriteLiveData.value = it > 0
-            }, {
-                handleException(it)
-            }).addToSubscription()
+        gameId?.let {
+            favoriteGamesRepository.checkIsFavorite(it)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    isFavoriteLiveData.value = it > 0
+                }, {
+                    handleException(it)
+                }).addToSubscription()
+        }
     }
 
-    fun onLikeClicked(gameData: GameData) {
+    fun onLikeClicked() {
+        isFavoriteLiveData.value = !isFavoriteLiveData.value!!
         if (isFavoriteLiveData.value!!) {
-            isFavoriteLiveData.value = false
-            favoriteGamesRepository.deleteByGameId(gameData.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe().addToSubscription()
+            gameId?.let {
+                favoriteGamesRepository.deleteByGameId(it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({}, {
+                        handleException(it)
+                    }).addToSubscription()
+            }
         } else {
-            isFavoriteLiveData.value = true
-            favoriteGamesRepository.insertFavoriteGame(gameData)
+            favoriteGamesRepository.insertFavoriteGame(gameLiveData.value?.data!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe().addToSubscription()
+                .subscribe({}, {
+                    handleException(it)
+                }).addToSubscription()
         }
 
     }
 
-    fun launchFollowerScreen(gameId: String) {
+    fun launchFollowerScreen() {
         launchFollowerScreenCommand.value = gameId
     }
 

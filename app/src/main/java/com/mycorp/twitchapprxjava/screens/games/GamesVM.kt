@@ -1,6 +1,5 @@
 package com.mycorp.twitchapprxjava.screens.games
 
-import androidx.navigation.NavController
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.PagedDataList
