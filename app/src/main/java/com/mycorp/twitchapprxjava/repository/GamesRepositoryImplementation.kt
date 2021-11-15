@@ -11,12 +11,12 @@ class GamesRepositoryImplementation(
     private val storage: Storage,
     private val context: Context
 ) : GamesRepository {
-    override fun getGamesDataListFromServer(limit: Int, offset: Int) =
+    override fun fetchGamesDataList(limit: Int, offset: Int) =
         networkController.getDataFromNetwork(limit, offset).map {
             it.toListOfGameData()
         }
 
-    override fun getGamesDataFromDb() = storage.getGamesDataFromDb().map {
+    override fun getGamesData() = storage.getGamesData().map {
         GameListItem(context, GameData.fromEntity(it))
     }
 
@@ -25,6 +25,6 @@ class GamesRepositoryImplementation(
             GameData.fromEntity(it)
         }
 
-    override fun insertGamesDataToDb(gameDataList: List<GameData>) =
+    override fun insertGamesData(gameDataList: List<GameData>) =
         storage.insertGamesData(gamesData = gameDataList)
 }

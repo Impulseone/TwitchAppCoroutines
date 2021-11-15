@@ -30,7 +30,7 @@ class GameVM(
     fun init(gameId: String) {
         this.gameId = gameId
         getGameData()
-        getFollowersListFromServer()
+        fetchFollowers()
         checkIsFavorite()
     }
 
@@ -48,9 +48,9 @@ class GameVM(
         }
     }
 
-    private fun getFollowersListFromServer() {
+    private fun fetchFollowers() {
         gameId?.let {
-            followersRepository.getFollowersListFromServer(it)
+            followersRepository.fetchFollowers(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -59,14 +59,14 @@ class GameVM(
                     }
                 }, {
                     handleException(it)
-                    getFollowersFromDb()
+                    getFollowers()
                 }).addToSubscription()
         }
     }
 
-    private fun getFollowersFromDb() {
+    private fun getFollowers() {
         gameId?.let {
-            followersRepository.getFollowersIdFromDbByGameId(it)
+            followersRepository.getFollowersIdByGameId(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe({
                     followersIdLiveData.value = it

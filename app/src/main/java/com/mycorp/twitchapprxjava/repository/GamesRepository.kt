@@ -8,9 +8,10 @@ import io.reactivex.Single
 
 interface GamesRepository {
 
-    fun getGamesDataListFromServer(limit: Int, offset: Int): Single<List<GameData>>
-    fun getGamesDataFromDb(): DataSource.Factory<Int, GameListItem>
+    fun fetchGamesDataList(limit: Int, offset: Int): Single<List<GameData>>
+
+    fun getGamesData(): DataSource.Factory<Int, GameListItem>
     fun getGameDataById(id: String): Single<GameData>
 
-    fun insertGamesDataToDb(gameDataList: List<GameData>): Completable
+    fun insertGamesData(gameDataList: List<GameData>): Completable
 }

@@ -5,7 +5,8 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 interface FollowersRepository {
-    fun getFollowersListFromServer(id: String): Single<List<FollowerInfo>>
-    fun getFollowersListFromDbByIds(followerIds: List<String>): Single<List<FollowerInfo>>
-    fun getFollowersIdFromDbByGameId(gameId: String): Single<List<String>>
+    fun fetchFollowers(id: String): Single<List<FollowerInfo>>
+
+    fun getFollowersByIds(followerIds: List<String>): Single<List<FollowerInfo>>
+    fun getFollowersIdByGameId(gameId: String): Single<List<String>>
 }

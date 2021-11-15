@@ -21,12 +21,12 @@ class FollowersVM(
 
     fun init(gameId: String) {
         this.gameId = gameId
-        getFollowersFromServer()
+        fetchFollowers()
     }
 
-    private fun getFollowersFromServer() {
+    private fun fetchFollowers() {
         gameId?.let {
-            followersRepository.getFollowersListFromServer(it)
+            followersRepository.fetchFollowers(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -36,26 +36,26 @@ class FollowersVM(
                         )
                 }, {
                     handleException(it)
-                    getFollowersIdFromDb()
+                    getFollowersId()
                 }).addToSubscription()
         }
     }
 
-    private fun getFollowersIdFromDb() {
+    private fun getFollowersId() {
         gameId?.let {
-            followersRepository.getFollowersIdFromDbByGameId(it)
+            followersRepository.getFollowersIdByGameId(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    getFollowersFromDb(it)
+                    getFollowers(it)
                 }, {
                     handleException(it)
                 }).addToSubscription()
         }
     }
 
-    private fun getFollowersFromDb(followersIds: List<String>) {
-        followersRepository.getFollowersListFromDbByIds(followersIds)
+    private fun getFollowers(followersIds: List<String>) {
+        followersRepository.getFollowersByIds(followersIds)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

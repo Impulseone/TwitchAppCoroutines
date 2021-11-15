@@ -11,11 +11,11 @@ import io.reactivex.Single
 
 interface Storage {
 
-    fun getGamesDataFromDb(): DataSource.Factory<Int, GameDataEntity>
+    fun getGamesData(): DataSource.Factory<Int, GameDataEntity>
     fun getGameDataEntityById(id: String): Single<GameDataEntity>
-    fun getFollowersFromDbByIds(followerIds: List<String>): Single<List<FollowerInfoEntity>>
-    fun getFollowersIdFromDbByGameId(gameId: String): Single<List<String>>
-    fun getFavoriteGamesFromDb(): DataSource.Factory<Int, FavoriteGameDataEntity>
+    fun getFollowersByIds(followerIds: List<String>): Single<List<FollowerInfoEntity>>
+    fun getFollowersIdByGameId(gameId: String): Single<List<String>>
+    fun getFavoriteGames(): DataSource.Factory<Int, FavoriteGameDataEntity>
 
     fun insertGamesData(gamesData: List<GameData>): Completable
     fun insertFollowersData(followersData: List<FollowerInfo>, gameId: String): Completable

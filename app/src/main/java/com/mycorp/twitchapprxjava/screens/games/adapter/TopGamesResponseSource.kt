@@ -1,7 +1,6 @@
 package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.content.Context
-import android.util.Log
 import androidx.paging.PositionalDataSource
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,7 +19,7 @@ class TopGamesResponseSource(
         callback: LoadInitialCallback<GameListItem>
     ) {
         compositeDisposable.add(
-            gamesRepository.getGamesDataListFromServer(
+            gamesRepository.fetchGamesDataList(
                 limit = params.pageSize,
                 offset = params.requestedStartPosition
             )
@@ -31,7 +30,7 @@ class TopGamesResponseSource(
                         },
                         DEFAULT_START_POSITION
                     )
-                    gamesRepository.insertGamesDataToDb(it)
+                    gamesRepository.insertGamesData(it)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
@@ -43,7 +42,7 @@ class TopGamesResponseSource(
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<GameListItem>) {
         compositeDisposable.add(
-            gamesRepository.getGamesDataListFromServer(
+            gamesRepository.fetchGamesDataList(
                 limit = params.loadSize,
                 offset = params.startPosition
             ).subscribe({
@@ -52,7 +51,7 @@ class TopGamesResponseSource(
                         GameListItem(context, game)
                     }
                 )
-                gamesRepository.insertGamesDataToDb(it)
+                gamesRepository.insertGamesData(it)
             }, {
                 throwableStateSubject.onNext(it)
             })

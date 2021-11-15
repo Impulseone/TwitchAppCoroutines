@@ -7,7 +7,7 @@ import com.mycorp.twitchapprxjava.database.model.GameData
 class FavoriteGamesRepositoryImplementation(
     private val storage: Storage
 ) : FavoriteGamesRepository {
-    override fun getFavoriteGamesFromDb() = storage.getFavoriteGamesFromDb()
+    override fun getFavoriteGames() = storage.getFavoriteGames()
         .map {
             FavoriteGameData(it)
         }

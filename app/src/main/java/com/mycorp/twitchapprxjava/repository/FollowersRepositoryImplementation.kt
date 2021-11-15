@@ -12,11 +12,11 @@ class FollowersRepositoryImplementation(
     private val networkController: NetworkController,
     private val storage: Storage
 ) : FollowersRepository {
-    override fun getFollowersListFromServer(id: String): Single<List<FollowerInfo>> =
+    override fun fetchFollowers(id: String): Single<List<FollowerInfo>> =
         networkController.getGameItemDataFromNetwork(id).map {
             val followers = it.follows?.map { FollowerInfo.fromFollowerDto(it!!) }
             if (followers != null) {
-                insertFollowersToDb(followers, id)
+                insertFollowers(followers, id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({},{})
@@ -25,15 +25,15 @@ class FollowersRepositoryImplementation(
             return@map followers
         }
 
-    override fun getFollowersListFromDbByIds(followerIds: List<String>) =
-        storage.getFollowersFromDbByIds(followerIds)
+    override fun getFollowersByIds(followerIds: List<String>) =
+        storage.getFollowersByIds(followerIds)
             .map { it.map { FollowerInfo.fromFollowerInfoEntity(it) } }
 
-    override fun getFollowersIdFromDbByGameId(gameId: String): Single<List<String>> {
-        return storage.getFollowersIdFromDbByGameId(gameId)
+    override fun getFollowersIdByGameId(gameId: String): Single<List<String>> {
+        return storage.getFollowersIdByGameId(gameId)
     }
 
-    private fun insertFollowersToDb(
+    private fun insertFollowers(
         followersList: List<FollowerInfo>,
         gameId: String
     ): Completable {

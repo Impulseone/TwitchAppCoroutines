@@ -31,7 +31,7 @@ class GamesVM(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 showToast(it.message!!)
-                getGamesFromDb()
+                getGames()
             }.addToSubscription()
 
         RxPagedListBuilder(topGamesSourceFactory, pagedListConfig)
@@ -47,8 +47,8 @@ class GamesVM(
         launchGameScreenCommand.value = id
     }
 
-    private fun getGamesFromDb() {
-        val dataSourceFactory = gamesRepository.getGamesDataFromDb()
+    private fun getGames() {
+        val dataSourceFactory = gamesRepository.getGamesData()
         RxPagedListBuilder(dataSourceFactory, pagedListConfig)
             .buildObservable()
             .subscribe({

@@ -1,7 +1,6 @@
 package com.mycorp.twitchapprxjava.screens.favoriteGames
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.Data
@@ -29,7 +28,7 @@ class FavoriteGamesVM(
 
     private fun getGames() {
         val eventPagedList =
-            RxPagedListBuilder(favoriteGamesRepository.getFavoriteGamesFromDb(), pagedListConfig)
+            RxPagedListBuilder(favoriteGamesRepository.getFavoriteGames(), pagedListConfig)
                 .setFetchScheduler(Schedulers.io())
                 .buildObservable()
                 .cache()
