@@ -1,7 +1,7 @@
-package com.mycorp.twitchapprxjava.database.model.topGamesResponse
+package com.mycorp.twitchapprxjava.api.model.topGamesResponse
 
 import com.google.gson.annotations.SerializedName
-import com.mycorp.twitchapprxjava.database.model.GameData
+import com.mycorp.twitchapprxjava.model.GameData
 
 class TopGamesResponseDto(
     @field:SerializedName("top")

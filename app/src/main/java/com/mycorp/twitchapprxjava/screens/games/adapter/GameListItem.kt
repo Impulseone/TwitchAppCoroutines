@@ -2,8 +2,7 @@ package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.content.Context
 import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.database.model.GameData
-import java.util.*
+import com.mycorp.twitchapprxjava.model.GameData
 
 data class GameListItem(
     val id: String,

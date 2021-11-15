@@ -6,7 +6,7 @@ import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.database.model.GameData
+import com.mycorp.twitchapprxjava.model.GameData
 import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
 import com.mycorp.twitchapprxjava.repository.FollowersRepository
 import com.mycorp.twitchapprxjava.repository.GamesRepository

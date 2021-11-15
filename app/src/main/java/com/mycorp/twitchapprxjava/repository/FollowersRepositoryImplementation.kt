@@ -2,7 +2,7 @@ package com.mycorp.twitchapprxjava.repository
 
 import com.mycorp.twitchapprxjava.api.controllers.NetworkController
 import com.mycorp.twitchapprxjava.database.Storage
-import com.mycorp.twitchapprxjava.database.model.FollowerInfo
+import com.mycorp.twitchapprxjava.model.FollowerInfo
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

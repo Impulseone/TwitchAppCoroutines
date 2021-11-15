@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.database.model
+package com.mycorp.twitchapprxjava.model
 
 import com.mycorp.twitchapprxjava.database.room.entities.FavoriteGameDataEntity
 

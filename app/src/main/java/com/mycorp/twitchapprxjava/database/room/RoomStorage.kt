@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.database.room
 
 import com.mycorp.twitchapprxjava.database.Storage
-import com.mycorp.twitchapprxjava.database.model.FollowerInfo
-import com.mycorp.twitchapprxjava.database.model.GameData
+import com.mycorp.twitchapprxjava.model.FollowerInfo
+import com.mycorp.twitchapprxjava.model.GameData
 import com.mycorp.twitchapprxjava.database.room.dao.FavoriteGameDataDao
 import com.mycorp.twitchapprxjava.database.room.dao.FollowersDao
 import com.mycorp.twitchapprxjava.database.room.dao.GameDataDao
@@ -12,7 +12,6 @@ import com.mycorp.twitchapprxjava.database.room.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameFollowersEntity
 import io.reactivex.Completable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 

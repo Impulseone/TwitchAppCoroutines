@@ -2,7 +2,7 @@ package com.mycorp.twitchapprxjava.database.room.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.mycorp.twitchapprxjava.database.model.FollowerInfo
+import com.mycorp.twitchapprxjava.model.FollowerInfo
 
 @Entity
 class FollowerInfoEntity(

@@ -1,8 +1,8 @@
-package com.mycorp.twitchapprxjava.database.model.topGamesResponse
+package com.mycorp.twitchapprxjava.api.model.topGamesResponse
 
 import com.google.gson.annotations.SerializedName
 
-class BoxDto(
+class LogoDto(
     @field:SerializedName("small")
     val small: String? = null,
 
