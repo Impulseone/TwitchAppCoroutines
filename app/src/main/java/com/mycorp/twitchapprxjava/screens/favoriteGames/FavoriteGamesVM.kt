@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
+import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.database.model.FavoriteGameData
@@ -20,17 +21,13 @@ class FavoriteGamesVM(
         .setPageSize(PAGED_LIST_PAGE_SIZE)
         .build()
 
-    private var gamesLiveData: MutableLiveData<GameDataViewState<PagedList<FavoriteGameData>>>
+    var gamesLiveData = Data<GameDataViewState<PagedList<FavoriteGameData>>>()
 
-    init {
-        gamesLiveData = MutableLiveData()
+    fun init() {
         getGames()
     }
 
-    fun gamesLiveData() = gamesLiveData
-
     private fun getGames() {
-
         val eventPagedList =
             RxPagedListBuilder(favoriteGamesRepository.getFavoriteGamesFromDb(), pagedListConfig)
                 .setFetchScheduler(Schedulers.io())
