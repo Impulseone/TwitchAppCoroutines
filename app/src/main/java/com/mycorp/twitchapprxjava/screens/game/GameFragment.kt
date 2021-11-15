@@ -52,7 +52,7 @@ class GameFragment :
                 }
                 bindData(followersIdLiveData) {
                     followersCount.text =
-                        getString(R.string.followers_count, it.size.toString())
+                        getString(R.string.scr_game_followersCount, it.size.toString())
                 }
                 bindData(favoriteResLiveData) {
                     like.setImageDrawable(

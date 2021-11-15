@@ -15,7 +15,7 @@ class FavoriteGameViewHolder(private val binding: FavoriteGameItemViewBinding) :
         with(binding) {
             GlideApp.with(itemView.context).load(gameData?.logoUrl).into(image)
             with(itemView.context) {
-                gameName.text = getString(R.string.game_name, gameData?.name)
+                gameName.text = getString(R.string.scr_favorite_game_view_holder_gameName, gameData?.name)
             }
         }
     }

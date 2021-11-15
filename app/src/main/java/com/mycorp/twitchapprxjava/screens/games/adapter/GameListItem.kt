@@ -16,7 +16,7 @@ data class GameListItem(
         id = game.id,
         name = game.name,
         logoUrl = game.logoUrl,
-        channels = context.getString(R.string.channels, game.channelsCount.toString()),
-        watchers = context.getString(R.string.watchers, game.watchersCount.toString())
+        channels = context.getString(R.string.scr_favorite_game_list_item_gameName, game.channelsCount.toString()),
+        watchers = context.getString(R.string.scr_favorite_game_list_item_watchersCount, game.watchersCount.toString())
     )
 }

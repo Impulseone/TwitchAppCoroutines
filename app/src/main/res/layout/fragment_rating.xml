@@ -7,7 +7,7 @@
     tools:context=".screens.rating.RatingFragment">
 
     <RatingBar
-        android:id="@+id/ratingBar_default"
+        android:id="@+id/rating_bar"
         style="?android:attr/ratingBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:hint="@string/write_report" />
+        android:hint="@string/scr_rating_write_report_btn" />
 
     <Button
         android:id="@+id/send_report_btn"
@@ -26,13 +26,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="@string/send_report" />
+        android:text="@string/scr_rating_send_report_btn" />
 
     <Button
         android:id="@+id/back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/back" />
+        android:text="@string/scr_rating_back_btn" />
 
 </LinearLayout>
