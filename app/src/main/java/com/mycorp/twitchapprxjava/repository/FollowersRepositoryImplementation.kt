@@ -5,6 +5,8 @@ import com.mycorp.twitchapprxjava.database.Storage
 import com.mycorp.twitchapprxjava.database.model.FollowerInfo
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class FollowersRepositoryImplementation(
     private val networkController: NetworkController,
@@ -12,7 +14,15 @@ class FollowersRepositoryImplementation(
 ) : FollowersRepository {
     override fun getFollowersListFromServer(id: String): Single<List<FollowerInfo>> =
         networkController.getGameItemDataFromNetwork(id).map {
-            it.follows?.map { FollowerInfo.fromFollowerDto(it!!) }
+            val followers = it.follows?.map { FollowerInfo.fromFollowerDto(it!!) }
+            if (followers != null) {
+                insertFollowersToDb(followers, id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({},{})
+                    .dispose()
+            }
+            return@map followers
         }
 
     override fun getFollowersListFromDbByIds(followerIds: List<String>) =
@@ -23,10 +33,10 @@ class FollowersRepositoryImplementation(
         return storage.getFollowersIdFromDbByGameId(gameId)
     }
 
-    override fun insertFollowersToDb(
+    private fun insertFollowersToDb(
         followersList: List<FollowerInfo>,
         gameId: String
     ): Completable {
-       return storage.insertFollowersData(followersList, gameId)
+        return storage.insertFollowersData(followersList, gameId)
     }
 }

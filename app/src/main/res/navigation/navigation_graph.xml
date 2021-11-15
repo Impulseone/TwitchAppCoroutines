@@ -38,7 +38,7 @@
         android:id="@+id/gameFragment"
         android:name="com.mycorp.twitchapprxjava.screens.game.GameFragment"
         android:label="fragment_game_item"
-        tools:layout="@layout/fragment_single_game_data">
+        tools:layout="@layout/fragment_game">
         <argument
             android:name="gameId"
             app:argType="string" />

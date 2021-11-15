@@ -54,13 +54,12 @@ class TopGamesResponseSource(
                 )
                 gamesRepository.insertGamesDataToDb(it)
             }, {
-                Log.d(RESPONSE_SOURCE_TAG, "$it")
+                throwableStateSubject.onNext(it)
             })
         )
     }
 
     companion object {
-        private const val RESPONSE_SOURCE_TAG = "RESPONSE_SOURCE_TAG"
         private const val DEFAULT_START_POSITION = 0
     }
 }

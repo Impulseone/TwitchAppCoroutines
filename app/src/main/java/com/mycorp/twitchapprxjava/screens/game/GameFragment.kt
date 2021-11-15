@@ -2,19 +2,15 @@ package com.mycorp.twitchapprxjava.screens.game
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.databinding.FragmentSingleGameDataBinding
 import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameFragment :
-    BaseFragment<GameVM>(R.layout.fragment_single_game_data) {
+    BaseFragment<GameVM>(R.layout.fragment_game) {
 
     override val viewModel: GameVM by viewModel()
     private val binding: FragmentSingleGameDataBinding by viewBinding()
