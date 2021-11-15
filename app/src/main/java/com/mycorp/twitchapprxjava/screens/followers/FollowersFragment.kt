@@ -16,7 +16,7 @@ class FollowersFragment : BaseFragment<FollowersVM>(R.layout.fragment_followers_
 
     override val viewModel: FollowersVM by viewModel()
     private val binding: FragmentFollowersListBinding by viewBinding()
-    private val followersAdapter: FollowersAdapter = FollowersAdapter()
+    private var followersAdapter: FollowersAdapter? = null
     private val navArgs by navArgs<FollowersFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,6 +28,7 @@ class FollowersFragment : BaseFragment<FollowersVM>(R.layout.fragment_followers_
 
     private fun initViews() {
         with(binding) {
+            followersAdapter = FollowersAdapter()
             followersRv.layoutManager =
                 LinearLayoutManager(context)
             followersRv.adapter = followersAdapter
@@ -36,14 +37,9 @@ class FollowersFragment : BaseFragment<FollowersVM>(R.layout.fragment_followers_
 
     override fun bindVm() {
         super.bindVm()
-        viewModel.followersLiveData().observe(viewLifecycleOwner, {
-            changeProgressbarVisibility(it.progressIndicatorVisibility)
-            followersAdapter.submitList(it.data)
-        })
+        bindData(viewModel.followersLiveData()) {
+            binding.progressIndicator.isVisible = (it.progressIndicatorVisibility)
+            followersAdapter?.submitList(it.data)
+        }
     }
-
-    private fun changeProgressbarVisibility(visibility: Boolean) {
-        binding.progressIndicator.isVisible = visibility
-    }
-
 }

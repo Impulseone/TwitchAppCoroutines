@@ -1,6 +1,8 @@
 package com.mycorp.twitchapprxjava.screens.game
 
-import androidx.lifecycle.MutableLiveData
+import androidx.annotation.DrawableRes
+import com.mycorp.twitchapprxjava.R
+import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
@@ -20,9 +22,10 @@ class GameVM(
 
     private var gameId: String? = null
 
-    val gameLiveData = MutableLiveData<GameDataViewState<GameData>>()
-    val followersIdLiveData = MutableLiveData<List<String>>()
-    val isFavoriteLiveData = MutableLiveData<Boolean>()
+    val gameLiveData = Data<GameDataViewState<GameData>>()
+    val followersIdLiveData = Data<List<String>>()
+    private val isFavoriteLiveData = Data<Boolean>()
+    val favoriteResLiveData = Data<@DrawableRes Int>()
     val launchFollowerScreenCommand = TCommand<String?>()
 
     fun init(gameId: String) {
@@ -91,6 +94,8 @@ class GameVM(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     isFavoriteLiveData.value = it > 0
+                    favoriteResLiveData.value =
+                        if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
                 }, {
                     handleException(it)
                 }).addToSubscription()
@@ -100,6 +105,7 @@ class GameVM(
     fun onLikeClicked() {
         isFavoriteLiveData.value = !isFavoriteLiveData.value!!
         if (isFavoriteLiveData.value!!) {
+            favoriteResLiveData.value = R.drawable.like_filled_icon
             gameId?.let {
                 favoriteGamesRepository.deleteByGameId(it)
                     .subscribeOn(Schedulers.io())
@@ -109,6 +115,7 @@ class GameVM(
                     }).addToSubscription()
             }
         } else {
+            favoriteResLiveData.value = R.drawable.like_outlined_icon
             favoriteGamesRepository.insertFavoriteGame(gameLiveData.value?.data!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

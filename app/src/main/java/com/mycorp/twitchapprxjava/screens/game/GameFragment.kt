@@ -54,11 +54,11 @@ class GameFragment :
                     followersCount.text =
                         getString(R.string.followers_count, it.size.toString())
                 }
-                bindData(isFavoriteLiveData) {
+                bindData(favoriteResLiveData) {
                     like.setImageDrawable(
                         ContextCompat.getDrawable(
                             requireContext(),
-                            if (it) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+                            it
                         )
                     )
                 }
