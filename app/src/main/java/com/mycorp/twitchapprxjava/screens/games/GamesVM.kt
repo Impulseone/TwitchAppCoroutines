@@ -2,10 +2,14 @@ package com.mycorp.twitchapprxjava.screens.games
 
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
+import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.PagedDataList
+import com.mycorp.twitchapprxjava.common.PagedListState
 import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
+import com.mycorp.twitchapprxjava.models.GameData
+import com.mycorp.twitchapprxjava.models.ListItemData
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
@@ -22,7 +26,7 @@ class GamesVM(
         .setPageSize(PAGED_LIST_PAGE_SIZE)
         .build()
 
-    val pagedGamesLiveData = PagedDataList<GameListItem>()
+    val pagedGamesLiveData = Data<PagedListState<GameListItem>>()
     val launchGameScreenCommand = TCommand<String?>()
 
     fun init() {

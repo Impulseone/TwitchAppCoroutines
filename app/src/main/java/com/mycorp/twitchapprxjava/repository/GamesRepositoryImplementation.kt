@@ -4,6 +4,7 @@ import android.content.Context
 import com.mycorp.twitchapprxjava.api.controllers.NetworkController
 import com.mycorp.twitchapprxjava.database.Storage
 import com.mycorp.twitchapprxjava.models.GameData
+import com.mycorp.twitchapprxjava.models.ListItemData
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 
 class GamesRepositoryImplementation(
@@ -17,7 +18,7 @@ class GamesRepositoryImplementation(
         }
 
     override fun getGamesData() = storage.getGamesData().map {
-        GameListItem(context, GameData.fromEntity(it))
+        ListItemData(it.id, GameListItem(context, GameData.fromEntity(it)))
     }
 
     override fun getGameDataById(id: String) =

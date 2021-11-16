@@ -2,6 +2,7 @@ package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.content.Context
 import androidx.paging.PositionalDataSource
+import com.mycorp.twitchapprxjava.models.ListItemData
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import io.reactivex.Observable.fromIterable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,10 +16,10 @@ class TopGamesResponseSource(
     private val compositeDisposable: CompositeDisposable,
     private val throwableStateSubject: PublishSubject<Throwable>,
     private val gamesRepository: GamesRepository
-) : PositionalDataSource<GameListItem>() {
+) : PositionalDataSource<ListItemData<GameListItem>>() {
     override fun loadInitial(
         params: LoadInitialParams,
-        callback: LoadInitialCallback<GameListItem>
+        callback: LoadInitialCallback<ListItemData<GameListItem>>
     ) {
         compositeDisposable.add(
             gamesRepository.fetchGamesDataList(
@@ -28,7 +29,7 @@ class TopGamesResponseSource(
                 .subscribe({
                     callback.onResult(
                         it.map { game ->
-                            GameListItem(context, game)
+                           ListItemData(game.id, GameListItem(context, game))
                         },
                         DEFAULT_START_POSITION
                     )
@@ -43,7 +44,7 @@ class TopGamesResponseSource(
         )
     }
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<GameListItem>) {
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<ListItemData<GameListItem>>) {
         compositeDisposable.add(
             gamesRepository.fetchGamesDataList(
                 limit = params.loadSize,
@@ -51,7 +52,7 @@ class TopGamesResponseSource(
             ).subscribe({
                 callback.onResult(
                     it.map { game ->
-                        GameListItem(context, game)
+                        ListItemData(game.id, GameListItem(context, game))
                     }
                 )
                 gamesRepository.insertGamesData(it)
