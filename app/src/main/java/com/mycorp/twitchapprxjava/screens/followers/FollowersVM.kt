@@ -1,6 +1,5 @@
 package com.mycorp.twitchapprxjava.screens.followers
 
-import androidx.lifecycle.MutableLiveData
 import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.models.FollowerInfo
@@ -26,7 +25,7 @@ class FollowersVM(
     }
 
     override fun getDataFromDb() {
-        getFollowersId()
+        getFollowers()
     }
 
     private fun fetchFollowers() {
@@ -45,30 +44,22 @@ class FollowersVM(
         }
     }
 
-    private fun getFollowersId() {
+    private fun getFollowers() {
         gameId?.let {
             followersRepository.getFollowersIdByGameId(it)
+                .flatMap {
+                    return@flatMap followersRepository.getFollowersByIds(it)
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    getFollowers(it)
+                    followersLiveData.value =
+                        GameDataViewState.success(
+                            data = it.map { ListItemData(it.followerId, it) }
+                        )
                 }, {
                     handleException(it)
                 }).addToSubscription()
         }
-    }
-
-    private fun getFollowers(followersIds: List<String>) {
-        followersRepository.getFollowersByIds(followersIds)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                followersLiveData.value =
-                    GameDataViewState.success(
-                        data = it.map { ListItemData(it.followerId, it) }
-                    )
-            }, {
-                handleException(it)
-            }).addToSubscription()
     }
 }
