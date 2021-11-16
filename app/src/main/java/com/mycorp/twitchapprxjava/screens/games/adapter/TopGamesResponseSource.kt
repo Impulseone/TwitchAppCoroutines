@@ -2,6 +2,7 @@ package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.content.Context
 import androidx.paging.PositionalDataSource
+import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.models.ListItemData
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import io.reactivex.Observable.fromIterable
@@ -29,22 +30,21 @@ class TopGamesResponseSource(
                 .subscribe({
                     callback.onResult(
                         it.map { game ->
-                           ListItemData(game.id, GameListItem(context, game))
+                            ListItemData(game.id, GameListItem(context, game))
                         },
                         DEFAULT_START_POSITION
                     )
-                    gamesRepository.insertGamesData(it)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({}, {})
-                        .dispose()
+                    saveData(it)
                 }, {
                     throwableStateSubject.onNext(it)
                 })
         )
     }
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<ListItemData<GameListItem>>) {
+    override fun loadRange(
+        params: LoadRangeParams,
+        callback: LoadRangeCallback<ListItemData<GameListItem>>
+    ) {
         compositeDisposable.add(
             gamesRepository.fetchGamesDataList(
                 limit = params.loadSize,
@@ -55,14 +55,18 @@ class TopGamesResponseSource(
                         ListItemData(game.id, GameListItem(context, game))
                     }
                 )
-                gamesRepository.insertGamesData(it)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({}, {}).dispose()
+                saveData(it)
             }, {
                 throwableStateSubject.onNext(it)
             })
         )
+    }
+
+    fun saveData(gameDataList:List<GameData>){
+        gamesRepository.insertGamesData(gameDataList)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({}, {}).dispose()
     }
 
     companion object {
