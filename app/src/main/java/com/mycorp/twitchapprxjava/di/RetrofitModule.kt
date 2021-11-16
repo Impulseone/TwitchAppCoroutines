@@ -1,7 +1,7 @@
 package com.mycorp.twitchapprxjava.di
 
 import com.mycorp.twitchapprxjava.BuildConfig
-import com.mycorp.twitchapprxjava.api.ApiService
+import com.mycorp.twitchapprxjava.api.GamesApi
 import com.mycorp.twitchapprxjava.api.interceptors.AuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,5 +26,5 @@ val retrofitModule = module {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
     }
-    single { get<Retrofit>().create(ApiService::class.java) }
+    single { get<Retrofit>().create(GamesApi::class.java) }
 }
