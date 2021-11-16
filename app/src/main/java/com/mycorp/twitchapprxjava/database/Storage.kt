@@ -15,7 +15,7 @@ interface Storage {
     fun getGameDataEntityById(id: String): Single<GameDataEntity>
     fun getFollowersByIds(followerIds: List<String>): Single<List<FollowerInfoEntity>>
     fun getFollowersIdByGameId(gameId: String): Single<List<String>>
-    fun getFavoriteGames(): DataSource.Factory<Int, FavoriteGameDataEntity>
+    fun getFavoriteGames(limit: Int, offset: Int): Single<List<FavoriteGameDataEntity>>
 
     fun insertGamesData(gamesData: List<GameData>): Completable
     fun insertFollowersData(followersData: List<FollowerInfo>, gameId: String): Completable

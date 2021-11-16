@@ -2,7 +2,6 @@ package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.content.Context
 import androidx.paging.DataSource
-import com.mycorp.twitchapprxjava.api.ApiService
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject

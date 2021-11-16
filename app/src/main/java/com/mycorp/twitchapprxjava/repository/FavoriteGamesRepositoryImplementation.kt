@@ -3,13 +3,16 @@ package com.mycorp.twitchapprxjava.repository
 import com.mycorp.twitchapprxjava.database.Storage
 import com.mycorp.twitchapprxjava.models.FavoriteGameData
 import com.mycorp.twitchapprxjava.models.GameData
+import com.mycorp.twitchapprxjava.models.ListItemData
 
 class FavoriteGamesRepositoryImplementation(
     private val storage: Storage
 ) : FavoriteGamesRepository {
-    override fun getFavoriteGames() = storage.getFavoriteGames()
+    override fun getFavoriteGames(limit: Int, offset: Int) = storage.getFavoriteGames(limit, offset)
         .map {
-            FavoriteGameData(it)
+            it.map {
+                ListItemData(it.id, FavoriteGameData(it))
+            }
         }
 
     override fun checkIsFavorite(gameId: String) = storage.checkIsFavorite(gameId)

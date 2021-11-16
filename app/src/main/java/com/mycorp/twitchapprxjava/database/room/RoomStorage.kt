@@ -33,7 +33,7 @@ class RoomStorage(
     override fun getFollowersIdByGameId(gameId: String) =
         gameFollowersDao.getGameFollowersById(gameId).map { it.followersId }
 
-    override fun getFavoriteGames() = favoriteGameDataDao.getAll()
+    override fun getFavoriteGames(limit: Int, offset: Int) = favoriteGameDataDao.getAll(limit, offset)
 
     override fun insertGamesData(gamesData: List<GameData>) =
         gameDataDao.insertAll(gamesData.map { GameDataEntity.fromGameData(it) })
