@@ -28,15 +28,11 @@ class FavoriteGamesVM(
     private fun getGames() {
         val eventPagedList =
             RxPagedListBuilder(favoriteGamesRepository.getFavoriteGames(), pagedListConfig)
-                .setFetchScheduler(Schedulers.io())
                 .buildObservable()
-                .cache()
         eventPagedList
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .distinctUntilChanged()
-            .doOnSubscribe {
-            }.subscribe({
+            .subscribe({
                 gamesLiveData.postValue(
                     GameDataViewState.success(
                         data = it,
