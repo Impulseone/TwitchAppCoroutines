@@ -31,7 +31,6 @@ class GameVM(
         this.gameId = gameId
         getGameData()
         fetchFollowers()
-        checkIsFavorite()
     }
 
     override fun getDataFromDb() {
@@ -39,15 +38,25 @@ class GameVM(
     }
 
     private fun getGameData() {
-        gameId?.let {
-            gamesRepository.getGameDataById(it)
+        gameId?.let { gameId ->
+            gamesRepository.getGameDataById(gameId)
+                .toObservable()
+                .flatMap({
+                    favoriteGamesRepository.checkIsFavorite(gameId).toObservable()
+                }, { gameData: GameData, isFavorite: Int ->
+                    Pair(gameData, isFavorite)
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ gameData ->
-                    gameLiveData.value = GameDataViewState.success(gameData)
-                }, { throwable ->
-                    handleException(throwable)
-                })
+                .subscribe({ result ->
+                    gameLiveData.value = GameDataViewState.success(result.first)
+                    isFavoriteLiveData.value = result.second > 0
+                    favoriteResLiveData.value =
+                        if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+                },
+                    { throwable ->
+                        handleException(throwable)
+                    })
                 .addToSubscription()
         }
     }
@@ -79,24 +88,10 @@ class GameVM(
         }
     }
 
-    private fun checkIsFavorite() {
-        gameId?.let {
-            favoriteGamesRepository.checkIsFavorite(it)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ isFavorite ->
-                    isFavoriteLiveData.value = isFavorite > 0
-                    favoriteResLiveData.value =
-                        if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-                }, { throwable ->
-                    handleException(throwable)
-                }).addToSubscription()
-        }
-    }
-
     fun onLikeClicked() {
         isFavoriteLiveData.value = !isFavoriteLiveData.value!!
-        favoriteResLiveData.value = if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+        favoriteResLiveData.value =
+            if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
         (if (isFavoriteLiveData.value!!) {
             favoriteGamesRepository.insertFavoriteGame(gameLiveData.value?.data!!)
         } else {
@@ -111,7 +106,5 @@ class GameVM(
 
     fun launchFollowerScreen() {
         launchFollowerScreenCommand.value = gameId
-
     }
-
 }
