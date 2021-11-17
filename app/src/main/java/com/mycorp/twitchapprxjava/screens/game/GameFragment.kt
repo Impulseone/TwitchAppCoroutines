@@ -9,16 +9,15 @@ import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.GlideApp
 import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.databinding.FragmentSingleGameDataBinding
 import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
-import com.mycorp.twitchapprxjava.screens.games.GamesFragmentDirections
+import com.mycorp.twitchapprxjava.databinding.FragmentGameBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameFragment :
-    BaseFragment<GameVM>(R.layout.fragment_single_game_data) {
+    BaseFragment<GameVM>(R.layout.fragment_game) {
 
     override val viewModel: GameVM by viewModel()
-    private val binding: FragmentSingleGameDataBinding by viewBinding()
+    private val binding: FragmentGameBinding by viewBinding()
     private val navArgs by navArgs<GameFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,11 +29,13 @@ class GameFragment :
 
     private fun initViews() {
         with(binding) {
-            like.setOnClickListener {
-                viewModel.onLikeClicked(viewModel.singleGameLiveData().value?.data!!)
-            }
-            followersCount.setOnClickListener {
-                viewModel.launchFollowerScreen(viewModel.singleGameLiveData().value?.data?.id!!)
+            with(viewModel) {
+                like.setOnClickListener {
+                    onLikeClicked()
+                }
+                followersCount.setOnClickListener {
+                    launchFollowerScreen()
+                }
             }
         }
     }
@@ -42,38 +43,36 @@ class GameFragment :
     override fun bindVm() {
         super.bindVm()
         with(binding) {
-            bindData(viewModel.singleGameLiveData()) {
-                progressIndicator.isVisible = it.progressIndicatorVisibility
-                contentLayout.isVisible = it.data != null
-                gameName.text = it.data?.name ?: ""
-                GlideApp.with(requireContext()).load(it.data?.logoUrl).into(image)
-            }
-
-            bindData(viewModel.followersIdLiveData()) {
-                followersCount.text =
-                    getString(R.string.followers_count, it.size.toString())
-            }
-
-            bindData(viewModel.favoriteStateLiveData()) {
-                like.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        if (it) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+            with(viewModel) {
+                bindData(gameLiveData) {
+                    progressIndicator.isVisible = it.progressIndicatorVisibility
+                    contentLayout.isVisible = it.data != null
+                    gameName.text = it.data?.name ?: ""
+                    GlideApp.with(requireContext()).load(it.data?.logoUrl).into(image)
+                }
+                bindData(followersIdLiveData) {
+                    followersCount.text =
+                        getString(R.string.scr_game_followersCount, it.size.toString())
+                }
+                bindData(favoriteResLiveData) {
+                    like.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            it
+                        )
                     )
-                )
+                }
+                bindCommand(launchFollowerScreenCommand) {
+                    if (it != null) {
+                        findNavController().navigate(
+                            GameFragmentDirections.actionGameFragmentToFollowersFragment(
+                                it
+                            )
+                        )
+                    }
+                }
             }
-            viewModel.launchFollowerScreenCommand.observe(viewLifecycleOwner, {
-                navigateToFollowersFragment(viewModel.singleGameLiveData().value?.data?.id!!)
-            })
         }
-    }
-
-    private fun navigateToFollowersFragment(gameId: String) {
-        findNavController().navigate(
-            GameFragmentDirections.actionGameFragmentToFollowersFragment(
-                gameId
-            )
-        )
     }
 
 }

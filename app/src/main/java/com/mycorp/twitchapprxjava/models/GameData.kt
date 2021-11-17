@@ -1,9 +1,7 @@
-package com.mycorp.twitchapprxjava.database.model
+package com.mycorp.twitchapprxjava.models
 
 import android.os.Parcelable
-import com.mycorp.twitchapprxjava.database.room.entities.FavoriteGameDataEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity
-import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

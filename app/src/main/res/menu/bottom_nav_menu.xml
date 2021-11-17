@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <item android:id="@+id/gamesFragment"
-        android:title="@string/all_bottom_ic_text"
+        android:title="@string/scr_bottom_nav_all"
         app:showAsAction="always"
         android:orderInCategory="1"
         android:icon="@drawable/ic_games_list"/>
 
     <item android:id="@+id/favoriteGamesFragment"
-        android:title="@string/favorite_bottom_nav_text"
+        android:title="@string/scr_bottom_nav_favorite"
         app:showAsAction="ifRoom"
         android:orderInCategory="2"
         android:icon="@drawable/ic_favorite_filled"/>

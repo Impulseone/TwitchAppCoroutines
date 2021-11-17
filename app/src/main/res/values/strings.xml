@@ -1,18 +1,20 @@
 <resources>
     <string name="app_name">TwitchAppRxJava</string>
 
-    <string name="rate_app">Оценить приложение</string>
+    <string name="scr_games_rate_app_btn">Оценить приложение</string>
 
-    <string name="write_report">Напишите отзыв…</string>
-    <string name="send_report">отправить отзыв</string>
-    <string name="back">назад</string>
+    <string name="scr_rating_write_report_btn">Напишите отзыв…</string>
+    <string name="scr_rating_send_report_btn">отправить отзыв</string>
+    <string name="scr_rating_back_btn">назад</string>
+    <string name="scr_rating_toast_text">Rating: %1$s</string>
 
-    <string name="game_name">Game: %1$s</string>
-    <string name="channels">Channels: %1$s</string>
-    <string name="watchers">Watchers: %1$s</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="followers_count">followers count: %1$s</string>
-    <string name="game_item_fragment">game_item_fragment</string>
-    <string name="all_bottom_ic_text">All</string>
-    <string name="favorite_bottom_nav_text">Favorite</string>
+    <string name="scr_favorite_game_view_holder_gameName">Game: %1$s</string>
+
+    <string name="scr_favorite_game_list_item_gameName">Channels: %1$s</string>
+    <string name="scr_favorite_game_list_item_watchersCount">Watchers: %1$s</string>
+
+    <string name="scr_game_followersCount">followers count: %1$s</string>
+
+    <string name="scr_bottom_nav_all">All</string>
+    <string name="scr_bottom_nav_favorite">Favorite</string>
 </resources>

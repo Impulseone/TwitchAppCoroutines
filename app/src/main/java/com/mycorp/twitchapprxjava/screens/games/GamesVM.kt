@@ -2,16 +2,18 @@ package com.mycorp.twitchapprxjava.screens.games
 
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
+import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.PagedDataList
+import com.mycorp.twitchapprxjava.common.PagedListState
 import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
+import com.mycorp.twitchapprxjava.models.GameData
+import com.mycorp.twitchapprxjava.models.ListItemData
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class GamesVM(
@@ -24,16 +26,15 @@ class GamesVM(
         .setPageSize(PAGED_LIST_PAGE_SIZE)
         .build()
 
-    val pagedGamesLiveData = PagedDataList<GameListItem>()
-    val launchGameScreenCommand = TCommand<Any>()
+    val pagedGamesLiveData = Data<PagedListState<GameListItem>>()
+    val launchGameScreenCommand = TCommand<String?>()
 
     fun init() {
         topGamesSourceFactory.getThrowableSubject()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                showToast(it.message!!)
-                getGamesFromDb()
+                handleException(it)
             }.addToSubscription()
 
         RxPagedListBuilder(topGamesSourceFactory, pagedListConfig)
@@ -44,12 +45,17 @@ class GamesVM(
             .addToSubscription()
     }
 
-    fun gameItemClicked(position: Int) {
-        launchGameScreenCommand.value = position
+    override fun getDataFromDb() {
+        getGames()
     }
 
-    private fun getGamesFromDb() {
-        val dataSourceFactory = gamesRepository.getGamesDataFromDb()
+    fun gameItemClicked(position: Int) {
+        val id = pagedGamesLiveData.value?.data?.get(position)?.id
+        launchGameScreenCommand.value = id
+    }
+
+    private fun getGames() {
+        val dataSourceFactory = gamesRepository.getGamesData()
         RxPagedListBuilder(dataSourceFactory, pagedListConfig)
             .buildObservable()
             .subscribe({
@@ -58,7 +64,7 @@ class GamesVM(
                 pagedGamesLiveData.postValue(
                     GameDataViewState.error()
                 )
-                handleException(it as Exception)
+                handleException(it)
             }).addToSubscription()
     }
 

@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.database.room
 
 import com.mycorp.twitchapprxjava.database.Storage
-import com.mycorp.twitchapprxjava.database.model.FollowerInfo
-import com.mycorp.twitchapprxjava.database.model.GameData
+import com.mycorp.twitchapprxjava.models.FollowerInfo
+import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.database.room.dao.FavoriteGameDataDao
 import com.mycorp.twitchapprxjava.database.room.dao.FollowersDao
 import com.mycorp.twitchapprxjava.database.room.dao.GameDataDao
@@ -12,7 +12,6 @@ import com.mycorp.twitchapprxjava.database.room.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity
 import com.mycorp.twitchapprxjava.database.room.entities.GameFollowersEntity
 import io.reactivex.Completable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -24,17 +23,17 @@ class RoomStorage(
 ) :
     Storage {
 
-    override fun getGamesDataFromDb() = gameDataDao.getAllGames()
+    override fun getGamesData() = gameDataDao.getAllGames()
 
     override fun getGameDataEntityById(id: String) = gameDataDao.getGameById(id)
 
-    override fun getFollowersFromDbByIds(followerIds: List<String>) =
+    override fun getFollowersByIds(followerIds: List<String>) =
         followersDao.getByIds(followerIds)
 
-    override fun getFollowersIdFromDbByGameId(gameId: String) =
+    override fun getFollowersIdByGameId(gameId: String) =
         gameFollowersDao.getGameFollowersById(gameId).map { it.followersId }
 
-    override fun getFavoriteGamesFromDb() = favoriteGameDataDao.getAll()
+    override fun getFavoriteGames(limit: Int, offset: Int) = favoriteGameDataDao.getAll(limit, offset)
 
     override fun insertGamesData(gamesData: List<GameData>) =
         gameDataDao.insertAll(gamesData.map { GameDataEntity.fromGameData(it) })

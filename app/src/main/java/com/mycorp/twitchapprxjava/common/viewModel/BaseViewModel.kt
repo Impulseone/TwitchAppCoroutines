@@ -3,10 +3,11 @@ package com.mycorp.twitchapprxjava.common.viewModel
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.mycorp.twitchapprxjava.database.model.topGamesResponse.ConvertDtoException
+import com.mycorp.twitchapprxjava.api.dto.topGamesResponse.ConvertDtoException
 import com.mycorp.twitchapprxjava.common.helpers.SingleLiveEvent
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.net.UnknownHostException
 
 abstract class BaseViewModel : ViewModel() {
 
@@ -18,16 +19,23 @@ abstract class BaseViewModel : ViewModel() {
         showToast.value = text to length
     }
 
-    fun handleException(e: Throwable) {
-        when (e) {
+    fun handleException(t: Throwable) {
+        when (t) {
             is ConvertDtoException -> run {
-                Log.e("Dto", e.message.toString())
+                Log.e("Dto", t.message.toString())
+            }
+            is UnknownHostException -> run {
+                Log.e("UnknownHostException", t.message.toString())
+                showToast("Подключение к интернету отсутствует")
+                getDataFromDb()
             }
             else -> {
-                Log.e("Error", e.message.toString())
+                Log.e("Error", t.message.toString())
             }
         }
     }
+
+    open fun getDataFromDb(){}
 
     protected fun Disposable.addToSubscription() { disposables.add(this) }
 

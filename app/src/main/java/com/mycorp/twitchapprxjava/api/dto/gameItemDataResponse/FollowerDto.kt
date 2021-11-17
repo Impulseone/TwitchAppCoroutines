@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.database.model.gameItemDataResponse
+package com.mycorp.twitchapprxjava.api.dto.gameItemDataResponse
 
 data class FollowerDto(
     val created_at: String? = null,
