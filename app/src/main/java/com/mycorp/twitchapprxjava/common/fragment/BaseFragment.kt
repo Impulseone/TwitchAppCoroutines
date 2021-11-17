@@ -32,7 +32,7 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
         })
     }
 
-    fun closeApp() {
+    private fun closeApp() {
         with(requireActivity()) {
             onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
                 finish()

@@ -10,8 +10,8 @@ class FavoriteGamesRepositoryImplementation(
 ) : FavoriteGamesRepository {
     override fun getFavoriteGames(limit: Int, offset: Int) = favoriteGamesStorage.getFavoriteGames(limit, offset)
         .map {
-            it.map {
-                ListItemData(it.id, FavoriteGameData(it))
+            it.map { entity ->
+                ListItemData(entity.id, FavoriteGameData(entity))
             }
         }
 

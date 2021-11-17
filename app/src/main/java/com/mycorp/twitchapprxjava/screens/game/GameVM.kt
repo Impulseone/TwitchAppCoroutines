@@ -43,10 +43,10 @@ class GameVM(
             gamesRepository.getGameDataById(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    gameLiveData.value = GameDataViewState.success(it)
-                }, {
-                    handleException(it)
+                .subscribe({ gameData ->
+                    gameLiveData.value = GameDataViewState.success(gameData)
+                }, { throwable ->
+                    handleException(throwable)
                 })
                 .addToSubscription()
         }
@@ -57,12 +57,12 @@ class GameVM(
             followersRepository.fetchFollowers(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    followersIdLiveData.value = it.map {
-                        it.followerId
+                .subscribe({ list ->
+                    followersIdLiveData.value = list.map { followerInfo ->
+                        followerInfo.followerId
                     }
-                }, {
-                    handleException(it)
+                }, { throwable ->
+                    handleException(throwable)
                 }).addToSubscription()
         }
     }
@@ -71,10 +71,10 @@ class GameVM(
         gameId?.let {
             followersRepository.getFollowersIdByGameId(it)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe({
-                    followersIdLiveData.value = it
-                }, {
-                    handleException(it as Exception)
+                .observeOn(AndroidSchedulers.mainThread()).subscribe({ list ->
+                    followersIdLiveData.value = list
+                }, { throwable ->
+                    handleException(throwable as Exception)
                 }).addToSubscription()
         }
     }
@@ -84,12 +84,12 @@ class GameVM(
             favoriteGamesRepository.checkIsFavorite(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    isFavoriteLiveData.value = it > 0
+                .subscribe({ isFavorite ->
+                    isFavoriteLiveData.value = isFavorite > 0
                     favoriteResLiveData.value =
                         if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-                }, {
-                    handleException(it)
+                }, { throwable ->
+                    handleException(throwable)
                 }).addToSubscription()
         }
     }

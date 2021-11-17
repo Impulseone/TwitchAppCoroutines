@@ -33,13 +33,13 @@ class FollowersVM(
             followersRepository.fetchFollowers(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .subscribe({ list ->
                     followersLiveData.value =
                         GameDataViewState.success(
-                            data = it.map { ListItemData(it.followerId, it) }
+                            data = list.map { followerInfo -> ListItemData(followerInfo.followerId, followerInfo) }
                         )
-                }, {
-                    handleException(it)
+                }, { throwable ->
+                    handleException(throwable)
                 }).addToSubscription()
         }
     }
@@ -47,18 +47,18 @@ class FollowersVM(
     private fun getFollowers() {
         gameId?.let {
             followersRepository.getFollowersIdByGameId(it)
-                .flatMap {
-                    return@flatMap followersRepository.getFollowersByIds(it)
+                .flatMap { list ->
+                    return@flatMap followersRepository.getFollowersByIds(list)
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+                .subscribe({ list ->
                     followersLiveData.value =
                         GameDataViewState.success(
-                            data = it.map { ListItemData(it.followerId, it) }
+                            data = list.map { followerInfo -> ListItemData(followerInfo.followerId, followerInfo) }
                         )
-                }, {
-                    handleException(it)
+                }, { throwable ->
+                    handleException(throwable)
                 }).addToSubscription()
         }
     }

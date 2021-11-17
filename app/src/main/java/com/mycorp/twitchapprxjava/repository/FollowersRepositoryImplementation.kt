@@ -14,7 +14,7 @@ class FollowersRepositoryImplementation(
 ) : FollowersRepository {
     override fun fetchFollowers(id: String): Single<List<FollowerInfo>> =
         followersController.getGameItemDataFromNetwork(id).map {
-            val followers = it.follows?.map { FollowerInfo.fromFollowerDto(it!!) }
+            val followers = it.follows?.map { followerDto -> FollowerInfo.fromFollowerDto(followerDto!!) }
             if (followers != null) {
                 insertFollowers(followers, id)
                     .subscribeOn(Schedulers.io())
@@ -27,7 +27,7 @@ class FollowersRepositoryImplementation(
 
     override fun getFollowersByIds(followerIds: List<String>) =
         followersStorage.getFollowersByIds(followerIds)
-            .map { it.map { FollowerInfo.fromFollowerInfoEntity(it) } }
+            .map { it.map { entity -> FollowerInfo.fromFollowerInfoEntity(entity) } }
 
     override fun getFollowersIdByGameId(gameId: String): Single<List<String>> {
         return followersStorage.getFollowersIdByGameId(gameId)

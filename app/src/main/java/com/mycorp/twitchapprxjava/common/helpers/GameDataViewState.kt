@@ -6,7 +6,5 @@ data class GameDataViewState<out T>(val progressIndicatorVisibility: Boolean, va
 
         fun <T> error(): GameDataViewState<T> =
             GameDataViewState(progressIndicatorVisibility = false, data = null)
-
-        fun <T> loading(): GameDataViewState<T> = GameDataViewState(progressIndicatorVisibility = true, data = null)
     }
 }
