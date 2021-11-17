@@ -4,7 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.mycorp.twitchapprxjava.api.dto.topGamesResponse.ConvertDtoException
-import com.mycorp.twitchapprxjava.common.helpers.SingleLiveEvent
+import com.mycorp.twitchapprxjava.common.TCommand
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.net.UnknownHostException
@@ -13,7 +13,8 @@ abstract class BaseViewModel : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
-    val showToast = SingleLiveEvent<Pair<String, Int>>()
+    val showToast = TCommand<Pair<String, Int>>()
+    val openFragmentCommand = TCommand<Any>()
 
     fun showToast(text: String, length: Int = Toast.LENGTH_SHORT) {
         showToast.value = text to length

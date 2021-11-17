@@ -3,7 +3,6 @@ package com.mycorp.twitchapprxjava.screens.game
 import androidx.annotation.DrawableRes
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.common.Data
-import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.models.GameData
@@ -25,7 +24,6 @@ class GameVM(
     val gameLiveData = Data<GameDataViewState<GameData>>()
     val followersIdLiveData = Data<List<String>>()
     val favoriteResLiveData = Data<@DrawableRes Int>()
-    val launchFollowerScreenCommand = TCommand<String?>()
 
     fun init(gameId: String) {
         this.gameId = gameId
@@ -105,6 +103,6 @@ class GameVM(
     }
 
     fun launchFollowerScreen() {
-        launchFollowerScreenCommand.value = gameId
+        openFragmentCommand.value = gameId
     }
 }

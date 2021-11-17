@@ -24,7 +24,6 @@ class GamesVM(
         .build()
 
     val pagedGamesLiveData = Data<PagedListState<GameListItem>>()
-    val launchGameScreenCommand = TCommand<String?>()
 
     fun init() {
         topGamesSourceFactory.getThrowableSubject()
@@ -48,7 +47,7 @@ class GamesVM(
 
     fun gameItemClicked(position: Int) {
         val id = pagedGamesLiveData.value?.data?.get(position)?.id
-        launchGameScreenCommand.value = id
+        openFragmentCommand.value = id
     }
 
     private fun getGames() {

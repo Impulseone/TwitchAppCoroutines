@@ -3,6 +3,7 @@ package com.mycorp.twitchapprxjava.screens.games
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -27,6 +28,22 @@ class GamesFragment : BaseFragment<GamesVM>(R.layout.fragment_games) {
         viewModel.init()
     }
 
+    override fun bindVm() {
+        super.bindVm()
+        bindData(viewModel.pagedGamesLiveData) {
+            binding.progressIndicator.isVisible = it.progressIndicatorVisibility
+            pagedAdapter?.submitList(it.data)
+        }
+    }
+
+    override fun openFragment(params: Any) {
+        findNavController().navigate(
+            GamesFragmentDirections.actionGamesFragmentToGameFragment(
+                params as String
+            )
+        )
+    }
+
     private fun initViews() {
         with(binding) {
             pagedAdapter = PagedGamesAdapter {
@@ -39,23 +56,6 @@ class GamesFragment : BaseFragment<GamesVM>(R.layout.fragment_games) {
             rateButton.setOnClickListener(
                 Navigation.createNavigateOnClickListener(R.id.action_gamesFragment_to_ratingFragment)
             )
-        }
-    }
-
-    override fun bindVm() {
-        super.bindVm()
-        bindData(viewModel.pagedGamesLiveData) {
-            binding.progressIndicator.isVisible = it.progressIndicatorVisibility
-            pagedAdapter?.submitList(it.data)
-        }
-        bindCommand(viewModel.launchGameScreenCommand) {
-            it?.let {
-                findNavController().navigate(
-                    GamesFragmentDirections.actionGamesFragmentToGameFragment(
-                        it
-                    )
-                )
-            }
         }
     }
 }

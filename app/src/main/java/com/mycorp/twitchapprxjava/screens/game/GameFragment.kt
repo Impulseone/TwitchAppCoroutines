@@ -62,17 +62,15 @@ class GameFragment :
                         )
                     )
                 }
-                bindCommand(launchFollowerScreenCommand) {
-                    if (it != null) {
-                        findNavController().navigate(
-                            GameFragmentDirections.actionGameFragmentToFollowersFragment(
-                                it
-                            )
-                        )
-                    }
-                }
             }
         }
     }
 
+    override fun openFragment(params: Any) {
+        findNavController().navigate(
+            GameFragmentDirections.actionGameFragmentToFollowersFragment(
+                params as String
+            )
+        )
+    }
 }

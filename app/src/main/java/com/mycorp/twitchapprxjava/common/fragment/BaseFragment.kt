@@ -25,20 +25,24 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
     }
 
     open fun bindVm() {
-        viewModel.showToast.observe(this, {
-            if (it == null) return@observe
-            val (text, length) = it
-            Toast.makeText(requireContext(), text, length).show()
-        })
-    }
-
-    private fun closeApp() {
-        with(requireActivity()) {
-            onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-                finish()
+        bindData(viewModel.showToast) {
+            if (it != null) {
+                val (text, length) = it
+                Toast.makeText(requireContext(), text, length).show()
             }
         }
+        bindCommand(viewModel.openFragmentCommand) { openFragment(it) }
     }
+
+open fun openFragment(params: Any) {}
+
+private fun closeApp() {
+    with(requireActivity()) {
+        onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            finish()
+        }
+    }
+}
 }
 
 
