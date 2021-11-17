@@ -111,6 +111,7 @@ class GameVM(
 
     fun launchFollowerScreen() {
         launchFollowerScreenCommand.value = gameId
+
     }
 
 }

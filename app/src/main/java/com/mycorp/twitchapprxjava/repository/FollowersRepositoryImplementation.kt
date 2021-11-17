@@ -1,8 +1,7 @@
 package com.mycorp.twitchapprxjava.repository
 
 import com.mycorp.twitchapprxjava.api.controllers.FollowersController
-import com.mycorp.twitchapprxjava.api.controllers.GamesController
-import com.mycorp.twitchapprxjava.database.Storage
+import com.mycorp.twitchapprxjava.database.storage.FollowersStorage
 import com.mycorp.twitchapprxjava.models.FollowerInfo
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -11,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 
 class FollowersRepositoryImplementation(
     private val followersController: FollowersController,
-    private val storage: Storage
+    private val followersStorage: FollowersStorage
 ) : FollowersRepository {
     override fun fetchFollowers(id: String): Single<List<FollowerInfo>> =
         followersController.getGameItemDataFromNetwork(id).map {
@@ -27,17 +26,17 @@ class FollowersRepositoryImplementation(
         }
 
     override fun getFollowersByIds(followerIds: List<String>) =
-        storage.getFollowersByIds(followerIds)
+        followersStorage.getFollowersByIds(followerIds)
             .map { it.map { FollowerInfo.fromFollowerInfoEntity(it) } }
 
     override fun getFollowersIdByGameId(gameId: String): Single<List<String>> {
-        return storage.getFollowersIdByGameId(gameId)
+        return followersStorage.getFollowersIdByGameId(gameId)
     }
 
     private fun insertFollowers(
         followersList: List<FollowerInfo>,
         gameId: String
     ): Completable {
-        return storage.insertFollowersData(followersList, gameId)
+        return followersStorage.insertFollowersData(followersList, gameId)
     }
 }

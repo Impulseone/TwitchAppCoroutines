@@ -1,6 +1,6 @@
 package com.mycorp.twitchapprxjava.models
 
-import com.mycorp.twitchapprxjava.database.room.entities.FavoriteGameDataEntity
+import com.mycorp.twitchapprxjava.database.entities.FavoriteGameDataEntity
 
 class FavoriteGameData(
     val id: String,
