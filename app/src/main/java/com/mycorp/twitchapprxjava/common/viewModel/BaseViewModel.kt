@@ -3,7 +3,7 @@ package com.mycorp.twitchapprxjava.common.viewModel
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.mycorp.twitchapprxjava.api.dto.topGamesResponse.ConvertDtoException
+import com.mycorp.twitchapprxjava.api.dto.ConvertDtoException
 import com.mycorp.twitchapprxjava.common.TCommand
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

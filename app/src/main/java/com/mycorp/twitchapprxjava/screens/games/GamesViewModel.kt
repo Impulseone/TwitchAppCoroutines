@@ -13,7 +13,7 @@ import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class GamesVM(
+class GamesViewModel(
     private val gamesRepository: GamesRepository,
     private val topGamesSourceFactory: TopGamesSourceFactory,
 ) : BaseViewModel() {

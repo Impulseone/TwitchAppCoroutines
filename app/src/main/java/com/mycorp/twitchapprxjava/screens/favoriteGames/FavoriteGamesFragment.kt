@@ -10,8 +10,8 @@ import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
 import com.mycorp.twitchapprxjava.screens.favoriteGames.adapter.FavoriteGamesListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoriteGamesFragment : BaseFragment<FavoriteGamesVM>(R.layout.fragment_favorite_games) {
-    override val viewModel: FavoriteGamesVM by viewModel()
+class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.fragment_favorite_games) {
+    override val viewModel: FavoriteGamesViewModel by viewModel()
     private val binding: FragmentFavoriteGamesBinding by viewBinding()
     private var favoriteGamesListAdapter: FavoriteGamesListAdapter? = null
 

@@ -14,7 +14,7 @@ class GamesRepositoryImplementation(
 ) : GamesRepository {
     override fun fetchGamesDataList(limit: Int, offset: Int) =
         gamesController.getDataFromNetwork(limit, offset).map {
-            it.toListOfGameData()
+            it.toModel()
         }
 
     override fun getGamesData() = gamesStorage.getGamesData().map {

@@ -14,9 +14,9 @@ import com.mycorp.twitchapprxjava.databinding.FragmentGameBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameFragment :
-    BaseFragment<GameVM>(R.layout.fragment_game) {
+    BaseFragment<GameViewModel>(R.layout.fragment_game) {
 
-    override val viewModel: GameVM by viewModel()
+    override val viewModel: GameViewModel by viewModel()
     private val binding: FragmentGameBinding by viewBinding()
     private val navArgs by navArgs<GameFragmentArgs>()
 

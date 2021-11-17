@@ -12,7 +12,7 @@ import com.mycorp.twitchapprxjava.repository.GamesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class GameVM(
+class GameViewModel(
     private val followersRepository: FollowersRepository,
     private val gamesRepository: GamesRepository,
     private val favoriteGamesRepository: FavoriteGamesRepository

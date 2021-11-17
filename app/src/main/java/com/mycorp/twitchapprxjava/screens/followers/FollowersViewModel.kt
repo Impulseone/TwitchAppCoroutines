@@ -9,7 +9,7 @@ import com.mycorp.twitchapprxjava.repository.FollowersRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class FollowersVM(
+class FollowersViewModel(
     private val followersRepository: FollowersRepository
 ) : BaseViewModel() {
 
