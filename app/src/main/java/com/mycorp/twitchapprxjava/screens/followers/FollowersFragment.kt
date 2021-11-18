@@ -12,9 +12,9 @@ import com.mycorp.twitchapprxjava.databinding.FragmentFollowersBinding
 import com.mycorp.twitchapprxjava.screens.followers.adapter.FollowersAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FollowersFragment : BaseFragment<FollowersVM>(R.layout.fragment_followers) {
+class FollowersFragment : BaseFragment<FollowersViewModel>(R.layout.fragment_followers) {
 
-    override val viewModel: FollowersVM by viewModel()
+    override val viewModel: FollowersViewModel by viewModel()
     private val binding: FragmentFollowersBinding by viewBinding()
     private var followersAdapter: FollowersAdapter? = null
     private val navArgs by navArgs<FollowersFragmentArgs>()

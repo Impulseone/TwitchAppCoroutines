@@ -2,7 +2,6 @@ package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import com.mycorp.twitchapprxjava.common.helpers.BaseItemCallback
 import com.mycorp.twitchapprxjava.models.ListItemData
 

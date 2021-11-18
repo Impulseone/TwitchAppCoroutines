@@ -1,13 +1,14 @@
 package com.mycorp.twitchapprxjava.api.dto.topGamesResponse
 
 import com.google.gson.annotations.SerializedName
+import com.mycorp.twitchapprxjava.api.dto.ConvertDtoException
 import com.mycorp.twitchapprxjava.models.GameData
 
 class TopGamesResponseDto(
     @field:SerializedName("top")
     val top: List<TopItemDto?>? = null
 ) {
-    fun toListOfGameData(): List<GameData> {
+    fun toModel(): List<GameData> {
         return top?.map {
             GameData(
                 it?.game?.id?.toString() ?: throw ConvertDtoException(),
@@ -19,5 +20,3 @@ class TopGamesResponseDto(
         } ?: listOf()
     }
 }
-
-class ConvertDtoException : Exception("Dto Error converting")

@@ -19,6 +19,7 @@ class App : Application(){
                 repositoriesModule,
                 viewModelModule,
                 pagingModule,
+                usecasesModule
             ))
         }
     }

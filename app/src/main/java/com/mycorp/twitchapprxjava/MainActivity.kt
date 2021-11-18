@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavigationView,
             navController
         )
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item: MenuItem ->
+        binding.bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
             navHostFragment.navController.navigate(item.itemId)
             true
         }

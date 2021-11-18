@@ -3,8 +3,10 @@ package com.mycorp.twitchapprxjava.common.viewModel
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.mycorp.twitchapprxjava.api.dto.topGamesResponse.ConvertDtoException
-import com.mycorp.twitchapprxjava.common.helpers.SingleLiveEvent
+import androidx.navigation.NavDirections
+import com.mycorp.twitchapprxjava.api.dto.ConvertDtoException
+import com.mycorp.twitchapprxjava.common.TCommand
+import com.mycorp.twitchapprxjava.common.helpers.TAG
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.net.UnknownHostException
@@ -13,24 +15,30 @@ abstract class BaseViewModel : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
-    val showToast = SingleLiveEvent<Pair<String, Int>>()
+    val showToast = TCommand<Pair<String, Int>>()
+    val openScreenCommand = TCommand<NavDirections>()
+    val connectionExceptionCommand = TCommand<Boolean>()
 
     fun showToast(text: String, length: Int = Toast.LENGTH_SHORT) {
         showToast.value = text to length
     }
 
+    fun navigateTo(directions: NavDirections) {
+        openScreenCommand.value = directions
+    }
+
     fun handleException(t: Throwable) {
         when (t) {
             is ConvertDtoException -> run {
-                Log.e("Dto", t.message.toString())
+                Log.e(TAG, t.message.toString())
             }
             is UnknownHostException -> run {
-                Log.e("UnknownHostException", t.message.toString())
-                showToast("Подключение к интернету отсутствует")
+                Log.e(TAG, t.message.toString())
+                connectionExceptionCommand.value = true
                 getDataFromDb()
             }
             else -> {
-                Log.e("Error", t.message.toString())
+                Log.e(TAG, t.message.toString())
             }
         }
     }

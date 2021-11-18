@@ -1,9 +1,9 @@
-package com.mycorp.twitchapprxjava.database.room.dao
+package com.mycorp.twitchapprxjava.database.dao
 
 import androidx.paging.DataSource
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import com.mycorp.twitchapprxjava.database.room.entities.GameDataEntity
+import com.mycorp.twitchapprxjava.database.entities.GameDataEntity
 import io.reactivex.Completable
 import io.reactivex.Single
 

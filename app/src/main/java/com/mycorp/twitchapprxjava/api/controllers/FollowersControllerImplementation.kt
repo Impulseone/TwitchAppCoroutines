@@ -1,8 +1,6 @@
 package com.mycorp.twitchapprxjava.api.controllers
 
 import com.mycorp.twitchapprxjava.api.FollowersApi
-import com.mycorp.twitchapprxjava.api.dto.gameItemDataResponse.GameItemDataDto
-import io.reactivex.Single
 
 class FollowersControllerImplementation(private val followersApi: FollowersApi) :
     FollowersController {

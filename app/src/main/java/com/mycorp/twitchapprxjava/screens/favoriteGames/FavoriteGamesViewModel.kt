@@ -11,7 +11,7 @@ import com.mycorp.twitchapprxjava.screens.favoriteGames.adapter.FavoriteGamesSou
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class FavoriteGamesVM(
+class FavoriteGamesViewModel(
     private val favoriteGamesSourceFactory: FavoriteGamesSourceFactory
 ) : BaseViewModel() {
 

@@ -5,12 +5,10 @@ import androidx.paging.PositionalDataSource
 import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.models.ListItemData
 import com.mycorp.twitchapprxjava.repository.GamesRepository
-import io.reactivex.Observable.fromIterable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import java.util.*
 
 class TopGamesResponseSource(
     private val context: Context,
@@ -62,7 +60,7 @@ class TopGamesResponseSource(
         )
     }
 
-    fun saveData(gameDataList:List<GameData>){
+    private fun saveData(gameDataList:List<GameData>){
         gamesRepository.insertGamesData(gameDataList)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

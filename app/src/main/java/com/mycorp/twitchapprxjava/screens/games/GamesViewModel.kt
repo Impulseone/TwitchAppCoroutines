@@ -3,20 +3,16 @@ package com.mycorp.twitchapprxjava.screens.games
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.Data
-import com.mycorp.twitchapprxjava.common.PagedDataList
 import com.mycorp.twitchapprxjava.common.PagedListState
-import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.models.GameData
-import com.mycorp.twitchapprxjava.models.ListItemData
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class GamesVM(
+class GamesViewModel(
     private val gamesRepository: GamesRepository,
     private val topGamesSourceFactory: TopGamesSourceFactory,
 ) : BaseViewModel() {
@@ -27,7 +23,6 @@ class GamesVM(
         .build()
 
     val pagedGamesLiveData = Data<PagedListState<GameListItem>>()
-    val launchGameScreenCommand = TCommand<String?>()
 
     fun init() {
         topGamesSourceFactory.getThrowableSubject()
@@ -50,8 +45,9 @@ class GamesVM(
     }
 
     fun gameItemClicked(position: Int) {
-        val id = pagedGamesLiveData.value?.data?.get(position)?.id
-        launchGameScreenCommand.value = id
+        pagedGamesLiveData.value?.data?.get(position)?.id?.let {
+            navigateTo(GamesFragmentDirections.actionGamesFragmentToGameFragment(it))
+        }
     }
 
     private fun getGames() {

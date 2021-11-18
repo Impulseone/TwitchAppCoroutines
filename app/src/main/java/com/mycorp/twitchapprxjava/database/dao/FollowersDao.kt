@@ -1,10 +1,10 @@
-package com.mycorp.twitchapprxjava.database.room.dao
+package com.mycorp.twitchapprxjava.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.mycorp.twitchapprxjava.database.room.entities.FollowerInfoEntity
+import com.mycorp.twitchapprxjava.database.entities.FollowerInfoEntity
 import io.reactivex.Completable
 import io.reactivex.Single
 

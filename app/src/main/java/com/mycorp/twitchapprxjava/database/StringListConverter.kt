@@ -1,4 +1,4 @@
-package com.mycorp.twitchapprxjava.database.room
+package com.mycorp.twitchapprxjava.database
 
 import androidx.room.TypeConverter
 
