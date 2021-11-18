@@ -9,14 +9,15 @@ import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
 import com.mycorp.twitchapprxjava.repository.FollowersRepository
 import com.mycorp.twitchapprxjava.repository.GamesRepository
+import com.mycorp.twitchapprxjava.usecases.GetGameDataUseCase
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class GameViewModel(
     private val followersRepository: FollowersRepository,
-    private val gamesRepository: GamesRepository,
-    private val favoriteGamesRepository: FavoriteGamesRepository
+    private val favoriteGamesRepository: FavoriteGamesRepository,
+    private val getGameDataUseCase: GetGameDataUseCase
 ) : BaseViewModel() {
 
     private var gameId: String? = null
@@ -36,22 +37,8 @@ class GameViewModel(
     }
 
     private fun getGameData() {
-        Single.just(gameId)
-            .flatMap { id ->
-                gamesRepository.getGameDataById(id)
-                    .flatMap { data ->
-                        favoriteGamesRepository.checkIsFavorite(id).map {
-                            it to data
-                        }
-                    }
-                    .flatMap { (isFavorite, gameData) ->
-                        followersRepository.fetchFollowers(id).map { list ->
-                            Triple(isFavorite, gameData, list.map { followerInfo ->
-                                followerInfo.followerId
-                            }.size.toString())
-                        }
-                    }
-            }
+        getGameDataUseCase
+            .getGameData(gameId!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ (isFavorite, gameData, followersCount) ->
