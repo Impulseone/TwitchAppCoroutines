@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.common.extensions.setIgnoreLastDivider
@@ -33,14 +32,6 @@ class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games) {
             binding.progressIndicator.isVisible = it.progressIndicatorVisibility
             pagedAdapter?.submitList(it.data)
         }
-    }
-
-    override fun openFragment(params: Any) {
-        findNavController().navigate(
-            GamesFragmentDirections.actionGamesFragmentToGameFragment(
-                params as String
-            )
-        )
     }
 
     private fun initViews() {

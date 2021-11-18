@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.GlideApp
@@ -49,9 +48,9 @@ class GameFragment :
                     gameName.text = it.data?.name ?: ""
                     GlideApp.with(requireContext()).load(it.data?.logoUrl).into(image)
                 }
-                bindData(followersIdLiveData) {
+                bindData(followersCountData) {
                     followersCount.text =
-                        getString(R.string.scr_game_layout_followers_tv, it.size.toString())
+                        getString(R.string.scr_game_layout_followers_tv, it)
                 }
                 bindData(favoriteResLiveData) {
                     like.setImageDrawable(
@@ -63,13 +62,5 @@ class GameFragment :
                 }
             }
         }
-    }
-
-    override fun openFragment(params: Any) {
-        findNavController().navigate(
-            GameFragmentDirections.actionGameFragmentToFollowersFragment(
-                params as String
-            )
-        )
     }
 }

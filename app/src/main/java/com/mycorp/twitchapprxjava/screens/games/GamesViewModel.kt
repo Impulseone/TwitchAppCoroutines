@@ -4,7 +4,6 @@ import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.PagedListState
-import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.repository.GamesRepository
@@ -46,8 +45,9 @@ class GamesViewModel(
     }
 
     fun gameItemClicked(position: Int) {
-        val id = pagedGamesLiveData.value?.data?.get(position)?.id
-        openFragmentCommand.value = id
+        pagedGamesLiveData.value?.data?.get(position)?.id?.let {
+            navigateTo(GamesFragmentDirections.actionGamesFragmentToGameFragment(it))
+        }
     }
 
     private fun getGames() {

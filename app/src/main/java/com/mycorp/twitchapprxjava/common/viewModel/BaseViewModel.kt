@@ -3,6 +3,7 @@ package com.mycorp.twitchapprxjava.common.viewModel
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavDirections
 import com.mycorp.twitchapprxjava.api.dto.ConvertDtoException
 import com.mycorp.twitchapprxjava.common.TCommand
 import com.mycorp.twitchapprxjava.common.helpers.TAG
@@ -15,11 +16,15 @@ abstract class BaseViewModel : ViewModel() {
     private val disposables = CompositeDisposable()
 
     val showToast = TCommand<Pair<String, Int>>()
-    val openFragmentCommand = TCommand<Any>()
+    val openScreenCommand = TCommand<NavDirections>()
     val connectionExceptionCommand = TCommand<Boolean>()
 
     fun showToast(text: String, length: Int = Toast.LENGTH_SHORT) {
         showToast.value = text to length
+    }
+
+    fun navigateTo(directions: NavDirections) {
+        openScreenCommand.value = directions
     }
 
     fun handleException(t: Throwable) {

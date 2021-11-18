@@ -9,6 +9,7 @@ import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
 import com.mycorp.twitchapprxjava.repository.FollowersRepository
 import com.mycorp.twitchapprxjava.repository.GamesRepository
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -22,13 +23,12 @@ class GameViewModel(
     private val isFavoriteLiveData = Data<Boolean>()
 
     val gameLiveData = Data<GameDataViewState<GameData>>()
-    val followersIdLiveData = Data<List<String>>()
+    val followersCountData = Data<String>()
     val favoriteResLiveData = Data<@DrawableRes Int>()
 
     fun init(gameId: String) {
         this.gameId = gameId
         getGameData()
-        fetchFollowers()
     }
 
     override fun getDataFromDb() {
@@ -36,42 +36,34 @@ class GameViewModel(
     }
 
     private fun getGameData() {
-        gameId?.let { gameId ->
-            gamesRepository.getGameDataById(gameId)
-                .toObservable()
-                .flatMap({
-                    favoriteGamesRepository.checkIsFavorite(gameId).toObservable()
-                }, { gameData: GameData, isFavorite: Int ->
-                    Pair(gameData, isFavorite)
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result ->
-                    gameLiveData.value = GameDataViewState.success(result.first)
-                    isFavoriteLiveData.value = result.second > 0
-                    favoriteResLiveData.value =
-                        if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-                },
-                    { throwable ->
-                        handleException(throwable)
-                    })
-                .addToSubscription()
-        }
-    }
-
-    private fun fetchFollowers() {
-        gameId?.let {
-            followersRepository.fetchFollowers(it)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ list ->
-                    followersIdLiveData.value = list.map { followerInfo ->
-                        followerInfo.followerId
+        Single.just(gameId)
+            .flatMap { id ->
+                gamesRepository.getGameDataById(id)
+                    .flatMap { data ->
+                        favoriteGamesRepository.checkIsFavorite(id).map {
+                            it to data
+                        }
                     }
-                }, { throwable ->
-                    handleException(throwable)
-                }).addToSubscription()
-        }
+                    .flatMap { (isFavorite, gameData) ->
+                        followersRepository.fetchFollowers(id).map { list ->
+                            Triple(isFavorite, gameData, list.map { followerInfo ->
+                                followerInfo.followerId
+                            }.size.toString())
+                        }
+                    }
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ (isFavorite, gameData, followersCount) ->
+                gameLiveData.value = GameDataViewState.success(gameData)
+                isFavoriteLiveData.value = isFavorite > 0
+                favoriteResLiveData.value =
+                    if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+                followersCountData.value = followersCount
+            }, { throwable ->
+                handleException(throwable)
+            })
+            .addToSubscription()
     }
 
     private fun getFollowers() {
@@ -79,7 +71,7 @@ class GameViewModel(
             followersRepository.getFollowersIdByGameId(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe({ list ->
-                    followersIdLiveData.value = list
+                    followersCountData.value = list.size.toString()
                 }, { throwable ->
                     handleException(throwable as Exception)
                 }).addToSubscription()
@@ -99,10 +91,9 @@ class GameViewModel(
             .subscribe({}, {
                 handleException(it)
             }).addToSubscription()
-
     }
 
     fun launchFollowerScreen() {
-        openFragmentCommand.value = gameId
+        navigateTo(GameFragmentDirections.actionGameFragmentToFollowersFragment(gameId!!))
     }
 }
