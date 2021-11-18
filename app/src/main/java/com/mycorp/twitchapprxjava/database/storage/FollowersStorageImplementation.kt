@@ -26,7 +26,7 @@ class FollowersStorageImplementation(
         gameFollowersDao.insert(GameFollowersEntity(followersData, gameId))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribe({}, {}).dispose()
         return followersDao.insertAll(followersData.map { FollowerInfoEntity.fromFollowerInfo(it) })
     }
 }

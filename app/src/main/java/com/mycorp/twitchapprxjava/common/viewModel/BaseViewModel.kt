@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.mycorp.twitchapprxjava.api.dto.ConvertDtoException
 import com.mycorp.twitchapprxjava.common.TCommand
+import com.mycorp.twitchapprxjava.common.helpers.TAG
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.net.UnknownHostException
@@ -24,15 +25,15 @@ abstract class BaseViewModel : ViewModel() {
     fun handleException(t: Throwable) {
         when (t) {
             is ConvertDtoException -> run {
-                Log.e("Dto", t.message.toString())
+                Log.e(TAG, t.message.toString())
             }
             is UnknownHostException -> run {
-                Log.e("UnknownHostException", t.message.toString())
+                Log.e(TAG, t.message.toString())
                 connectionExceptionCommand.value = true
                 getDataFromDb()
             }
             else -> {
-                Log.e("Error", t.message.toString())
+                Log.e(TAG, t.message.toString())
             }
         }
     }

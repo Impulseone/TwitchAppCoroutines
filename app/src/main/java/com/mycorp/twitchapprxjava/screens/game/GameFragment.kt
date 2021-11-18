@@ -46,7 +46,6 @@ class GameFragment :
             with(viewModel) {
                 bindData(gameLiveData) {
                     progressIndicator.isVisible = it.progressIndicatorVisibility
-//                    contentLayout.isVisible = it.data != null
                     gameName.text = it.data?.name ?: ""
                     GlideApp.with(requireContext()).load(it.data?.logoUrl).into(image)
                 }
