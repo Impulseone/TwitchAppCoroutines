@@ -46,13 +46,13 @@ class GameFragment :
             with(viewModel) {
                 bindData(gameLiveData) {
                     progressIndicator.isVisible = it.progressIndicatorVisibility
-                    contentLayout.isVisible = it.data != null
+//                    contentLayout.isVisible = it.data != null
                     gameName.text = it.data?.name ?: ""
                     GlideApp.with(requireContext()).load(it.data?.logoUrl).into(image)
                 }
                 bindData(followersIdLiveData) {
                     followersCount.text =
-                        getString(R.string.scr_game_followersCount, it.size.toString())
+                        getString(R.string.scr_game_layout_followers_tv, it.size.toString())
                 }
                 bindData(favoriteResLiveData) {
                     like.setImageDrawable(
