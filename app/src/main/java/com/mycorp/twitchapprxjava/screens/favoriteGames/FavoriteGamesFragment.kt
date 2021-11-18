@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.twitchapprxjava.R
+import com.mycorp.twitchapprxjava.common.extensions.setIgnoreLastDivider
 import com.mycorp.twitchapprxjava.databinding.FragmentFavoriteGamesBinding
 import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
 import com.mycorp.twitchapprxjava.screens.favoriteGames.adapter.FavoriteGamesListAdapter
@@ -25,9 +26,13 @@ class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.frag
     private fun initViews() {
         with(binding) {
             favoriteGamesListAdapter = FavoriteGamesListAdapter()
-            gamesRv.layoutManager =
-                LinearLayoutManager(context)
-            gamesRv.adapter = favoriteGamesListAdapter
+            gamesRv.apply {
+                setIgnoreLastDivider(R.drawable.shape_game_divider)
+                layoutManager =
+                    LinearLayoutManager(context)
+                adapter = favoriteGamesListAdapter
+            }
+
         }
     }
 
