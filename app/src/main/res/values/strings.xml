@@ -21,4 +21,7 @@
     <string name="scr_bottom_nav_favorite">Favorite</string>
 
 
+    <string name="scr_base_fragment_connection_error">Подключение к интернету отсутствует</string>
+
+
 </resources>

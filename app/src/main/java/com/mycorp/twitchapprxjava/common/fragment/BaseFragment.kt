@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.screens.favoriteGames.FavoriteGamesFragment
 import com.mycorp.twitchapprxjava.screens.games.GamesFragment
@@ -32,17 +33,24 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
             }
         }
         bindCommand(viewModel.openFragmentCommand) { openFragment(it) }
-    }
-
-open fun openFragment(params: Any) {}
-
-private fun closeApp() {
-    with(requireActivity()) {
-        onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            finish()
+        bindCommand(viewModel.connectionExceptionCommand) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.scr_base_fragment_connection_error),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
-}
+
+    open fun openFragment(params: Any) {}
+
+    private fun closeApp() {
+        with(requireActivity()) {
+            onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+                finish()
+            }
+        }
+    }
 }
 
 

@@ -15,6 +15,7 @@ abstract class BaseViewModel : ViewModel() {
 
     val showToast = TCommand<Pair<String, Int>>()
     val openFragmentCommand = TCommand<Any>()
+    val connectionExceptionCommand = TCommand<Boolean>()
 
     fun showToast(text: String, length: Int = Toast.LENGTH_SHORT) {
         showToast.value = text to length
@@ -27,7 +28,7 @@ abstract class BaseViewModel : ViewModel() {
             }
             is UnknownHostException -> run {
                 Log.e("UnknownHostException", t.message.toString())
-                showToast("Подключение к интернету отсутствует")
+                connectionExceptionCommand.value = true
                 getDataFromDb()
             }
             else -> {
