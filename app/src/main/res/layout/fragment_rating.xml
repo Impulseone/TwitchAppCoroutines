@@ -20,16 +20,17 @@
 
     <EditText
         android:id="@+id/reportText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:hint="@string/scr_rating_write_report_btn"
+        android:importantForAutofill="no"
         android:inputType="text"
         android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rating_bar"
-        tools:ignore="TextContrastCheck"
-        tools:layout_editor_absoluteX="20dp"
-        android:importantForAutofill="no" />
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/send_report_btn"

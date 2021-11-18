@@ -13,17 +13,17 @@ class FollowersRepositoryImplementation(
     private val followersStorage: FollowersStorage
 ) : FollowersRepository {
     override fun fetchFollowers(id: String): Single<List<FollowerInfo>> {
-        return followersController.getGameItemDataFromNetwork(id).map {
-            it.follows!!.map { followerDto -> FollowerInfo.fromFollowerDto(followerDto!!) }
-        }.doOnSuccess {
-            if (it != null) {
-                followersStorage.insertFollowersData(it, id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({}, {})
-                    .dispose()
+        return followersController.getGameItemDataFromNetwork(id)
+            .map {
+                it.follows ?: listOf()
             }
-        }
+            .map { list ->
+                list.filterNotNull().map { FollowerInfo.fromFollowerDto(it) }
+            }
+            .flatMap {
+                followersStorage.insertFollowersData(it, id)
+                    .andThen(Single.just(it))
+            }
     }
 
     override fun getFollowersByIds(followerIds: List<String>) =
