@@ -6,18 +6,14 @@ import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.models.GameData
-import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
-import com.mycorp.twitchapprxjava.repository.FollowersRepository
-import com.mycorp.twitchapprxjava.repository.GamesRepository
-import com.mycorp.twitchapprxjava.usecases.GetGameDataUseCase
-import io.reactivex.Single
+import com.mycorp.twitchapprxjava.usecases.FavoriteGamesUseCase
+import com.mycorp.twitchapprxjava.usecases.GameDataUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class GameViewModel(
-    private val followersRepository: FollowersRepository,
-    private val favoriteGamesRepository: FavoriteGamesRepository,
-    private val getGameDataUseCase: GetGameDataUseCase
+    private val gameDataUseCase: GameDataUseCase,
+    private val favoriteGamesUseCase: FavoriteGamesUseCase
 ) : BaseViewModel() {
 
     private var gameId: String? = null
@@ -29,15 +25,32 @@ class GameViewModel(
 
     fun init(gameId: String) {
         this.gameId = gameId
-        getGameData()
+        fetchGameData()
     }
 
     override fun getDataFromDb() {
-        getFollowers()
+        getGameData()
+    }
+
+    private fun fetchGameData() {
+        gameDataUseCase
+            .fetchGameData(gameId!!)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ (isFavorite, gameData, followersCount) ->
+                gameLiveData.value = GameDataViewState.success(gameData)
+                isFavoriteLiveData.value = isFavorite > 0
+                favoriteResLiveData.value =
+                    if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+                followersCountData.value = followersCount
+            }, { throwable ->
+                handleException(throwable)
+            })
+            .addToSubscription()
     }
 
     private fun getGameData() {
-        getGameDataUseCase
+        gameDataUseCase
             .getGameData(gameId!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -53,31 +66,24 @@ class GameViewModel(
             .addToSubscription()
     }
 
-    private fun getFollowers() {
-        gameId?.let {
-            followersRepository.getFollowersIdByGameId(it)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe({ list ->
-                    followersCountData.value = list.size.toString()
-                }, { throwable ->
-                    handleException(throwable as Exception)
-                }).addToSubscription()
-        }
-    }
-
     fun onLikeClicked() {
-        isFavoriteLiveData.value = !isFavoriteLiveData.value!!
-        favoriteResLiveData.value =
-            if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-        (if (isFavoriteLiveData.value!!) {
-            favoriteGamesRepository.insertFavoriteGame(gameLiveData.value?.data!!)
-        } else {
-            favoriteGamesRepository.deleteByGameId(gameId!!)
-        }).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, {
-                handleException(it)
-            }).addToSubscription()
+        try {
+            if (isFavoriteLiveData.value != null) isFavoriteLiveData.value =
+                !isFavoriteLiveData.value!!
+            favoriteResLiveData.value =
+                if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+            (if (isFavoriteLiveData.value!!) {
+                favoriteGamesUseCase.saveGame(gameLiveData.value?.data!!)
+            } else {
+                favoriteGamesUseCase.deleteGameById(gameId!!)
+            }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({}, {
+                    handleException(it)
+                }).addToSubscription()
+        } catch (t: Throwable) {
+            handleException(t)
+        }
     }
 
     fun launchFollowerScreen() {
