@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -25,10 +26,18 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "API_URL", "\"https://api.twitch.tv/\""
+            buildConfigField "String", "ACCEPT_HEADER", "\"Accept\""
+            buildConfigField "String", "CLIENT_ID", "\"Client-ID\""
+            buildConfigField "String", "ACCEPT_HEADER_VALUE", "\"application/vnd.twitchtv.v5+json\""
+            buildConfigField "String", "CLIENT_ID_HEADER_VALUE", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
         }
         release {
             minifyEnabled false
-            buildConfigField "String", "API_URL", "https://api.twitch.tv/"
+            buildConfigField "String", "API_URL", "\"https://api.twitch.tv/\""
+            buildConfigField "String", "ACCEPT_HEADER", "\"Accept\""
+            buildConfigField "String", "CLIENT_ID", "\"Client-ID\""
+            buildConfigField "String", "ACCEPT_HEADER_VALUE", "\"application/vnd.twitchtv.v5+json\""
+            buildConfigField "String", "CLIENT_ID_HEADER_VALUE", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -56,6 +65,7 @@ ext {
     navigation = "2.3.5"
     paging_version = "2.1.2"
     coroutines_version = "1.5.2"
+    ok_http = "4.3.1"
 }
 
 dependencies {
@@ -86,6 +96,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit"
+    implementation "com.squareup.okhttp3:okhttp:$ok_http"
+    implementation "com.squareup.okhttp3:logging-interceptor:$ok_http"
 
     //Room
     implementation "androidx.room:room-ktx:$room"

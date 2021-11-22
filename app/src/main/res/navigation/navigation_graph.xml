@@ -3,45 +3,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/gamesListFragment">
+    app:startDestination="@id/gamesFragment">
 
     <fragment
-        android:id="@+id/gamesListFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.gamesList.GamesListFragment"
+        android:id="@+id/gamesFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.games.GamesFragment"
         android:label="fragment_games_list"
-        tools:layout="@layout/fragment_games_list">
+        tools:layout="@layout/fragment_games">
         <action
-            android:id="@+id/action_gamesListFragment_to_ratingFragment"
+            android:id="@+id/action_gamesFragment_to_ratingFragment"
             app:destination="@id/ratingFragment"
-            app:popUpTo="@id/gamesListFragment" />
+            app:popUpTo="@id/gamesFragment" />
         <action
-            android:id="@+id/action_gamesListFragment_to_gameItemFragment"
-            app:destination="@id/singleGameDataFragment" />
+            android:id="@+id/action_gamesFragment_to_gameFragment"
+            app:destination="@id/gameFragment">
+            <argument
+                android:name="gameId"
+                app:argType="string" />
+        </action>
         <action
-            android:id="@+id/action_gamesListFragment_to_favoriteGamesFragment"
+            android:id="@+id/action_gamesFragment_to_favoriteGamesFragment"
             app:destination="@id/favoriteGamesFragment" />
     </fragment>
     <fragment
         android:id="@+id/ratingFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.RatingFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.rating.RatingFragment"
         android:label="fragment_rating"
-        tools:layout="@layout/fragment_rating" />
-    <fragment
-        android:id="@+id/singleGameDataFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.SingleGameDataFragment"
-        android:label="fragment_game_item"
-        tools:layout="@layout/fragment_single_game_data" >
+        tools:layout="@layout/fragment_rating">
         <action
-            android:id="@+id/action_gameItemFragment_to_followersListFragment"
-            app:destination="@id/followersListFragment" />
+            android:id="@+id/action_ratingFragment_to_gamesFragment"
+            app:destination="@id/gamesFragment" />
     </fragment>
     <fragment
-        android:id="@+id/followersListFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.followersList.FollowersListFragment"
-        android:label="FollowersListFragment" />
+        android:id="@+id/gameFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.game.GameFragment"
+        android:label="fragment_game_item"
+        tools:layout="@layout/fragment_game">
+        <argument
+            android:name="gameId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_gameFragment_to_followersFragment"
+            app:destination="@id/followersFragment">
+            <argument
+                android:name="gameId"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/followersFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.followers.FollowersFragment"
+        android:label="FollowersListFragment">
+        <argument
+            android:name="gameId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteGamesFragment"
-        android:name="com.mycorp.twitchapprxjava.presentation.fragments.favoriteGames.FavoriteGamesFragment"
+        android:name="com.mycorp.twitchapprxjava.screens.favoriteGames.FavoriteGamesFragment"
         android:label="fragment_favorite_games"
         tools:layout="@layout/fragment_favorite_games" />
 </navigation>
