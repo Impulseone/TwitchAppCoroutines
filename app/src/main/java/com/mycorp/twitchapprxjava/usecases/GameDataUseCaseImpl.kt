@@ -5,12 +5,14 @@ import com.mycorp.twitchapprxjava.repository.FollowersRepository
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import io.reactivex.Single
 
-class GetGameDataUseCaseImpl(
+class GameDataUseCaseImpl(
     private val followersRepository: FollowersRepository,
     private val gamesRepository: GamesRepository,
     private val favoriteGamesRepository: FavoriteGamesRepository
-) : GetGameDataUseCase {
-    override fun getGameData(gameId: String) = Single.just(gameId)
+) : GameDataUseCase {
+    override fun getGames() = gamesRepository.getGamesData()
+
+    override fun fetchGameData(gameId: String) = Single.just(gameId)
         .flatMap { id ->
             gamesRepository.getGameDataById(id)
                 .flatMap { data ->
@@ -20,11 +22,23 @@ class GetGameDataUseCaseImpl(
                 }
                 .flatMap { (isFavorite, gameData) ->
                     followersRepository.fetchFollowers(id).map { list ->
-                        Triple(isFavorite, gameData, list.map { followerInfo ->
-                            followerInfo.followerId
-                        }.size.toString())
+                        Triple(isFavorite, gameData, list)
                     }
                 }
         }
 
+    override fun getGameData(gameId: String) = Single.just(gameId)
+        .flatMap { id ->
+            gamesRepository.getGameDataById(id)
+                .flatMap { data ->
+                    favoriteGamesRepository.checkIsFavorite(id).map {
+                        it to data
+                    }
+                }
+                .flatMap { (isFavorite, gameData) ->
+                    followersRepository.getFollowersByGameId(id).map { list ->
+                        Triple(isFavorite, gameData, list)
+                    }
+                }
+        }
 }

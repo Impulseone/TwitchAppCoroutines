@@ -5,12 +5,12 @@ import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.twitchapprxjava.models.FollowerInfo
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.models.ListItemData
-import com.mycorp.twitchapprxjava.repository.FollowersRepository
+import com.mycorp.twitchapprxjava.usecases.GameDataUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class FollowersViewModel(
-    private val followersRepository: FollowersRepository
+    private val gameDataUseCase: GameDataUseCase
 ) : BaseViewModel() {
 
     private var gameId: String? = null
@@ -30,35 +30,34 @@ class FollowersViewModel(
 
     private fun fetchFollowers() {
         gameId?.let {
-            followersRepository.fetchFollowers(it)
+            gameDataUseCase.fetchGameData(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ list ->
-                    followersLiveData.value =
-                        GameDataViewState.success(
-                            data = list.map { followerInfo -> ListItemData(followerInfo.followerId, followerInfo) }
-                        )
-                }, { throwable ->
-                    handleException(throwable)
+                .subscribe({ (_, _, followers) ->
+                    followersLiveData.value = GameDataViewState.success(
+                        data = followers.map { follower ->
+                            ListItemData(follower.followerId, follower)
+                        }
+                    )
+                }, { t ->
+                    handleException(t)
                 }).addToSubscription()
         }
     }
 
     private fun getFollowers() {
         gameId?.let {
-            followersRepository.getFollowersIdByGameId(it)
-                .flatMap { list ->
-                    return@flatMap followersRepository.getFollowersByIds(list)
-                }
+            gameDataUseCase.getGameData(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ list ->
-                    followersLiveData.value =
-                        GameDataViewState.success(
-                            data = list.map { followerInfo -> ListItemData(followerInfo.followerId, followerInfo) }
-                        )
-                }, { throwable ->
-                    handleException(throwable)
+                .subscribe({ (_, _, followers) ->
+                    followersLiveData.value = GameDataViewState.success(
+                        data = followers.map { follower ->
+                            ListItemData(follower.followerId, follower)
+                        }
+                    )
+                }, { t ->
+                    handleException(t)
                 }).addToSubscription()
         }
     }
