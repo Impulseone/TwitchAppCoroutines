@@ -45,22 +45,6 @@ class FollowersViewModel(
         }
     }
 
-//    private fun fetchFollowers() {
-//        gameId?.let {
-//            followersRepository.fetchFollowers(it)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({ list ->
-//                    followersLiveData.value =
-//                        GameDataViewState.success(
-//                            data = list.map { followerInfo -> ListItemData(followerInfo.followerId, followerInfo) }
-//                        )
-//                }, { throwable ->
-//                    handleException(throwable)
-//                }).addToSubscription()
-//        }
-//    }
-
     private fun getFollowers() {
         gameId?.let {
             gameDataUseCase.getGameData(it)
@@ -77,25 +61,4 @@ class FollowersViewModel(
                 }).addToSubscription()
         }
     }
-
-//    private fun getFollowers() {
-//        gameId?.let {
-//            followersRepository.getFollowersByGameId(it)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({ list ->
-//                    followersLiveData.value =
-//                        GameDataViewState.success(
-//                            data = list.map { followerInfo ->
-//                                ListItemData(
-//                                    followerInfo.followerId,
-//                                    followerInfo
-//                                )
-//                            }
-//                        )
-//                }, { throwable ->
-//                    handleException(throwable)
-//                }).addToSubscription()
-//        }
-//    }
 }
