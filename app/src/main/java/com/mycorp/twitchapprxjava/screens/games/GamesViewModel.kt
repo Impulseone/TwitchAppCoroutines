@@ -6,10 +6,8 @@ import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.PagedListState
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.repository.GamesRepository
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
-import com.mycorp.twitchapprxjava.usecases.FavoriteGamesUseCase
 import com.mycorp.twitchapprxjava.usecases.GameDataUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

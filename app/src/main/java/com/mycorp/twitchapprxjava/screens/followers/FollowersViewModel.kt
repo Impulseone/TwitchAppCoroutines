@@ -46,10 +46,7 @@ class FollowersViewModel(
 
     private fun getFollowers() {
         gameId?.let {
-            followersRepository.getFollowersIdByGameId(it)
-                .flatMap { list ->
-                    return@flatMap followersRepository.getFollowersByIds(list)
-                }
+            followersRepository.getFollowersByGameId(it)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ list ->

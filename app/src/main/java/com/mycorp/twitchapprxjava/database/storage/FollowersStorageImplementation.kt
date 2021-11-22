@@ -6,6 +6,7 @@ import com.mycorp.twitchapprxjava.database.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.database.entities.GameFollowersEntity
 import com.mycorp.twitchapprxjava.models.FollowerInfo
 import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -13,11 +14,20 @@ class FollowersStorageImplementation(
     private val followersDao: FollowersDao,
     private val gameFollowersDao: GameFollowersDao
 ) : FollowersStorage {
-    override fun getFollowersByIds(followerIds: List<String>) =
-        followersDao.getByIds(followerIds)
 
-    override fun getFollowersIdByGameId(gameId: String) =
-        gameFollowersDao.getGameFollowersById(gameId).map { it.followersId }
+   override fun getFollowersByGameId(gameId: String): Single<List<FollowerInfo>> {
+        return Single.just(gameId).flatMap {
+            gameFollowersDao.getGameFollowersById(it).map { entity ->
+                entity.followersId
+            }
+        }.flatMap { followersId ->
+            followersDao.getByIds(followersId).map { followerEntities ->
+                followerEntities.map {
+                    FollowerInfo(it)
+                }
+            }
+        }
+    }
 
     override fun insertFollowersData(
         followersData: List<FollowerInfo>,
