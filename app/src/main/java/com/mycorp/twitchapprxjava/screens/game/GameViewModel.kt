@@ -37,12 +37,12 @@ class GameViewModel(
             .fetchGameData(gameId!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ (isFavorite, gameData, followersCount) ->
+            .subscribe({ (isFavorite, gameData, followers) ->
                 gameLiveData.value = GameDataViewState.success(gameData)
                 isFavoriteLiveData.value = isFavorite > 0
                 favoriteResLiveData.value =
                     if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-                followersCountData.value = followersCount
+                followersCountData.value = followers.size.toString()
             }, { throwable ->
                 handleException(throwable)
             })
@@ -54,12 +54,12 @@ class GameViewModel(
             .getGameData(gameId!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ (isFavorite, gameData, followersCount) ->
+            .subscribe({ (isFavorite, gameData, followers) ->
                 gameLiveData.value = GameDataViewState.success(gameData)
                 isFavoriteLiveData.value = isFavorite > 0
                 favoriteResLiveData.value =
                     if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-                followersCountData.value = followersCount
+                followersCountData.value = followers.size.toString()
             }, { throwable ->
                 handleException(throwable)
             })

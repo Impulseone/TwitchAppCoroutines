@@ -22,7 +22,7 @@ class GameDataUseCaseImpl(
                 }
                 .flatMap { (isFavorite, gameData) ->
                     followersRepository.fetchFollowers(id).map { list ->
-                        Triple(isFavorite, gameData, list.size.toString())
+                        Triple(isFavorite, gameData, list)
                     }
                 }
         }
@@ -37,7 +37,7 @@ class GameDataUseCaseImpl(
                 }
                 .flatMap { (isFavorite, gameData) ->
                     followersRepository.getFollowersByGameId(id).map { list ->
-                        Triple(isFavorite, gameData, list.size.toString())
+                        Triple(isFavorite, gameData, list)
                     }
                 }
         }
