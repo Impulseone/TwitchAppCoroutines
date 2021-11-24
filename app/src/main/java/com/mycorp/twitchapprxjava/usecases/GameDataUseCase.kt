@@ -1,9 +1,9 @@
 package com.mycorp.twitchapprxjava.usecases
 
 import androidx.paging.DataSource
-import com.mycorp.twitchapprxjava.models.FollowerInfo
-import com.mycorp.twitchapprxjava.models.GameData
-import com.mycorp.twitchapprxjava.models.ListItemData
+import com.mycorp.model.FollowerInfo
+import com.mycorp.model.GameData
+import com.mycorp.model.ListItemData
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import io.reactivex.Single
 

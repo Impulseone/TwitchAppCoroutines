@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.database.storage
 
 import androidx.paging.DataSource
+import com.mycorp.model.GameData
 import com.mycorp.twitchapprxjava.database.entities.GameDataEntity
-import com.mycorp.twitchapprxjava.models.GameData
 import io.reactivex.Completable
 import io.reactivex.Single
 

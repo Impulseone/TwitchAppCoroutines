@@ -2,7 +2,8 @@ package com.mycorp.twitchapprxjava.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.mycorp.twitchapprxjava.models.GameData
+import com.mycorp.model.FavoriteGameData
+import com.mycorp.model.GameData
 
 @Entity
 class FavoriteGameDataEntity(
@@ -19,5 +20,13 @@ class FavoriteGameDataEntity(
         logoUrl = gameData.logoUrl,
         channelsCount = gameData.channelsCount,
         watchersCount = gameData.watchersCount
+    )
+
+    fun toModel() = FavoriteGameData(
+        id = id,
+        name = name,
+        logoUrl = logoUrl,
+        channelsCount = channelsCount,
+        watchersCount = watchersCount
     )
 }

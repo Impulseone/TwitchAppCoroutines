@@ -1,7 +1,7 @@
 package com.mycorp.twitchapprxjava.database.storage
 
+import com.mycorp.model.GameData
 import com.mycorp.twitchapprxjava.database.entities.FavoriteGameDataEntity
-import com.mycorp.twitchapprxjava.models.GameData
 import io.reactivex.Completable
 import io.reactivex.Single
 

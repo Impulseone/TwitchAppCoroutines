@@ -1,6 +1,6 @@
 package com.mycorp.twitchapprxjava.usecases
 
-import com.mycorp.twitchapprxjava.models.GameData
+import com.mycorp.model.GameData
 import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
 
 class FavoriteGamesUseCaseImpl(private val favoriteGamesRepository: FavoriteGamesRepository) :

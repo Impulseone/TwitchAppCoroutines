@@ -2,9 +2,9 @@ package com.mycorp.twitchapprxjava.common
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
+import com.mycorp.model.ListItemData
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.helpers.SingleLiveEvent
-import com.mycorp.twitchapprxjava.models.ListItemData
 
 typealias TCommand<T> = SingleLiveEvent<T>
 typealias Data<T> = MutableLiveData<T>

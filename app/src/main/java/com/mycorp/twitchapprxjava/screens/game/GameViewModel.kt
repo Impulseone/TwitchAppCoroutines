@@ -1,11 +1,11 @@
 package com.mycorp.twitchapprxjava.screens.game
 
 import androidx.annotation.DrawableRes
+import com.mycorp.model.GameData
 import com.mycorp.twitchapprxjava.R
 import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.models.GameData
 import com.mycorp.twitchapprxjava.usecases.FavoriteGamesUseCase
 import com.mycorp.twitchapprxjava.usecases.GameDataUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,7 +21,7 @@ class GameViewModel(
 
     val gameLiveData = Data<GameDataViewState<GameData>>()
     val followersCountData = Data<String>()
-    val favoriteResLiveData = Data<@DrawableRes Int>()
+    val favoriteResLiveData = Data<Int>()
 
     fun init(gameId: String) {
         this.gameId = gameId

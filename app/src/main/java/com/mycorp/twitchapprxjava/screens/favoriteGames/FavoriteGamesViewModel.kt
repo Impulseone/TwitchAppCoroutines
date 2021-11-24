@@ -2,11 +2,11 @@ package com.mycorp.twitchapprxjava.screens.favoriteGames
 
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
+import com.mycorp.model.FavoriteGameData
 import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.PagedListState
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.models.FavoriteGameData
 import com.mycorp.twitchapprxjava.screens.favoriteGames.adapter.FavoriteGamesSourceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

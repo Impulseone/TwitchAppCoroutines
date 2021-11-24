@@ -1,9 +1,8 @@
 package com.mycorp.twitchapprxjava.repository
 
+import com.mycorp.model.GameData
+import com.mycorp.model.ListItemData
 import com.mycorp.twitchapprxjava.database.storage.FavoriteGamesStorage
-import com.mycorp.twitchapprxjava.models.FavoriteGameData
-import com.mycorp.twitchapprxjava.models.GameData
-import com.mycorp.twitchapprxjava.models.ListItemData
 
 class FavoriteGamesRepositoryImplementation(
     private val favoriteGamesStorage: FavoriteGamesStorage
@@ -11,7 +10,7 @@ class FavoriteGamesRepositoryImplementation(
     override fun getFavoriteGames(limit: Int, offset: Int) = favoriteGamesStorage.getFavoriteGames(limit, offset)
         .map {
             it.map { entity ->
-                ListItemData(entity.id, FavoriteGameData(entity))
+                ListItemData(entity.id, entity.toModel())
             }
         }
 

@@ -1,10 +1,10 @@
 package com.mycorp.twitchapprxjava.database.storage
 
+import com.mycorp.model.FollowerInfo
 import com.mycorp.twitchapprxjava.database.dao.FollowersDao
 import com.mycorp.twitchapprxjava.database.dao.GameFollowersDao
 import com.mycorp.twitchapprxjava.database.entities.FollowerInfoEntity
 import com.mycorp.twitchapprxjava.database.entities.GameFollowersEntity
-import com.mycorp.twitchapprxjava.models.FollowerInfo
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,7 +23,7 @@ class FollowersStorageImplementation(
         }.flatMap { followersId ->
             followersDao.getByIds(followersId).map { followerEntities ->
                 followerEntities.map {
-                    FollowerInfo(it)
+                    it.toModel()
                 }
             }
         }
@@ -37,6 +37,6 @@ class FollowersStorageImplementation(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, {}).dispose()
-        return followersDao.insertAll(followersData.map { FollowerInfoEntity.fromFollowerInfo(it) })
+        return followersDao.insertAll(followersData.map { FollowerInfoEntity(it) })
     }
 }

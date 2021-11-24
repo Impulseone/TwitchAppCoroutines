@@ -1,10 +1,10 @@
 package com.mycorp.twitchapprxjava.repository
 
 import android.content.Context
+import com.mycorp.model.GameData
+import com.mycorp.model.ListItemData
 import com.mycorp.twitchapprxjava.api.controllers.GamesController
 import com.mycorp.twitchapprxjava.database.storage.GamesStorage
-import com.mycorp.twitchapprxjava.models.GameData
-import com.mycorp.twitchapprxjava.models.ListItemData
 import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 
 class GamesRepositoryImplementation(
@@ -18,12 +18,12 @@ class GamesRepositoryImplementation(
         }
 
     override fun getGamesData() = gamesStorage.getGamesData().map {
-        ListItemData(it.id, GameListItem(context, GameData.fromEntity(it)))
+        ListItemData(it.id, GameListItem(context, it.toModel()))
     }
 
     override fun getGameDataById(id: String) =
         gamesStorage.getGameDataEntityById(id).map {
-            GameData.fromEntity(it)
+            it.toModel()
         }
 
     override fun insertGamesData(gameDataList: List<GameData>) =

@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.repository
 
-import com.mycorp.twitchapprxjava.models.FavoriteGameData
-import com.mycorp.twitchapprxjava.models.GameData
-import com.mycorp.twitchapprxjava.models.ListItemData
+import com.mycorp.model.FavoriteGameData
+import com.mycorp.model.GameData
+import com.mycorp.model.ListItemData
 import io.reactivex.Completable
 import io.reactivex.Single
 

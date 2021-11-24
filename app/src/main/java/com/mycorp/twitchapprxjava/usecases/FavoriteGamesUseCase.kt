@@ -1,6 +1,6 @@
 package com.mycorp.twitchapprxjava.usecases
 
-import com.mycorp.twitchapprxjava.models.GameData
+import com.mycorp.model.GameData
 import io.reactivex.Completable
 
 interface FavoriteGamesUseCase {

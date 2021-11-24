@@ -1,10 +1,10 @@
 package com.mycorp.twitchapprxjava.screens.followers
 
+import com.mycorp.model.FollowerInfo
+import com.mycorp.model.ListItemData
 import com.mycorp.twitchapprxjava.common.Data
 import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.models.FollowerInfo
 import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
-import com.mycorp.twitchapprxjava.models.ListItemData
 import com.mycorp.twitchapprxjava.usecases.GameDataUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

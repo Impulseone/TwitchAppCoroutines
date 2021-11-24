@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.database.storage
 
+import com.mycorp.model.GameData
 import com.mycorp.twitchapprxjava.database.dao.FavoriteGameDataDao
 import com.mycorp.twitchapprxjava.database.entities.FavoriteGameDataEntity
-import com.mycorp.twitchapprxjava.models.GameData
 
 class FavoriteGamesStorageImplementation(private val favoriteGameDataDao: FavoriteGameDataDao) :
     FavoriteGamesStorage {

@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.repository
 
+import com.mycorp.model.FollowerInfo
 import com.mycorp.twitchapprxjava.api.controllers.FollowersController
 import com.mycorp.twitchapprxjava.database.storage.FollowersStorage
-import com.mycorp.twitchapprxjava.models.FollowerInfo
 import io.reactivex.Single
 
 class FollowersRepositoryImplementation(
@@ -15,7 +15,7 @@ class FollowersRepositoryImplementation(
                 it.follows ?: listOf()
             }
             .map { list ->
-                list.filterNotNull().map { FollowerInfo(it) }
+                list.filterNotNull().map { it.toModel() }
             }
             .flatMap {
                 followersStorage.insertFollowersData(it, id)

@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.screens.favoriteGames.adapter
 
 import androidx.paging.DataSource
-import com.mycorp.twitchapprxjava.models.FavoriteGameData
-import com.mycorp.twitchapprxjava.models.ListItemData
+import com.mycorp.model.FavoriteGameData
+import com.mycorp.model.ListItemData
 import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject

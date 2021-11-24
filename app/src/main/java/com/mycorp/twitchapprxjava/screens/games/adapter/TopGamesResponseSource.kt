@@ -2,8 +2,8 @@ package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.content.Context
 import androidx.paging.PositionalDataSource
-import com.mycorp.twitchapprxjava.models.GameData
-import com.mycorp.twitchapprxjava.models.ListItemData
+import com.mycorp.model.GameData
+import com.mycorp.model.ListItemData
 import com.mycorp.twitchapprxjava.repository.GamesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

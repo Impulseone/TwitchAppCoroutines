@@ -3,8 +3,8 @@ package com.mycorp.twitchapprxjava.screens.followers.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.mycorp.model.FollowerInfo
 import com.mycorp.twitchapprxjava.GlideApp
-import com.mycorp.twitchapprxjava.models.FollowerInfo
 import com.mycorp.twitchapprxjava.databinding.ItemFollowerBinding
 
 class FollowerViewHolder(private val binding: ItemFollowerBinding) :

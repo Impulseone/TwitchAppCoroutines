@@ -1,8 +1,8 @@
 package com.mycorp.twitchapprxjava.screens.games.adapter
 
 import android.content.Context
+import com.mycorp.model.GameData
 import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.models.GameData
 
 data class GameListItem(
     val id: String,

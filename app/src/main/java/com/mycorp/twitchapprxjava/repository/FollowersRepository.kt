@@ -1,6 +1,6 @@
 package com.mycorp.twitchapprxjava.repository
 
-import com.mycorp.twitchapprxjava.models.FollowerInfo
+import com.mycorp.model.FollowerInfo
 import io.reactivex.Single
 
 interface FollowersRepository {
