@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.common.extensions.setIgnoreLastDivider
 import com.mycorp.common.fragment.BaseFragment
+import com.mycorp.features.R
 import com.mycorp.features.databinding.FragmentFavoriteGamesBinding
 import com.mycorp.features.screens.favoriteGames.adapter.FavoriteGamesListAdapter
-import com.mycorp.twitchapprxjava.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.fragment_favorite_games) {

@@ -4,7 +4,6 @@ import android.content.Context
 import com.mycorp.api.controllers.GamesController
 import com.mycorp.database.storage.GamesStorage
 import com.mycorp.model.GameData
-import com.mycorp.model.ListItemData
 
 class GamesRepositoryImplementation(
     private val gamesController: GamesController,
@@ -16,9 +15,12 @@ class GamesRepositoryImplementation(
             it.toModel()
         }!!
 
-    override fun getGamesData() = gamesStorage.getGamesData().map {
-        ListItemData(it.id, GameListItem(context, it.toModel()))
-    }
+    override fun getGamesLimited(limit: Int, offset: Int) =
+        gamesStorage.getGamesLimited(limit, offset).map {
+            it.map { gameDataEntity ->
+                gameDataEntity.toModel()
+            }
+        }
 
     override fun getGameDataById(id: String) =
         gamesStorage.getGameDataEntityById(id).map {

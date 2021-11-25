@@ -10,8 +10,6 @@ class GameDataUseCaseImpl(
     private val gamesRepository: GamesRepository,
     private val favoriteGamesRepository: FavoriteGamesRepository
 ) : GameDataUseCase {
-    override fun getGames() = gamesRepository.getGamesData()
-
     override fun fetchGameData(gameId: String) = Single.just(gameId)
         .flatMap { id ->
             gamesRepository.getGameDataById(id)

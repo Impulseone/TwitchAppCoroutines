@@ -15,6 +15,9 @@ interface GameDataDao {
     @Query("SELECT * FROM GameDataEntity")
     fun getAllGames(): DataSource.Factory<Int, GameDataEntity>
 
+    @Query("SELECT * FROM GameDataEntity limit :limit offset :offset")
+    fun getGamesLimited(limit:Int,offset:Int): Single<List<GameDataEntity>>
+
     @Query("SELECT * FROM GameDataEntity where id=:id")
     fun getGameById(id: String): Single<GameDataEntity>
 }

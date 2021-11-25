@@ -8,6 +8,7 @@ import io.reactivex.Single
 
 interface GamesStorage {
     fun getGamesData(): DataSource.Factory<Int, GameDataEntity>
+    fun getGamesLimited(limit:Int,offset:Int): Single<List<GameDataEntity>>
     fun getGameDataEntityById(id: String): Single<GameDataEntity>
     fun insertGamesData(gamesData: List<GameData>): Completable
 }

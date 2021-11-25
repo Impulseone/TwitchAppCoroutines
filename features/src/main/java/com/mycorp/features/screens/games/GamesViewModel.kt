@@ -6,6 +6,7 @@ import com.mycorp.common.Data
 import com.mycorp.common.PagedListState
 import com.mycorp.common.helpers.GameDataViewState
 import com.mycorp.common.viewModel.BaseViewModel
+import com.mycorp.features.screens.games.adapter.DbGamesSourceFactory
 import com.mycorp.features.screens.games.adapter.GameListItem
 import com.mycorp.features.screens.games.adapter.TopGamesSourceFactory
 import com.mycorp.features.usecases.GameDataUseCase
@@ -13,8 +14,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class GamesViewModel(
-    private val gamesUseCase: GameDataUseCase,
     private val topGamesSourceFactory: TopGamesSourceFactory,
+    private val dbGamesSourceFactory: DbGamesSourceFactory,
 ) : BaseViewModel() {
 
     private val pagedListConfig = PagedList.Config.Builder()
@@ -51,8 +52,7 @@ class GamesViewModel(
     }
 
     private fun getGames() {
-        val dataSourceFactory = gamesUseCase.getGames()
-        RxPagedListBuilder(dataSourceFactory, pagedListConfig)
+        RxPagedListBuilder(dbGamesSourceFactory, pagedListConfig)
             .buildObservable()
             .subscribe({
                 pagedGamesLiveData.value = GameDataViewState.success(data = it)

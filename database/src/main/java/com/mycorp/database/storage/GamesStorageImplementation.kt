@@ -3,6 +3,7 @@ package com.mycorp.database.storage
 import com.mycorp.database.dao.GameDataDao
 import com.mycorp.database.entities.GameDataEntity
 import com.mycorp.model.GameData
+import io.reactivex.Single
 
 class GamesStorageImplementation(
     private val gameDataDao: GameDataDao,
@@ -10,6 +11,9 @@ class GamesStorageImplementation(
     GamesStorage {
 
     override fun getGamesData() = gameDataDao.getAllGames()
+
+    override fun getGamesLimited(limit: Int, offset: Int) =
+        gameDataDao.getGamesLimited(limit, offset)
 
     override fun getGameDataEntityById(id: String) = gameDataDao.getGameById(id)
 
