@@ -6,10 +6,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.mycorp.twitchapprxjava.GlideApp
-import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
-import com.mycorp.twitchapprxjava.databinding.FragmentGameBinding
+import com.bumptech.glide.Glide
+import com.mycorp.common.fragment.BaseFragment
+import com.mycorp.features.R
+import com.mycorp.features.databinding.FragmentGameBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameFragment :
@@ -46,7 +46,7 @@ class GameFragment :
                 bindData(gameLiveData) {
                     progressIndicator.isVisible = it.progressIndicatorVisibility
                     gameName.text = it.data?.name ?: ""
-                    GlideApp.with(requireContext()).load(it.data?.logoUrl).into(image)
+                    Glide.with(requireContext()).load(it.data?.logoUrl).into(image)
                 }
                 bindData(followersCountData) {
                     followersCount.text =

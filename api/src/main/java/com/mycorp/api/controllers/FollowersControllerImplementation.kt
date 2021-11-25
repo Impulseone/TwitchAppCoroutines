@@ -1,6 +1,6 @@
 package com.mycorp.api.controllers
 
-import com.mycorp.twitchapprxjava.api.FollowersApi
+import com.mycorp.api.FollowersApi
 
 class FollowersControllerImplementation(private val followersApi: FollowersApi) :
     FollowersController {

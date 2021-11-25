@@ -1,6 +1,6 @@
 package com.mycorp.api
 
-import com.mycorp.twitchapprxjava.api.dto.gameItemDataResponse.GameItemDataDto
+import com.mycorp.api.dto.gameItemDataResponse.GameItemDataDto
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path

@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mycorp.common.R
 import com.mycorp.common.viewModel.BaseViewModel
-import com.mycorp.twitchapprxjava.screens.favoriteGames.FavoriteGamesFragment
-import com.mycorp.twitchapprxjava.screens.games.GamesFragment
 
 @SuppressLint("ResourceType")
 abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layoutId), FragmentScene {
@@ -20,10 +18,11 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
         get() = this
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        when (this) {
-            is GamesFragment -> closeApp()
-            is FavoriteGamesFragment -> closeApp()
-        }
+        //TODO: fix this
+//        when (this) {
+//            is GamesFragment -> closeApp()
+//            is FavoriteGamesFragment -> closeApp()
+//        }
     }
 
     open fun bindVm() {

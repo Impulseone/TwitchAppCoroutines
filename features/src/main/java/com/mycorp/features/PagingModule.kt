@@ -1,7 +1,7 @@
 package com.mycorp.features
 
-import com.mycorp.twitchapprxjava.screens.favoriteGames.adapter.FavoriteGamesSourceFactory
-import com.mycorp.twitchapprxjava.screens.games.adapter.TopGamesSourceFactory
+import com.mycorp.features.screens.favoriteGames.adapter.FavoriteGamesSourceFactory
+import com.mycorp.features.screens.games.adapter.TopGamesSourceFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

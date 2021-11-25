@@ -1,6 +1,6 @@
 package com.mycorp.features.screens.rating
 
-import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
+import com.mycorp.common.viewModel.BaseViewModel
 
 class RatingViewModel : BaseViewModel() {
 

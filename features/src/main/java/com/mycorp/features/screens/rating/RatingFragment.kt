@@ -1,14 +1,13 @@
-package com.mycorp.twitchapprxjava.screens.rating
+package com.mycorp.features.screens.rating
 
 import android.os.Bundle
 import android.view.View
 import android.widget.RatingBar
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.mycorp.features.screens.rating.RatingViewModel
-import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.databinding.FragmentRatingBinding
-import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
+import com.mycorp.common.fragment.BaseFragment
+import com.mycorp.features.R
+import com.mycorp.features.databinding.FragmentRatingBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.DecimalFormat
 
@@ -30,10 +29,10 @@ class RatingFragment : BaseFragment<RatingViewModel>(R.layout.fragment_rating) {
                     viewModel.updateRating(getString(R.string.scr_rating_toast_text, DecimalFormat("#0.0").format(rating)))
                 }
             sendReportBtn.setOnClickListener {
-                findNavController().navigate(com.mycorp.games.rating.RatingFragmentDirections.actionRatingFragmentToGamesFragment())
+                findNavController().navigate(RatingFragmentDirections.actionRatingFragmentToGamesFragment())
             }
             backBtn.setOnClickListener {
-                findNavController().navigate(com.mycorp.games.rating.RatingFragmentDirections.actionRatingFragmentToGamesFragment())
+                findNavController().navigate(RatingFragmentDirections.actionRatingFragmentToGamesFragment())
             }
         }
     }

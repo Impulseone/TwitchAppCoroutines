@@ -1,8 +1,8 @@
 package com.mycorp.myapplication
 
+import com.mycorp.database.storage.FavoriteGamesStorage
 import com.mycorp.model.GameData
 import com.mycorp.model.ListItemData
-import com.mycorp.twitchapprxjava.database.storage.FavoriteGamesStorage
 
 class FavoriteGamesRepositoryImplementation(
     private val favoriteGamesStorage: FavoriteGamesStorage

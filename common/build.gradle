@@ -50,15 +50,17 @@ ext {
 }
 
 dependencies {
+    implementation project(path: ':model')
+    implementation project(path: ':api')
+    
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation project(path: ':app')
 
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
-    implementation project(path: ':model')
+
 
     //RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid"
@@ -66,6 +68,7 @@ dependencies {
 
     //Pagination
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
     testImplementation "androidx.paging:paging-common-ktx:$paging_version"
     implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
 }

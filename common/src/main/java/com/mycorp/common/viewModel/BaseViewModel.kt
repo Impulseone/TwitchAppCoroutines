@@ -4,9 +4,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
-import com.mycorp.twitchapprxjava.api.dto.ConvertDtoException
-import com.mycorp.twitchapprxjava.common.TCommand
-import com.mycorp.twitchapprxjava.common.helpers.TAG
+import com.mycorp.api.dto.ConvertDtoException
+import com.mycorp.common.TCommand
+import com.mycorp.common.helpers.TAG
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.net.UnknownHostException

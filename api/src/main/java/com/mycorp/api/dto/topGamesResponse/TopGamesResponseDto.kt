@@ -1,8 +1,8 @@
 package com.mycorp.api.dto.topGamesResponse
 
 import com.google.gson.annotations.SerializedName
+import com.mycorp.api.dto.ConvertDtoException
 import com.mycorp.model.GameData
-import com.mycorp.twitchapprxjava.api.dto.ConvertDtoException
 
 class TopGamesResponseDto(
     @field:SerializedName("top")

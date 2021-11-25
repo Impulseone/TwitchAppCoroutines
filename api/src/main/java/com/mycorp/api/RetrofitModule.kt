@@ -1,9 +1,6 @@
 package com.mycorp.api
 
-import com.mycorp.twitchapprxjava.BuildConfig
-import com.mycorp.twitchapprxjava.api.FollowersApi
-import com.mycorp.twitchapprxjava.api.GamesApi
-import com.mycorp.twitchapprxjava.api.interceptors.AuthInterceptor
+import com.mycorp.api.interceptors.AuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module

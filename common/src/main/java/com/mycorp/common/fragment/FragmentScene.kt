@@ -3,9 +3,9 @@ package com.mycorp.common.fragment
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import com.mycorp.twitchapprxjava.common.Data
-import com.mycorp.twitchapprxjava.common.TCommand
-import com.mycorp.twitchapprxjava.common.Text
+import com.mycorp.common.Data
+import com.mycorp.common.TCommand
+import com.mycorp.common.Text
 
 interface FragmentScene {
     val self: Fragment

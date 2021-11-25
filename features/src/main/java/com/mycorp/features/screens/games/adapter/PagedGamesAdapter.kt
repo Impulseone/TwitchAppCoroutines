@@ -2,8 +2,8 @@ package com.mycorp.features.screens.games.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
+import com.mycorp.common.helpers.BaseItemCallback
 import com.mycorp.model.ListItemData
-import com.mycorp.twitchapprxjava.common.helpers.BaseItemCallback
 
 class PagedGamesAdapter(
     private val itemClicked: (Int) -> Unit

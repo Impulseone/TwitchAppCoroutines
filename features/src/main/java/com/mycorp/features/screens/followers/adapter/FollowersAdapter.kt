@@ -2,9 +2,9 @@ package com.mycorp.features.screens.followers.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import com.mycorp.common.helpers.BaseItemCallback
 import com.mycorp.model.FollowerInfo
 import com.mycorp.model.ListItemData
-import com.mycorp.twitchapprxjava.common.helpers.BaseItemCallback
 
 class FollowersAdapter: ListAdapter<ListItemData<FollowerInfo>, FollowerViewHolder>(BaseItemCallback()) {
 

@@ -1,10 +1,10 @@
 package com.mycorp.features.screens.game
 
+import com.mycorp.common.Data
+import com.mycorp.common.helpers.GameDataViewState
+import com.mycorp.common.viewModel.BaseViewModel
+import com.mycorp.features.R
 import com.mycorp.model.GameData
-import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.common.Data
-import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
-import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
 import com.mycorp.features.usecases.FavoriteGamesUseCase
 import com.mycorp.features.usecases.GameDataUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.paging.PositionalDataSource
 import com.mycorp.model.GameData
 import com.mycorp.model.ListItemData
-import com.mycorp.twitchapprxjava.repository.GamesRepository
+import com.mycorp.myapplication.GamesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

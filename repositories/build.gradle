@@ -50,17 +50,20 @@ ext {
 }
 
 dependencies {
-
+    implementation project(path: ':model')
+    implementation project(path: ':database')
+    implementation project(path: ':api')
+    
     implementation 'androidx.core:core-ktx:1.7.0'
 
     //RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid"
     implementation "io.reactivex.rxjava2:rxjava:$rxjava"
-    implementation project(path: ':model')
-    implementation project(path: ':app')
+
 
     //Pagination
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
     testImplementation "androidx.paging:paging-common-ktx:$paging_version"
     implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
 

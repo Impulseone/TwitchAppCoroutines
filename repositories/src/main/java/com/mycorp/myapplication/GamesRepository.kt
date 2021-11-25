@@ -3,7 +3,6 @@ package com.mycorp.myapplication
 import androidx.paging.DataSource
 import com.mycorp.model.GameData
 import com.mycorp.model.ListItemData
-import com.mycorp.twitchapprxjava.screens.games.adapter.GameListItem
 import io.reactivex.Completable
 import io.reactivex.Single
 

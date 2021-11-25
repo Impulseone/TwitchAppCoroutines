@@ -1,19 +1,19 @@
-package com.mycorp.twitchapprxjava.screens.favoriteGames.adapter
+package com.mycorp.features.screens.favoriteGames.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.mycorp.features.R
 import com.mycorp.features.databinding.ItemFavoriteGameBinding
 import com.mycorp.model.FavoriteGameData
-import com.mycorp.twitchapprxjava.GlideApp
-import com.mycorp.twitchapprxjava.R
 
 class FavoriteGameViewHolder(private val binding: ItemFavoriteGameBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(gameData: FavoriteGameData?) {
         with(binding) {
-            GlideApp.with(itemView.context).load(gameData?.logoUrl).into(image)
+            Glide.with(itemView.context).load(gameData?.logoUrl).into(image)
             with(itemView.context) {
                 gameName.text = getString(R.string.scr_favorite_game_view_holder_gameName, gameData?.name)
             }

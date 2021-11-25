@@ -1,6 +1,6 @@
 package com.mycorp.api.interceptors
 
-import com.mycorp.twitchapprxjava.BuildConfig
+import com.mycorp.api.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 

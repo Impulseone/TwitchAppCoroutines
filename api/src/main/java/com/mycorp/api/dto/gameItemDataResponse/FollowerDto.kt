@@ -1,7 +1,7 @@
 package com.mycorp.api.dto.gameItemDataResponse
 
+import com.mycorp.api.dto.ConvertDtoException
 import com.mycorp.model.FollowerInfo
-import com.mycorp.twitchapprxjava.api.dto.ConvertDtoException
 
 data class FollowerDto(
     val created_at: String? = null,

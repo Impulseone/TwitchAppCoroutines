@@ -6,9 +6,9 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
-import com.mycorp.twitchapprxjava.databinding.FragmentFollowersBinding
+import com.mycorp.common.fragment.BaseFragment
+import com.mycorp.features.R
+import com.mycorp.features.databinding.FragmentFollowersBinding
 import com.mycorp.features.screens.followers.adapter.FollowersAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -17,7 +17,7 @@ class FollowersFragment : BaseFragment<FollowersViewModel>(R.layout.fragment_fol
     override val viewModel: FollowersViewModel by viewModel()
     private val binding: FragmentFollowersBinding by viewBinding()
     private var followersAdapter: FollowersAdapter? = null
-    private val navArgs by navArgs<com.mycorp.games.followers.FollowersFragmentArgs>()
+    private val navArgs by navArgs<FollowersFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

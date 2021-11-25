@@ -1,9 +1,9 @@
 package com.mycorp.features
 
-import com.mycorp.twitchapprxjava.usecases.FavoriteGamesUseCase
-import com.mycorp.twitchapprxjava.usecases.FavoriteGamesUseCaseImpl
-import com.mycorp.twitchapprxjava.usecases.GameDataUseCase
-import com.mycorp.twitchapprxjava.usecases.GameDataUseCaseImpl
+import com.mycorp.features.usecases.FavoriteGamesUseCase
+import com.mycorp.features.usecases.FavoriteGamesUseCaseImpl
+import com.mycorp.features.usecases.GameDataUseCase
+import com.mycorp.features.usecases.GameDataUseCaseImpl
 import org.koin.dsl.module
 
 val usecasesModule = module {

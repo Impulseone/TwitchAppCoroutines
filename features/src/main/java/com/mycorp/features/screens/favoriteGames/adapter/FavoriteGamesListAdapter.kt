@@ -5,7 +5,6 @@ import androidx.paging.PagedListAdapter
 import com.mycorp.common.helpers.BaseItemCallback
 import com.mycorp.model.FavoriteGameData
 import com.mycorp.model.ListItemData
-import com.mycorp.twitchapprxjava.screens.favoriteGames.adapter.FavoriteGameViewHolder
 
 class FavoriteGamesListAdapter :
     PagedListAdapter<ListItemData<FavoriteGameData>, FavoriteGameViewHolder>(BaseItemCallback()) {

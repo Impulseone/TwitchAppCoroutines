@@ -1,8 +1,8 @@
 package com.mycorp.features.usecases
 
-import com.mycorp.twitchapprxjava.repository.FavoriteGamesRepository
-import com.mycorp.twitchapprxjava.repository.FollowersRepository
-import com.mycorp.twitchapprxjava.repository.GamesRepository
+import com.mycorp.myapplication.FavoriteGamesRepository
+import com.mycorp.myapplication.FollowersRepository
+import com.mycorp.myapplication.GamesRepository
 import io.reactivex.Single
 
 class GameDataUseCaseImpl(

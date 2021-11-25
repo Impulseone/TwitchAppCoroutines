@@ -2,10 +2,10 @@ package com.mycorp.features.screens.games
 
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
-import com.mycorp.twitchapprxjava.common.Data
-import com.mycorp.twitchapprxjava.common.PagedListState
-import com.mycorp.twitchapprxjava.common.helpers.GameDataViewState
-import com.mycorp.twitchapprxjava.common.viewModel.BaseViewModel
+import com.mycorp.common.Data
+import com.mycorp.common.PagedListState
+import com.mycorp.common.helpers.GameDataViewState
+import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.features.screens.games.adapter.GameListItem
 import com.mycorp.features.screens.games.adapter.TopGamesSourceFactory
 import com.mycorp.features.usecases.GameDataUseCase
@@ -46,7 +46,7 @@ class GamesViewModel(
 
     fun gameItemClicked(position: Int) {
         pagedGamesLiveData.value?.data?.get(position)?.id?.let {
-            navigateTo(com.mycorp.games.games.GamesFragmentDirections.actionGamesFragmentToGameFragment(it))
+            navigateTo(GamesFragmentDirections.actionGamesFragmentToGameFragment(it))
         }
     }
 

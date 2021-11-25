@@ -5,10 +5,10 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.mycorp.twitchapprxjava.R
-import com.mycorp.twitchapprxjava.common.extensions.setIgnoreLastDivider
-import com.mycorp.twitchapprxjava.databinding.FragmentGamesBinding
-import com.mycorp.twitchapprxjava.common.fragment.BaseFragment
+import com.mycorp.common.extensions.setIgnoreLastDivider
+import com.mycorp.common.fragment.BaseFragment
+import com.mycorp.features.R
+import com.mycorp.features.databinding.FragmentGamesBinding
 import com.mycorp.features.screens.games.adapter.PagedGamesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
