@@ -18,7 +18,7 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
         get() = this
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //TODO: fix this
+//        TODO: fix this
 //        when (this) {
 //            is GamesFragment -> closeApp()
 //            is FavoriteGamesFragment -> closeApp()

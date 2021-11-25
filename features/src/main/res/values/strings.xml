@@ -27,6 +27,4 @@
     <string name="scr_followers_item_icon_description">follower_icon</string>
 
     <string name="scr_base_fragment_connection_error">Подключение к интернету отсутствует</string>
-
-
 </resources>
