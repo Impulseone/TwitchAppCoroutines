@@ -1,0 +1,71 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+ext {
+    lifecycle = "2.4.0"
+    junit = "4.13.2"
+    test_junit = "1.1.3"
+    espresso = "3.4.0"
+    vbPropertyDelegate = '1.5.0-beta01'
+    glide = "4.12.0"
+    retrofit = "2.9.0"
+    room = "2.3.0"
+    rxandroid = "2.1.1"
+    rxjava = "2.2.9"
+    koin = "3.1.2"
+    navigation = "2.3.5"
+    paging_version = "2.1.2"
+    coroutines_version = "1.5.2"
+    ok_http = "4.3.1"
+}
+
+dependencies {
+
+    //Room
+    implementation "androidx.room:room-ktx:$room"
+    implementation "androidx.room:room-runtime:$room"
+    implementation project(path: ':model')
+    annotationProcessor "androidx.room:room-compiler:$room"
+    kapt("androidx.room:room-compiler:$room")
+    implementation "androidx.room:room-rxjava2:$room"
+
+    //Pagination
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
+    implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
+
+    //RxJava
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava"
+}

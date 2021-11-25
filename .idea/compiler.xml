@@ -2,7 +2,14 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
+      <module name="TwitchAppRxJava.api" target="11" />
       <module name="TwitchAppRxJava.app" target="11" />
+      <module name="TwitchAppRxJava.common" target="11" />
+      <module name="TwitchAppRxJava.database" target="11" />
+      <module name="TwitchAppRxJava.favorite_games" target="11" />
+      <module name="TwitchAppRxJava.features" target="11" />
+      <module name="TwitchAppRxJava.games" target="11" />
+      <module name="TwitchAppRxJava.repositories" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

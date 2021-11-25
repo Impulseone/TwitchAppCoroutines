@@ -9,3 +9,8 @@ dependencyResolutionManagement {
 rootProject.name = "TwitchAppRxJava"
 include ':app'
 include ':model'
+include ':repositories'
+include ':database'
+include ':api'
+include ':common'
+include ':features'

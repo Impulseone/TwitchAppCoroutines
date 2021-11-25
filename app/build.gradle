@@ -87,7 +87,6 @@ dependencies {
     //ViewBinding
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$vbPropertyDelegate"
 
-
     //Testing
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$test_junit"
