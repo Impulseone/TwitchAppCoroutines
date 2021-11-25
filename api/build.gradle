@@ -50,7 +50,8 @@ ext {
 }
 
 dependencies {
-//Retrofit
+    
+    //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit"
@@ -58,4 +59,9 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$ok_http"
     implementation project(path: ':app')
     implementation project(path: ':model')
+
+    //Koin
+    implementation "io.insert-koin:koin-core:$koin"
+    implementation "io.insert-koin:koin-android:$koin"
+    implementation "io.insert-koin:koin-android-compat:$koin"
 }
