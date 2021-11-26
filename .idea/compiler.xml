@@ -6,8 +6,8 @@
       <module name="TwitchAppRxJava.app" target="11" />
       <module name="TwitchAppRxJava.common" target="11" />
       <module name="TwitchAppRxJava.database" target="11" />
-      <module name="TwitchAppRxJava.favorite_games" target="11" />
-      <module name="TwitchAppRxJava.features.features_module" target="11" />
+      <module name="TwitchAppRxJava.features.favoriteGames" target="11" />
+      <module name="TwitchAppRxJava.features.games" target="11" />
       <module name="TwitchAppRxJava.features.rating" target="11" />
       <module name="TwitchAppRxJava.games" target="11" />
       <module name="TwitchAppRxJava.repositories" target="11" />
