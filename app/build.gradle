@@ -57,6 +57,8 @@ dependencies {
     implementation project(path: ':database')
     implementation project(path: ':api')
     implementation project(path: ':features:games')
+    implementation project(path: ':features:favoriteGames')
+    implementation project(path: ':features:rating')
     implementation project(path: ':repositories')
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

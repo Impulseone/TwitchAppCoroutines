@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/gamesFragment"
-        android:name="com.mycorp.features.screens.games.GamesFragment"
+        android:name="com.mycorp.games.screens.games.GamesFragment"
         android:label="fragment_games_list"
         tools:layout="@layout/fragment_games">
         <action
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.mycorp.features.screens.game.GameFragment"
+        android:name="com.mycorp.games.screens.game.GameFragment"
         android:label="fragment_game_item"
         tools:layout="@layout/fragment_game">
         <argument
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/followersFragment"
-        android:name="com.mycorp.features.screens.followers.FollowersFragment"
+        android:name="com.mycorp.games.screens.followers.FollowersFragment"
         android:label="FollowersListFragment">
         <argument
             android:name="gameId"

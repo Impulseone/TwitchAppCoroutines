@@ -4,9 +4,10 @@ import android.app.Application
 import com.mycorp.api.networkModule
 import com.mycorp.api.retrofitModule
 import com.mycorp.database.dbModule
-import com.mycorp.features.pagingModule
-import com.mycorp.features.usecasesModule
-import com.mycorp.features.viewModelModule
+import com.mycorp.favorite_games.favoriteGamesModule
+import com.mycorp.games.pagingModule
+import com.mycorp.games.usecasesModule
+import com.mycorp.games.viewModelModule
 import com.mycorp.myapplication.repositoriesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -25,7 +26,8 @@ class App : Application(){
                 repositoriesModule,
                 viewModelModule,
                 pagingModule,
-                usecasesModule
+                usecasesModule,
+                favoriteGamesModule
             ))
         }
     }
