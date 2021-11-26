@@ -1,7 +1,6 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
 }
@@ -16,7 +15,6 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mycorp.twitchapprxjava"
         minSdk 21
         targetSdk 31
         versionCode 1
@@ -26,20 +24,8 @@ android {
     }
 
     buildTypes {
-        debug {
-            buildConfigField "String", "API_URL", "\"https://api.twitch.tv/\""
-            buildConfigField "String", "ACCEPT_HEADER", "\"Accept\""
-            buildConfigField "String", "CLIENT_ID", "\"Client-ID\""
-            buildConfigField "String", "ACCEPT_HEADER_VALUE", "\"application/vnd.twitchtv.v5+json\""
-            buildConfigField "String", "CLIENT_ID_HEADER_VALUE", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
-        }
         release {
             minifyEnabled false
-            buildConfigField "String", "API_URL", "\"https://api.twitch.tv/\""
-            buildConfigField "String", "ACCEPT_HEADER", "\"Accept\""
-            buildConfigField "String", "CLIENT_ID", "\"Client-ID\""
-            buildConfigField "String", "ACCEPT_HEADER_VALUE", "\"application/vnd.twitchtv.v5+json\""
-            buildConfigField "String", "CLIENT_ID_HEADER_VALUE", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -54,10 +40,11 @@ android {
 
 dependencies {
     implementation project(path: ':model')
-    implementation project(path: ':database')
-    implementation project(path: ':api')
-    implementation project(path: ':features:features_module')
+    implementation project(path: ':common')
     implementation project(path: ':repositories')
+    implementation project(path: ':features:rating')
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -65,12 +52,25 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
 
+    //Lifecycle
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle")
+
     //ViewBinding
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$vbPropertyDelegate"
+
+    //Testing
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test.ext:junit:$test_junit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 
     //Glide
     implementation "com.github.bumptech.glide:glide:$glide"
     kapt "com.github.bumptech.glide:compiler:$glide"
+
+    //RxJava
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava"
 
     //Koin
     implementation "io.insert-koin:koin-core:$koin"
@@ -81,5 +81,8 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
 
-
+    //Pagination
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
+    implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
 }
