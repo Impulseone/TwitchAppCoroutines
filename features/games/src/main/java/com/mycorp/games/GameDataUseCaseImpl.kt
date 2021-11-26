@@ -1,8 +1,10 @@
-package com.mycorp.games.usecases
+package com.mycorp.games
 
+import com.mycorp.model.GameData
 import com.mycorp.myapplication.FavoriteGamesRepository
 import com.mycorp.myapplication.FollowersRepository
 import com.mycorp.myapplication.GamesRepository
+import io.reactivex.Completable
 import io.reactivex.Single
 
 class GameDataUseCaseImpl(
@@ -39,4 +41,9 @@ class GameDataUseCaseImpl(
                     }
                 }
         }
+
+    override fun insertFavorite(gameData:GameData) = favoriteGamesRepository.insertFavoriteGame(gameData)
+
+    override fun deleteFavoriteById(gameId: String) = favoriteGamesRepository.deleteByGameId(gameId)
+
 }

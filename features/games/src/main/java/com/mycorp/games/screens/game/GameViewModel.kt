@@ -5,14 +5,12 @@ import com.mycorp.common.helpers.GameDataViewState
 import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.games.R
 import com.mycorp.model.GameData
-import com.mycorp.favorite_games.FavoriteGamesUseCase
-import com.mycorp.games.usecases.GameDataUseCase
+import com.mycorp.games.GameDataUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class GameViewModel(
     private val gameDataUseCase: GameDataUseCase,
-    private val favoriteGamesUseCase: FavoriteGamesUseCase
 ) : BaseViewModel() {
 
     private var gameId: String? = null
@@ -72,9 +70,9 @@ class GameViewModel(
             favoriteResLiveData.value =
                 if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
             (if (isFavoriteLiveData.value!!) {
-                favoriteGamesUseCase.saveGame(gameLiveData.value?.data!!)
+                gameDataUseCase.insertFavorite(gameLiveData.value?.data!!)
             } else {
-                favoriteGamesUseCase.deleteGameById(gameId!!)
+                gameDataUseCase.deleteFavoriteById(gameId!!)
             }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({}, {

@@ -5,7 +5,7 @@ import com.mycorp.common.helpers.GameDataViewState
 import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.model.FollowerInfo
 import com.mycorp.model.ListItemData
-import com.mycorp.games.usecases.GameDataUseCase
+import com.mycorp.games.GameDataUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 

@@ -42,8 +42,7 @@ dependencies {
     implementation project(path: ':model')
     implementation project(path: ':common')
     implementation project(path: ':repositories')
-    implementation project(path: ':features:rating')
-
+    
     implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -58,7 +57,7 @@ dependencies {
 
     //ViewBinding
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$vbPropertyDelegate"
-    implementation project(path: ':features:favoriteGames')
+
 
     //Testing
     testImplementation "junit:junit:$junit"
