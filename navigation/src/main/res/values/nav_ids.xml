@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="base_flow" type="id"/>
+    <item name="favorite_games_flow" type="id"/>
+    <item name="games_flow" type="id"/>
+</resources>

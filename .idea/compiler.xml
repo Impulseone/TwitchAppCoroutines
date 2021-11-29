@@ -10,6 +10,7 @@
       <module name="TwitchAppRxJava.features.games" target="11" />
       <module name="TwitchAppRxJava.features.rating" target="11" />
       <module name="TwitchAppRxJava.games" target="11" />
+      <module name="TwitchAppRxJava.navigation" target="11" />
       <module name="TwitchAppRxJava.repositories" target="11" />
     </bytecodeTargetLevel>
   </component>

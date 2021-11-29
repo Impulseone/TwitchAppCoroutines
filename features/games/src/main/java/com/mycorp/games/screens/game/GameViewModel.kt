@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class GameViewModel(
-    private val gameDataUseCase: GameDataUseCase,
+    private val gameDataUseCase: GameDataUseCase
 ) : BaseViewModel() {
 
     private var gameId: String? = null

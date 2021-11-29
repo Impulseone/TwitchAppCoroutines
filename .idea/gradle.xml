@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/features/games" />
             <option value="$PROJECT_DIR$/features/rating" />
             <option value="$PROJECT_DIR$/model" />
+            <option value="$PROJECT_DIR$/navigation" />
             <option value="$PROJECT_DIR$/rating" />
             <option value="$PROJECT_DIR$/repositories" />
           </set>
