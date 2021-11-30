@@ -28,15 +28,20 @@ class RatingFragment : BaseFragment<RatingViewModel>(R.layout.fragment_rating) {
         with(binding) {
             ratingBar.onRatingBarChangeListener =
                 RatingBar.OnRatingBarChangeListener { _, rating, _ ->
-                    viewModel.updateRating(getString(R.string.scr_rating_toast_text, DecimalFormat("#0.0").format(rating)))
+                    viewModel.updateRating(
+                        getString(
+                            R.string.scr_rating_toast_text,
+                            DecimalFormat("#0.0").format(rating)
+                        )
+                    )
                 }
             //TODO: fix this
-//            sendReportBtn.setOnClickListener {
-//                findNavController().navigate(RatingFragmentDirections.actionRatingFragmentToGamesFragment())
-//            }
-//            backBtn.setOnClickListener {
-//                findNavController().navigate(RatingFragmentDirections.actionRatingFragmentToGamesFragment())
-//            }
+            sendReportBtn.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            backBtn.setOnClickListener {
+                findNavController().popBackStack()
+            }
         }
     }
 }
