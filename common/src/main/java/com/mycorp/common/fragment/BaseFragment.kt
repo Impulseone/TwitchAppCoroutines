@@ -9,24 +9,27 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mycorp.common.R
 import com.mycorp.common.viewModel.BaseViewModel
+import com.mycorp.navigation.BaseNavigationFlow
+import com.mycorp.navigation.ToFlowNavigatable
 
 @SuppressLint("ResourceType")
 abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layoutId), FragmentScene {
     abstract val viewModel: VM
+    abstract val navigationFlow: BaseNavigationFlow
+
+    private val flowNavigatable by lazy {
+        requireActivity() as ToFlowNavigatable
+    }
 
     override val self: Fragment
         get() = this
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        TODO: fix this
-//        when (this) {
-//            is GamesFragment -> closeApp()
-//            is FavoriteGamesFragment -> closeApp()
-//        }
+        flowNavigatable.popBackStack(navigationFlow, this.viewLifecycleOwner)
     }
 
     open fun bindVm() {
-        with(viewModel){
+        with(viewModel) {
             bindData(showToast) {
                 if (it != null) {
                     val (text, length) = it
@@ -34,7 +37,7 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
                 }
             }
             bindCommand(openScreenCommand) {
-                findNavController().navigate(it)
+                flowNavigatable.navigateToFlow(it)
             }
             bindCommand(connectionExceptionCommand) {
                 Toast.makeText(
@@ -42,14 +45,6 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
                     getString(R.string.scr_base_fragment_connection_error),
                     Toast.LENGTH_SHORT
                 ).show()
-            }
-        }
-    }
-
-    private fun closeApp() {
-        with(requireActivity()) {
-            onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-                finish()
             }
         }
     }

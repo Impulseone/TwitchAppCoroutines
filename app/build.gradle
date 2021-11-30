@@ -60,6 +60,7 @@ dependencies {
     implementation project(path: ':features:favoriteGames')
     implementation project(path: ':features:rating')
     implementation project(path: ':repositories')
+    implementation project(path: ':navigation')
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core-ktx:1.7.0'

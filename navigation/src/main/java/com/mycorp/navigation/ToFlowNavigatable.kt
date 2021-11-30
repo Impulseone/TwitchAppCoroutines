@@ -1,9 +1,9 @@
 package com.mycorp.navigation
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavDirections
 
 interface ToFlowNavigatable {
-    fun navigateToFlow(flow: MainNavigationFlow)
-    fun navigateToFlow(flow: MainNavigationFlow, directions: NavDirections)
-    fun popBackStack(flow: MainNavigationFlow)
+    fun navigateToFlow(directions: NavDirections)
+    fun popBackStack(baseNavigationFlow: BaseNavigationFlow, lifecycleOwner: LifecycleOwner)
 }

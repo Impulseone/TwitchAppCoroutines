@@ -1,13 +1,9 @@
 package com.mycorp.navigation
 
 sealed class MainNavigationFlow : BaseNavigationFlow() {
-    object FavoriteGames : MainNavigationFlow()
-    object Games : MainNavigationFlow()
-
-    fun checkBottomBarState(): Boolean {
-        return when (this) {
-            is FavoriteGames -> true
-            else -> false
-        }
-    }
+    object GamesFlow : MainNavigationFlow()
+    object GameFlow : MainNavigationFlow()
+    object FavoriteGamesFlow : MainNavigationFlow()
+    object FollowersFlow : MainNavigationFlow()
+    object RatingFlow : MainNavigationFlow()
 }

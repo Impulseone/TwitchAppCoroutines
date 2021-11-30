@@ -58,6 +58,7 @@ dependencies {
 
     //ViewBinding
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$vbPropertyDelegate"
+    implementation project(path: ':navigation')
 
 
     //Testing

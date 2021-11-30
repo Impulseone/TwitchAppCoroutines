@@ -10,14 +10,17 @@ import com.mycorp.common.fragment.BaseFragment
 import com.mycorp.games.R
 import com.mycorp.games.databinding.FragmentGamesBinding
 import com.mycorp.games.screens.games.adapter.PagedGamesAdapter
+import com.mycorp.navigation.BaseNavigationFlow
+import com.mycorp.navigation.MainNavigationFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games) {
 
+    override val viewModel: GamesViewModel by viewModel()
+    override val navigationFlow: BaseNavigationFlow = MainNavigationFlow.GamesFlow
+
     private val binding: FragmentGamesBinding by viewBinding()
     private var pagedAdapter: PagedGamesAdapter? = null
-
-    override val viewModel: GamesViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

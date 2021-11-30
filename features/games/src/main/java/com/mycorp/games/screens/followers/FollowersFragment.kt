@@ -10,10 +10,12 @@ import com.mycorp.common.fragment.BaseFragment
 import com.mycorp.games.R
 import com.mycorp.games.databinding.FragmentFollowersBinding
 import com.mycorp.games.screens.followers.adapter.FollowersAdapter
+import com.mycorp.navigation.BaseNavigationFlow
+import com.mycorp.navigation.MainNavigationFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FollowersFragment : BaseFragment<FollowersViewModel>(R.layout.fragment_followers) {
-
+    override val navigationFlow: BaseNavigationFlow = MainNavigationFlow.FollowersFlow
     override val viewModel: FollowersViewModel by viewModel()
     private val binding: FragmentFollowersBinding by viewBinding()
     private var followersAdapter: FollowersAdapter? = null

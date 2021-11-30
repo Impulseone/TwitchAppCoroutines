@@ -8,10 +8,14 @@ import com.mycorp.common.extensions.setIgnoreLastDivider
 import com.mycorp.common.fragment.BaseFragment
 import com.mycorp.favorite_games.adapter.FavoriteGamesListAdapter
 import com.mycorp.favorite_games.databinding.FragmentFavoriteGamesBinding
+import com.mycorp.navigation.BaseNavigationFlow
+import com.mycorp.navigation.MainNavigationFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.fragment_favorite_games) {
     override val viewModel: FavoriteGamesViewModel by viewModel()
+    override val navigationFlow: BaseNavigationFlow = MainNavigationFlow.FavoriteGamesFlow
+
     private val binding: FragmentFavoriteGamesBinding by viewBinding()
     private var favoriteGamesListAdapter: FavoriteGamesListAdapter? = null
 
@@ -31,7 +35,6 @@ class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.frag
                     LinearLayoutManager(context)
                 adapter = favoriteGamesListAdapter
             }
-
         }
     }
 

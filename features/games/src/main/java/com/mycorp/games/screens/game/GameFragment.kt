@@ -10,12 +10,16 @@ import com.bumptech.glide.Glide
 import com.mycorp.common.fragment.BaseFragment
 import com.mycorp.games.R
 import com.mycorp.games.databinding.FragmentGameBinding
+import com.mycorp.navigation.BaseNavigationFlow
+import com.mycorp.navigation.MainNavigationFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameFragment :
     BaseFragment<GameViewModel>(R.layout.fragment_game) {
 
+    override val navigationFlow: BaseNavigationFlow = MainNavigationFlow.GameFlow
     override val viewModel: GameViewModel by viewModel()
+
     private val binding: FragmentGameBinding by viewBinding()
     private val navArgs by navArgs<GameFragmentArgs>()
 
