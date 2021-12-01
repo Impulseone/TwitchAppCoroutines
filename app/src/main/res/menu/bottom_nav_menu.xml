@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-    <item android:id="@+id/gamesFragment"
+    <item android:id="@id/games_flow"
         android:title="@string/scr_bottom_nav_all"
         app:showAsAction="always"
         android:orderInCategory="1"
         android:icon="@drawable/ic_games_list"/>
 
-    <item android:id="@+id/favoriteGamesFragment"
+    <item android:id="@id/favorite_games_flow"
         android:title="@string/scr_bottom_nav_favorite"
         app:showAsAction="ifRoom"
         android:orderInCategory="2"
