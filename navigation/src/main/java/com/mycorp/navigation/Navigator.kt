@@ -8,11 +8,14 @@ class Navigator {
 
     fun navigateToFlow(navigationFlow: BaseNavigationFlow, directions: NavDirections?) =
         when (navigationFlow) {
-            MainNavigationFlow.GamesFlow -> navController.navigate(MainNavGraphDirections.actionGlobalGamesFlow())
-            MainNavigationFlow.FavoriteGamesFlow -> navController.navigate(MainNavGraphDirections.actionGlobalFavoriteGamesFlow())
-            MainNavigationFlow.GameFlow -> directions?.let { navController.navigate(it) }
-            MainNavigationFlow.FollowersFlow -> directions?.let { navController.navigate(it) }
-            MainNavigationFlow.RatingFlow -> navController.navigate(MainNavGraphDirections.actionGlobalRatingFlow())
+            MainNavigationFlow.GamesFlow, MainNavigationFlow.FavoriteGamesFlow -> navController.navigate(
+                MainNavGraphDirections.actionGlobalGamesFlow()
+            )
+            MainNavigationFlow.GameFlow, MainNavigationFlow.FollowersFlow, MainNavigationFlow.RatingFlow -> directions?.let {
+                navController.navigate(
+                    it
+                )
+            }
             else -> navController.navigate(MainNavGraphDirections.actionGlobalGamesFlow())
         }
 }

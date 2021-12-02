@@ -47,7 +47,7 @@ class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games), OnB
                 adapter = this@GamesFragment.pagedAdapter
             }
             rateButton.setOnClickListener {
-                viewModel.navigateTo(MainNavigationFlow.RatingFlow, null)
+                viewModel.navigateTo(MainNavigationFlow.RatingFlow, GamesFragmentDirections.actionGamesFragmentToRatingFragment())
             }
         }
     }

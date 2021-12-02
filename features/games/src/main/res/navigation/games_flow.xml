@@ -16,6 +16,11 @@
                 android:name="gameId"
                 app:argType="string" />
         </action>
+
+        <action
+            android:id="@+id/action_gamesFragment_to_ratingFragment"
+            app:destination="@id/rating_fragment">
+        </action>
     </fragment>
 
     <fragment
@@ -38,9 +43,15 @@
     <fragment
         android:id="@+id/followersFragment"
         android:name="com.mycorp.games.screens.followers.FollowersFragment"
-        android:label="FollowersListFragment">
+        android:label="fragment_followers_list">
         <argument
             android:name="gameId"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/rating_fragment"
+        android:name="com.mycorp.rating.RatingFragment"
+        android:label="fragment_rating"
+        tools:layout="@layout/fragment_rating" />
 </navigation>
