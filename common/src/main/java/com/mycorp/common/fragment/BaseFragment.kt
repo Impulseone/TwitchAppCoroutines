@@ -37,7 +37,7 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
                 }
             }
             bindCommand(openScreenCommand) {
-                flowNavigatable.navigateToFlow(it)
+                flowNavigatable.navigateToFlow(it.first, it.second)
             }
             bindCommand(connectionExceptionCommand) {
                 Toast.makeText(

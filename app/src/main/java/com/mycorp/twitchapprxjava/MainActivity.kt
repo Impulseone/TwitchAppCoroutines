@@ -17,6 +17,7 @@ import com.mycorp.navigation.MainNavigationFlow
 import com.mycorp.navigation.Navigator
 import com.mycorp.navigation.ToFlowNavigatable
 import com.mycorp.twitchapprxjava.databinding.ActivityMainBinding
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(), ToFlowNavigatable {
 
@@ -24,35 +25,17 @@ class MainActivity : AppCompatActivity(), ToFlowNavigatable {
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment).navController
     }
-    private val navigator: Navigator = Navigator()
+    private val navigator: Navigator by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        setUpNavigation()
-//        navigator.navController = navController
-        val navView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         navigator.navController = navController
-        navView.setupWithNavController(navController)
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 
-    private fun setUpNavigation() {
-        NavigationUI.setupWithNavController(
-            binding.bottomNavigationView,
-            navController
-        )
-        binding.bottomNavigationView.setOnItemSelectedListener { item: MenuItem ->
-            navController.navigate(item.itemId)
-            true
-        }
-    }
-
-    override fun navigateToFlow(directions: NavDirections) {
-        navController.navigate(directions)
-    }
-
-    override fun navigateToFlow(flow: BaseNavigationFlow) {
-        navigator.navigateToFlow(flow)
+    override fun navigateToFlow(flow: BaseNavigationFlow, directions: NavDirections?) {
+        navigator.navigateToFlow(flow, directions)
     }
 
     override fun popBackStack(

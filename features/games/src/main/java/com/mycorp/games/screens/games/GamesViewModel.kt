@@ -9,6 +9,7 @@ import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.games.screens.games.adapter.DbGamesSourceFactory
 import com.mycorp.games.screens.games.adapter.GameListItem
 import com.mycorp.games.screens.games.adapter.TopGamesSourceFactory
+import com.mycorp.navigation.MainNavigationFlow
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -46,7 +47,7 @@ class GamesViewModel(
 
     fun gameItemClicked(position: Int) {
         pagedGamesLiveData.value?.data?.get(position)?.id?.let {
-            navigateTo(GamesFragmentDirections.actionGamesFragmentToGameFragment(it))
+            navigateTo(MainNavigationFlow.GameFlow, GamesFragmentDirections.actionGamesFragmentToGameFragment(it))
         }
     }
 

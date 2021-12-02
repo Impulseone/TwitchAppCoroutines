@@ -35,12 +35,11 @@ class RatingFragment : BaseFragment<RatingViewModel>(R.layout.fragment_rating) {
                         )
                     )
                 }
-            //TODO: fix this
             sendReportBtn.setOnClickListener {
-                findNavController().popBackStack()
+                viewModel.navigateTo(MainNavigationFlow.GamesFlow)
             }
             backBtn.setOnClickListener {
-                findNavController().popBackStack()
+                viewModel.navigateTo(MainNavigationFlow.GamesFlow)
             }
         }
     }

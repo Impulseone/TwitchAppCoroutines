@@ -6,6 +6,7 @@ import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.games.R
 import com.mycorp.model.GameData
 import com.mycorp.games.GameDataUseCase
+import com.mycorp.navigation.MainNavigationFlow
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -84,6 +85,9 @@ class GameViewModel(
     }
 
     fun launchFollowerScreen() {
-        navigateTo(GameFragmentDirections.actionGameFragmentToFollowersFragment(gameId!!))
+        navigateTo(
+            MainNavigationFlow.FollowersFlow,
+            GameFragmentDirections.actionGameFragmentToFollowersFragment(gameId!!)
+        )
     }
 }

@@ -7,6 +7,7 @@ import com.mycorp.database.dbModule
 import com.mycorp.favorite_games.favoriteGamesModule
 import com.mycorp.games.gamesModule
 import com.mycorp.myapplication.repositoriesModule
+import com.mycorp.navigation.navigationModule
 import com.mycorp.rating.ratingModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -26,7 +27,8 @@ class App : Application() {
                     repositoriesModule,
                     gamesModule,
                     favoriteGamesModule,
-                    ratingModule
+                    ratingModule,
+                    navigationModule
                 )
             )
         }

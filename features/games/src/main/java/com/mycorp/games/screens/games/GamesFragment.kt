@@ -46,9 +46,9 @@ class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games) {
                 setIgnoreLastDivider(R.drawable.shape_game_divider)
                 adapter = this@GamesFragment.pagedAdapter
             }
-            rateButton.setOnClickListener(
-                Navigation.createNavigateOnClickListener(R.id.action_gamesFragment_to_ratingFragment)
-            )
+            rateButton.setOnClickListener {
+                viewModel.navigateTo(MainNavigationFlow.RatingFlow, null)
+            }
         }
     }
 }

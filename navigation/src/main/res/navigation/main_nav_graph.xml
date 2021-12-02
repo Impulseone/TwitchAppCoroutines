@@ -8,6 +8,8 @@
 
     <include app:graph="@navigation/favorite_games_flow" />
 
+    <include app:graph="@navigation/rating_flow" />
+
     <action
         android:id="@+id/action_global_games_flow"
         app:destination="@id/games_flow"
@@ -19,6 +21,13 @@
         app:popUpTo="@id/main_nav_graph"
         android:id="@+id/action_global_favorite_games_flow"
         app:destination="@id/favorite_games_flow"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim" />
+
+    <action
+        app:popUpTo="@id/main_nav_graph"
+        android:id="@+id/action_global_rating_flow"
+        app:destination="@id/rating_flow"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim" />
 </navigation>
