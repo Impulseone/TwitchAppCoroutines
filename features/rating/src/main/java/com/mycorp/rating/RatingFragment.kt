@@ -14,10 +14,9 @@ import java.text.DecimalFormat
 
 class RatingFragment : BaseFragment<RatingViewModel>(R.layout.fragment_rating) {
 
-    override val navigationFlow: BaseNavigationFlow = MainNavigationFlow.RatingFlow
     override val viewModel: RatingViewModel by viewModel()
-
     private val binding: FragmentRatingBinding by viewBinding()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()

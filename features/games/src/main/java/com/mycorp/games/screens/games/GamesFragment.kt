@@ -12,12 +12,12 @@ import com.mycorp.games.databinding.FragmentGamesBinding
 import com.mycorp.games.screens.games.adapter.PagedGamesAdapter
 import com.mycorp.navigation.BaseNavigationFlow
 import com.mycorp.navigation.MainNavigationFlow
+import com.mycorp.navigation.OnBackPressed
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games) {
+class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games), OnBackPressed {
 
     override val viewModel: GamesViewModel by viewModel()
-    override val navigationFlow: BaseNavigationFlow = MainNavigationFlow.GamesFlow
 
     private val binding: FragmentGamesBinding by viewBinding()
     private var pagedAdapter: PagedGamesAdapter? = null

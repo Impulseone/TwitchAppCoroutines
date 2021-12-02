@@ -17,7 +17,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class GameFragment :
     BaseFragment<GameViewModel>(R.layout.fragment_game) {
 
-    override val navigationFlow: BaseNavigationFlow = MainNavigationFlow.GameFlow
     override val viewModel: GameViewModel by viewModel()
 
     private val binding: FragmentGameBinding by viewBinding()

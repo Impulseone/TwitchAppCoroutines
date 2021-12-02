@@ -10,11 +10,11 @@ import com.mycorp.favorite_games.adapter.FavoriteGamesListAdapter
 import com.mycorp.favorite_games.databinding.FragmentFavoriteGamesBinding
 import com.mycorp.navigation.BaseNavigationFlow
 import com.mycorp.navigation.MainNavigationFlow
+import com.mycorp.navigation.OnBackPressed
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.fragment_favorite_games) {
+class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.fragment_favorite_games), OnBackPressed {
     override val viewModel: FavoriteGamesViewModel by viewModel()
-    override val navigationFlow: BaseNavigationFlow = MainNavigationFlow.FavoriteGamesFlow
 
     private val binding: FragmentFavoriteGamesBinding by viewBinding()
     private var favoriteGamesListAdapter: FavoriteGamesListAdapter? = null

@@ -15,7 +15,6 @@ import com.mycorp.navigation.ToFlowNavigatable
 @SuppressLint("ResourceType")
 abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layoutId), FragmentScene {
     abstract val viewModel: VM
-    abstract val navigationFlow: BaseNavigationFlow
 
     private val flowNavigatable by lazy {
         requireActivity() as ToFlowNavigatable
@@ -23,10 +22,6 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
 
     override val self: Fragment
         get() = this
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        flowNavigatable.popBackStack(navigationFlow, this.viewLifecycleOwner)
-    }
 
     open fun bindVm() {
         with(viewModel) {
