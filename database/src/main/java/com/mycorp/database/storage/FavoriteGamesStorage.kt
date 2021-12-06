@@ -7,7 +7,6 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 interface FavoriteGamesStorage {
-    fun getFavoriteGames(limit: Int, offset: Int): Single<List<FavoriteGameDataEntity>>
     fun getFavoriteGamesList(): PagingSource<Int, FavoriteGameDataEntity>
     fun checkIsFavorite(gameId: String): Single<Int>
     fun insertFavoriteGame(gameData: GameData): Completable

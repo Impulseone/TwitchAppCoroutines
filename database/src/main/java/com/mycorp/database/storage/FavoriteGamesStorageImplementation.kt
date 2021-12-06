@@ -15,10 +15,7 @@ class FavoriteGamesStorageImplementation(private val favoriteGameDataDao: Favori
 
     override fun deleteFavoriteByGameId(gameId: String) = favoriteGameDataDao.deleteByGameId(gameId)
 
-    override fun getFavoriteGames(limit: Int, offset: Int) =
-        favoriteGameDataDao.getAll(limit, offset)
-
     override fun getFavoriteGamesList(): PagingSource<Int, FavoriteGameDataEntity> {
-        return favoriteGameDataDao.getAllList()
+        return favoriteGameDataDao.getAll()
     }
 }

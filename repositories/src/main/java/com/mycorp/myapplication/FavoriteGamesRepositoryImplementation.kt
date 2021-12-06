@@ -11,12 +11,6 @@ import io.reactivex.Single
 class FavoriteGamesRepositoryImplementation(
     private val favoriteGamesStorage: FavoriteGamesStorage
 ) : FavoriteGamesRepository {
-    override fun getFavoriteGames(limit: Int, offset: Int) = favoriteGamesStorage.getFavoriteGames(limit, offset)
-        .map {
-            it.map { entity ->
-                ListItemData(entity.id, entity.toModel())
-            }
-        }
 
     override fun getFavoriteGamesList(): PagingSource<Int, FavoriteGameDataEntity> {
        return favoriteGamesStorage.getFavoriteGamesList()

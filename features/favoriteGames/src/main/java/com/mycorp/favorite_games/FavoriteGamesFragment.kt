@@ -24,7 +24,6 @@ class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.frag
         super.onViewCreated(view, savedInstanceState)
         initViews()
         bindVm()
-        viewModel.init()
     }
 
     private fun initViews() {

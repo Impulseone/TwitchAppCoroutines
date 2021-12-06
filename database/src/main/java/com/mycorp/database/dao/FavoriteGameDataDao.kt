@@ -18,10 +18,7 @@ interface FavoriteGameDataDao {
     fun checkExist(id: String): Single<Int>
 
     @Query("select * from FavoriteGameDataEntity")
-    fun getAllList(): PagingSource<Int, FavoriteGameDataEntity>
-
-    @Query("select * from FavoriteGameDataEntity limit :limit offset :offset")
-    fun getAll(limit: Int, offset: Int): Single<List<FavoriteGameDataEntity>>
+    fun getAll(): PagingSource<Int, FavoriteGameDataEntity>
 
     @Query("DELETE FROM FavoriteGameDataEntity WHERE id = :gameId")
     fun deleteByGameId(gameId: String): Completable
