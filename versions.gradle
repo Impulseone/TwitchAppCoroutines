@@ -12,6 +12,7 @@ ext {
     koin = "3.1.2"
     navigation = "2.3.5"
     paging_version = "2.1.2"
+    paging_v3 = "3.1.0"
     coroutines_version = "1.5.2"
     ok_http = "4.3.1"
 }

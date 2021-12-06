@@ -1,5 +1,6 @@
 package com.mycorp.database.storage
 
+import androidx.paging.PagingSource
 import com.mycorp.database.dao.FavoriteGameDataDao
 import com.mycorp.database.entities.FavoriteGameDataEntity
 import com.mycorp.model.GameData
@@ -17,5 +18,7 @@ class FavoriteGamesStorageImplementation(private val favoriteGameDataDao: Favori
     override fun getFavoriteGames(limit: Int, offset: Int) =
         favoriteGameDataDao.getAll(limit, offset)
 
-
+    override fun getFavoriteGamesList(): PagingSource<Int, FavoriteGameDataEntity> {
+        return favoriteGameDataDao.getAllList()
+    }
 }

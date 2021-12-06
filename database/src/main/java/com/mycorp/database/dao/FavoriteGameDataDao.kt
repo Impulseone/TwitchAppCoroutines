@@ -1,5 +1,6 @@
 package com.mycorp.database.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
@@ -15,6 +16,9 @@ interface FavoriteGameDataDao {
 
     @Query("SELECT COUNT() FROM FavoriteGameDataEntity WHERE id = :id")
     fun checkExist(id: String): Single<Int>
+
+    @Query("select * from FavoriteGameDataEntity")
+    fun getAllList(): PagingSource<Int, FavoriteGameDataEntity>
 
     @Query("select * from FavoriteGameDataEntity limit :limit offset :offset")
     fun getAll(limit: Int, offset: Int): Single<List<FavoriteGameDataEntity>>
