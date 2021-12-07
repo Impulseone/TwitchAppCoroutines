@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TwitchAppRxJava</string>
+    <string name="app_name">TwitchAppCoroutines</string>
 
     <string name="scr_bottom_nav_all">All</string>
     <string name="scr_bottom_nav_favorite">Favorite</string>

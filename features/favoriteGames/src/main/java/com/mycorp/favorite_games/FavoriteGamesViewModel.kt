@@ -1,44 +1,35 @@
 package com.mycorp.favorite_games
 
-import androidx.paging.PagedList
-import androidx.paging.RxPagedListBuilder
-import com.mycorp.common.Data
-import com.mycorp.common.PagedListState
-import com.mycorp.common.helpers.GameDataViewState
+import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.model.FavoriteGameData
-import com.mycorp.favorite_games.adapter.FavoriteGamesSourceFactory
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.mycorp.model.ListItemData
+import com.mycorp.myapplication.FavoriteGamesRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class FavoriteGamesViewModel(
-    private val favoriteGamesSourceFactory: FavoriteGamesSourceFactory
+    private val favoriteGamesRepository: FavoriteGamesRepository
 ) : BaseViewModel() {
-
-    var gamesLiveData = Data<PagedListState<FavoriteGameData>>()
-
-    private val pagedListConfig = PagedList.Config.Builder()
-        .setEnablePlaceholders(false)
-        .setPageSize(PAGED_LIST_PAGE_SIZE)
-        .build()
-
-    fun init() {
-        favoriteGamesSourceFactory.getThrowableSubject()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                handleException(it)
-            }.addToSubscription()
-
-        RxPagedListBuilder(favoriteGamesSourceFactory, pagedListConfig)
-            .buildObservable()
-            .subscribe {
-                gamesLiveData.value = GameDataViewState.success(data = it)
-            }
-            .addToSubscription()
-    }
+    val favoriteGamesFlow: Flow<PagingData<ListItemData<FavoriteGameData>>> = Pager(
+        config = pagingConfig
+    ) {
+        favoriteGamesRepository.getFavoriteGamesList()
+    }.flow
+        .map { pagingData ->
+            pagingData
+                .map {
+                    ListItemData(it.id, it.toModel())
+                }
+        }
+        .cachedIn(viewModelScope)
 
     companion object {
-        private const val PAGED_LIST_PAGE_SIZE = 10
+        private val pagingConfig = PagingConfig(
+            pageSize = 8,
+            enablePlaceholders = false,
+            maxSize = 32
+        )
     }
 }

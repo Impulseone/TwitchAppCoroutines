@@ -1,9 +1,7 @@
 package com.mycorp.twitchapprxjava
 
 import android.os.Bundle
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
