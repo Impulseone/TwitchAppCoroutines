@@ -68,6 +68,7 @@ dependencies {
     //Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
 
     //ViewBinding
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$vbPropertyDelegate"

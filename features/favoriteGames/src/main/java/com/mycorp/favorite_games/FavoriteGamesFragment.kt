@@ -2,7 +2,9 @@ package com.mycorp.favorite_games
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.mycorp.common.extensions.setIgnoreLastDivider
@@ -14,7 +16,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.fragment_favorite_games), OnBackPressed {
+class FavoriteGamesFragment :
+    BaseFragment<FavoriteGamesViewModel>(R.layout.fragment_favorite_games), OnBackPressed {
     override val viewModel: FavoriteGamesViewModel by viewModel()
 
     private val binding: FragmentFavoriteGamesBinding by viewBinding()
@@ -41,7 +44,13 @@ class FavoriteGamesFragment : BaseFragment<FavoriteGamesViewModel>(R.layout.frag
     override fun bindVm() {
         super.bindVm()
         lifecycleScope.launch {
-            viewModel.favoriteGamesFlow.collectLatest { source -> favoriteGamesListAdapter?.submitData(source) }
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.favoriteGamesFlow.collectLatest { source ->
+                    favoriteGamesListAdapter?.submitData(
+                        source
+                    )
+                }
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mycorp.twitchapprxjava"
+        applicationId "com.mycorp.twitchappcoroutines"
         minSdk 21
         targetSdk 31
         versionCode 1
@@ -26,20 +26,9 @@ android {
     }
 
     buildTypes {
-        debug {
-            buildConfigField "String", "API_URL", "\"https://api.twitch.tv/\""
-            buildConfigField "String", "ACCEPT_HEADER", "\"Accept\""
-            buildConfigField "String", "CLIENT_ID", "\"Client-ID\""
-            buildConfigField "String", "ACCEPT_HEADER_VALUE", "\"application/vnd.twitchtv.v5+json\""
-            buildConfigField "String", "CLIENT_ID_HEADER_VALUE", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
-        }
+        debug {}
         release {
             minifyEnabled false
-            buildConfigField "String", "API_URL", "\"https://api.twitch.tv/\""
-            buildConfigField "String", "ACCEPT_HEADER", "\"Accept\""
-            buildConfigField "String", "CLIENT_ID", "\"Client-ID\""
-            buildConfigField "String", "ACCEPT_HEADER_VALUE", "\"application/vnd.twitchtv.v5+json\""
-            buildConfigField "String", "CLIENT_ID_HEADER_VALUE", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
