@@ -25,9 +25,7 @@ class GamesRepositoryImplementation(
             it.toModel()
         }
 
-    override suspend fun getGameDataByIdSuspend(id: String): GameData {
-        return gamesStorage.getGameDataEntityByIdSuspend(id).toModel()
-    }
+    override suspend fun getGameDataByIdSuspend(id: String) = gamesStorage.getGameDataEntityByIdSuspend(id).toModel()
 
     override fun insertGamesData(gameDataList: List<GameData>) =
         gamesStorage.insertGamesData(gamesData = gameDataList)
