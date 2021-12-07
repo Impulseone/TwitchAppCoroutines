@@ -7,8 +7,6 @@ import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.model.FollowerInfo
 import com.mycorp.model.ListItemData
 import com.mycorp.games.GameDataUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 
 class FollowersViewModel(
@@ -49,18 +47,18 @@ class FollowersViewModel(
 
     private fun getFollowers() {
         gameId?.let {
-            gameDataUseCase.getGameData(it)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ (_, _, followers) ->
+            viewModelScope.launch {
+                try {
+                    val followers = gameDataUseCase.getGameDataSuspend(it).third
                     followersLiveData.value = GameDataViewState.success(
                         data = followers.map { follower ->
                             ListItemData(follower.followerId, follower)
                         }
                     )
-                }, { t ->
+                } catch (t: Throwable) {
                     handleException(t)
-                }).addToSubscription()
+                }
+            }
         }
     }
 }

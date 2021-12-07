@@ -15,7 +15,7 @@ class FollowersStorageImplementation(
     private val gameFollowersDao: GameFollowersDao
 ) : FollowersStorage {
 
-   override fun getFollowersByGameId(gameId: String): Single<List<FollowerInfo>> {
+    override fun getFollowersByGameId(gameId: String): Single<List<FollowerInfo>> {
         return Single.just(gameId).flatMap {
             gameFollowersDao.getGameFollowersById(it).map { entity ->
                 entity.followersId
@@ -26,6 +26,13 @@ class FollowersStorageImplementation(
                     it.toModel()
                 }
             }
+        }
+    }
+
+    override suspend fun getFollowersByGameIdSuspend(gameId: String): List<FollowerInfo> {
+        val followersId = gameFollowersDao.getGameFollowersByIdSuspend(gameId).followersId
+        return followersDao.getByIdsSuspend(followersId).map {
+            it.toModel()
         }
     }
 
@@ -45,6 +52,6 @@ class FollowersStorageImplementation(
         gameId: String
     ) {
         gameFollowersDao.insertSuspend((GameFollowersEntity(followersData, gameId)))
-        followersDao.insertAllSuspend(followersData.map { FollowerInfoEntity(it)})
+        followersDao.insertAllSuspend(followersData.map { FollowerInfoEntity(it) })
     }
 }

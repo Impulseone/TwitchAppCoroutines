@@ -33,4 +33,8 @@ class FollowersRepositoryImplementation(
 
     override fun getFollowersByGameId(gameId: String) =
         followersStorage.getFollowersByGameId(gameId)
+
+    override suspend fun getFollowersByGameIdSuspend(gameId: String): List<FollowerInfo> {
+        return followersStorage.getFollowersByGameIdSuspend(gameId)
+    }
 }

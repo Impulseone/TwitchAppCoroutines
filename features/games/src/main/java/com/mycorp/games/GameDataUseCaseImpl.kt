@@ -49,6 +49,13 @@ class GameDataUseCaseImpl(
                 }
         }
 
+    override suspend fun getGameDataSuspend(gameId: String): Triple<Int, GameData, List<FollowerInfo>> {
+        val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
+        val isFavorite = favoriteGamesRepository.checkIsFavoriteSuspend(gameId)
+        val followers = followersRepository.getFollowersByGameIdSuspend(gameId)
+        return Triple(isFavorite, gameData, followers)
+    }
+
     override fun insertFavorite(gameData: GameData) =
         favoriteGamesRepository.insertFavoriteGame(gameData)
 
