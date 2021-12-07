@@ -39,4 +39,12 @@ class FollowersStorageImplementation(
             .subscribe({}, {}).dispose()
         return followersDao.insertAll(followersData.map { FollowerInfoEntity(it) })
     }
+
+    override suspend fun insertFollowersDataSuspend(
+        followersData: List<FollowerInfo>,
+        gameId: String
+    ) {
+        gameFollowersDao.insertSuspend((GameFollowersEntity(followersData, gameId)))
+        followersDao.insertAllSuspend(followersData.map { FollowerInfoEntity(it)})
+    }
 }

@@ -7,6 +7,9 @@ import com.mycorp.model.GameData
 class FavoriteGamesStorageImplementation(private val favoriteGameDataDao: FavoriteGameDataDao) :
     FavoriteGamesStorage {
     override fun checkIsFavorite(gameId: String) = favoriteGameDataDao.checkExist(gameId)
+    override suspend fun checkIsFavoriteSuspend(gameId: String): Int {
+        return favoriteGameDataDao.checkExistSuspend(gameId)
+    }
 
     override fun insertFavoriteGame(gameData: GameData) = favoriteGameDataDao.insert(
         FavoriteGameDataEntity(gameData)

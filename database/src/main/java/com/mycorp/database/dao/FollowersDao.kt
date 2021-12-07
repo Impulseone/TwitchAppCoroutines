@@ -15,4 +15,10 @@ interface FollowersDao {
 
     @Query("select * from FollowerInfoEntity where id in (:ids)")
     fun getByIds(ids: List<String>): Single<List<FollowerInfoEntity>>
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertAllSuspend(objects: List<FollowerInfoEntity>)
+
+    @Query("select * from FollowerInfoEntity where id in (:ids)")
+    suspend fun getByIdsSuspend(ids: List<String>): List<FollowerInfoEntity>
 }

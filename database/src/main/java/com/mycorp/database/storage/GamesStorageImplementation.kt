@@ -17,6 +17,10 @@ class GamesStorageImplementation(
 
     override fun getGameDataEntityById(id: String) = gameDataDao.getGameById(id)
 
+    override suspend fun getGameDataEntityByIdSuspend(id: String): GameDataEntity {
+        return gameDataDao.getGameByIdSuspend(id)
+    }
+
     override fun insertGamesData(gamesData: List<GameData>) =
         gameDataDao.insertAll(gamesData.map { GameDataEntity(it) })
 }

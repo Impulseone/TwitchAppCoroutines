@@ -17,6 +17,9 @@ interface FavoriteGameDataDao {
     @Query("SELECT COUNT() FROM FavoriteGameDataEntity WHERE id = :id")
     fun checkExist(id: String): Single<Int>
 
+    @Query("SELECT COUNT() FROM FavoriteGameDataEntity WHERE id = :id")
+    suspend fun checkExistSuspend(id: String): Int
+
     @Query("select * from FavoriteGameDataEntity")
     fun getAll(): PagingSource<Int, FavoriteGameDataEntity>
 
