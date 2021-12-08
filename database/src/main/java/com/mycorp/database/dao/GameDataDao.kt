@@ -20,4 +20,7 @@ interface GameDataDao {
 
     @Query("SELECT * FROM GameDataEntity where id=:id")
     fun getGameById(id: String): Single<GameDataEntity>
+
+    @Query("SELECT * FROM GameDataEntity where id=:id")
+    suspend fun getGameByIdSuspend(id: String): GameDataEntity
 }

@@ -8,4 +8,7 @@ import retrofit2.http.Path
 interface FollowersApi {
     @GET("kraken/channels/{id}/follows")
     fun loadGameDataItem(@Path("id") id: String): Single<GameItemDataDto>
+
+    @GET("kraken/channels/{id}/follows")
+    suspend fun loadGameDataItemSuspend(@Path("id") id: String): GameItemDataDto
 }

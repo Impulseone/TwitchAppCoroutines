@@ -23,6 +23,18 @@ class FollowersRepositoryImplementation(
             }
     }
 
+    override suspend fun fetchFollowersSuspend(id: String): List<FollowerInfo> {
+        val followers = followersController.getGameItemDataFromNetworkSuspend(id).follows?.map {
+            it!!.toModel()
+        }
+        followers?.let { followersStorage.insertFollowersDataSuspend(it, id) }
+        return followers ?: listOf()
+    }
+
     override fun getFollowersByGameId(gameId: String) =
         followersStorage.getFollowersByGameId(gameId)
+
+    override suspend fun getFollowersByGameIdSuspend(gameId: String): List<FollowerInfo> {
+        return followersStorage.getFollowersByGameIdSuspend(gameId)
+    }
 }
