@@ -12,7 +12,7 @@ import io.reactivex.Single
 @Dao
 interface FavoriteGameDataDao {
     @Insert(onConflict = REPLACE)
-    fun insert(favoriteGameDataEntity: FavoriteGameDataEntity): Completable
+    suspend fun insert(favoriteGameDataEntity: FavoriteGameDataEntity)
 
     @Query("SELECT COUNT() FROM FavoriteGameDataEntity WHERE id = :id")
     fun checkExist(id: String): Single<Int>
@@ -24,5 +24,5 @@ interface FavoriteGameDataDao {
     fun getAll(): PagingSource<Int, FavoriteGameDataEntity>
 
     @Query("DELETE FROM FavoriteGameDataEntity WHERE id = :gameId")
-    fun deleteByGameId(gameId: String): Completable
+    suspend fun deleteByGameId(gameId: String)
 }

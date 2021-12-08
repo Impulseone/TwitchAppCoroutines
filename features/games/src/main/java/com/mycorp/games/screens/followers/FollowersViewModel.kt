@@ -32,7 +32,7 @@ class FollowersViewModel(
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    val followers = gameDataUseCase.fetchGameDataSuspend(it).third
+                    val followers = gameDataUseCase.fetchGameData(it).third
                     followersLiveData.value = GameDataViewState.success(
                         data = followers.map { follower ->
                             ListItemData(follower.followerId, follower)
@@ -49,7 +49,7 @@ class FollowersViewModel(
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    val followers = gameDataUseCase.getGameDataSuspend(it).third
+                    val followers = gameDataUseCase.getGameData(it).third
                     followersLiveData.value = GameDataViewState.success(
                         data = followers.map { follower ->
                             ListItemData(follower.followerId, follower)

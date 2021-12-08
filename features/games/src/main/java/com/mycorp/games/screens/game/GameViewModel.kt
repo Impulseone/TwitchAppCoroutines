@@ -9,20 +9,17 @@ import com.mycorp.model.GameData
 import com.mycorp.games.GameDataUseCase
 import com.mycorp.model.FollowerInfo
 import com.mycorp.navigation.MainNavigationFlow
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 
 class GameViewModel(
     private val gameDataUseCase: GameDataUseCase
 ) : BaseViewModel() {
-
-    private var gameId: String? = null
-    private val isFavoriteLiveData = Data<Boolean>()
-
     val gameLiveData = Data<GameDataViewState<GameData>>()
     val followersCountData = Data<String>()
     val favoriteResLiveData = Data<Int>()
+
+    private var gameId: String? = null
+    private val isFavoriteLiveData = Data<Boolean>()
 
     fun init(gameId: String) {
         this.gameId = gameId
@@ -33,11 +30,27 @@ class GameViewModel(
         getGameDataSuspend()
     }
 
+    fun onLikeClicked() {
+        isFavoriteLiveData.value?.let {
+            isFavoriteLiveData.value = !it
+            favoriteResLiveData.value =
+                if (!it) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+            updateFavoriteData(!it)
+        }
+    }
+
+    fun launchFollowerScreen() {
+        navigateTo(
+            MainNavigationFlow.FollowersFlow,
+            GameFragmentDirections.actionGameFragmentToFollowersFragment(gameId!!)
+        )
+    }
+
     private fun fetchGameDataSuspend() {
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    updateLiveDataWithDataFromSource(gameDataUseCase.fetchGameDataSuspend(it))
+                    updateLiveDataWithDataFromSource(gameDataUseCase.fetchGameData(it))
                 } catch (t: Throwable) {
                     handleException(t)
                 }
@@ -49,7 +62,7 @@ class GameViewModel(
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    updateLiveDataWithDataFromSource(gameDataUseCase.getGameDataSuspend(it))
+                    updateLiveDataWithDataFromSource(gameDataUseCase.getGameData(it))
                 } catch (t: Throwable) {
                     handleException(t)
                 }
@@ -65,30 +78,13 @@ class GameViewModel(
         followersCountData.value = triple.third.size.toString()
     }
 
-    fun onLikeClicked() {
-        try {
-            if (isFavoriteLiveData.value != null) isFavoriteLiveData.value =
-                !isFavoriteLiveData.value!!
-            favoriteResLiveData.value =
-                if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-            (if (isFavoriteLiveData.value!!) {
+    private fun updateFavoriteData(isFavorite: Boolean) {
+        viewModelScope.launch {
+            if (isFavorite) {
                 gameDataUseCase.insertFavorite(gameLiveData.value?.data!!)
             } else {
                 gameDataUseCase.deleteFavoriteById(gameId!!)
-            }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({}, {
-                    handleException(it)
-                }).addToSubscription()
-        } catch (t: Throwable) {
-            handleException(t)
+            }
         }
-    }
-
-    fun launchFollowerScreen() {
-        navigateTo(
-            MainNavigationFlow.FollowersFlow,
-            GameFragmentDirections.actionGameFragmentToFollowersFragment(gameId!!)
-        )
     }
 }

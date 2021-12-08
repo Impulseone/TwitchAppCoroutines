@@ -15,7 +15,7 @@ class GameDataUseCaseImpl(
     private val favoriteGamesRepository: FavoriteGamesRepository,
     private val dispatcher: CoroutineDispatcher
 ) : GameDataUseCase {
-    override suspend fun fetchGameDataSuspend(gameId: String): Triple<Int, GameData, List<FollowerInfo>> {
+    override suspend fun fetchGameData(gameId: String): Triple<Int, GameData, List<FollowerInfo>> {
         val triple: Triple<Int, GameData, List<FollowerInfo>>
         withContext(dispatcher) {
             val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
@@ -26,7 +26,7 @@ class GameDataUseCaseImpl(
         return triple
     }
 
-    override suspend fun getGameDataSuspend(gameId: String): Triple<Int, GameData, List<FollowerInfo>> {
+    override suspend fun getGameData(gameId: String): Triple<Int, GameData, List<FollowerInfo>> {
         val triple: Triple<Int, GameData, List<FollowerInfo>>
         withContext(dispatcher) {
             val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
@@ -37,9 +37,16 @@ class GameDataUseCaseImpl(
         return triple
     }
 
-    override fun insertFavorite(gameData: GameData) =
-        favoriteGamesRepository.insertFavoriteGame(gameData)
+    override suspend fun insertFavorite(gameData: GameData) {
+        withContext(dispatcher) {
+            favoriteGamesRepository.insertFavoriteGame(gameData)
+        }
+    }
 
-    override fun deleteFavoriteById(gameId: String) = favoriteGamesRepository.deleteByGameId(gameId)
+    override suspend fun deleteFavoriteById(gameId: String) {
+        withContext(dispatcher) {
+            favoriteGamesRepository.deleteByGameId(gameId)
+        }
+    }
 
 }

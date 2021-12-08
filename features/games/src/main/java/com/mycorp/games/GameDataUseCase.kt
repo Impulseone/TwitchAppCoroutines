@@ -6,8 +6,8 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 interface GameDataUseCase {
-    suspend fun fetchGameDataSuspend(gameId: String): Triple<Int, GameData, List<FollowerInfo>>
-    suspend fun getGameDataSuspend(gameId: String): Triple<Int, GameData, List<FollowerInfo>>
-    fun insertFavorite(gameData: GameData): Completable
-    fun deleteFavoriteById(gameId: String): Completable
+    suspend fun fetchGameData(gameId: String): Triple<Int, GameData, List<FollowerInfo>>
+    suspend fun getGameData(gameId: String): Triple<Int, GameData, List<FollowerInfo>>
+    suspend fun insertFavorite(gameData: GameData)
+    suspend fun deleteFavoriteById(gameId: String)
 }
