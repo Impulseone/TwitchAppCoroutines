@@ -6,13 +6,13 @@ import com.mycorp.common.helpers.GameDataViewState
 import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.games.R
 import com.mycorp.model.GameData
-import com.mycorp.games.GameDataUseCase
-import com.mycorp.model.FollowerInfo
+import com.mycorp.games.GameDataInfoUseCase
+import com.mycorp.model.GameDataInfo
 import com.mycorp.navigation.MainNavigationFlow
 import kotlinx.coroutines.launch
 
 class GameViewModel(
-    private val gameDataUseCase: GameDataUseCase
+    private val gameDataInfoUseCase: GameDataInfoUseCase
 ) : BaseViewModel() {
     val gameLiveData = Data<GameDataViewState<GameData>>()
     val followersCountData = Data<String>()
@@ -23,11 +23,11 @@ class GameViewModel(
 
     fun init(gameId: String) {
         this.gameId = gameId
-        fetchGameDataSuspend()
+        fetchGameData()
     }
 
     override fun getDataFromDb() {
-        getGameDataSuspend()
+        getGameData()
     }
 
     fun onLikeClicked() {
@@ -46,11 +46,11 @@ class GameViewModel(
         )
     }
 
-    private fun fetchGameDataSuspend() {
+    private fun fetchGameData() {
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    updateLiveDataWithDataFromSource(gameDataUseCase.fetchGameData(it))
+                    updateLiveDataWithDataFromSource(gameDataInfoUseCase.fetchGameDataInfo(it))
                 } catch (t: Throwable) {
                     handleException(t)
                 }
@@ -58,11 +58,11 @@ class GameViewModel(
         }
     }
 
-    private fun getGameDataSuspend() {
+    private fun getGameData() {
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    updateLiveDataWithDataFromSource(gameDataUseCase.getGameData(it))
+                    updateLiveDataWithDataFromSource(gameDataInfoUseCase.getGameDataInfo(it))
                 } catch (t: Throwable) {
                     handleException(t)
                 }
@@ -70,20 +70,20 @@ class GameViewModel(
         }
     }
 
-    private fun updateLiveDataWithDataFromSource(triple: Triple<Int, GameData, List<FollowerInfo>>) {
-        gameLiveData.value = GameDataViewState.success(triple.second)
-        isFavoriteLiveData.value = triple.first > 0
+    private fun updateLiveDataWithDataFromSource(gameDataInfo: GameDataInfo) {
+        gameLiveData.value = GameDataViewState.success(gameDataInfo.gameData)
+        isFavoriteLiveData.value = gameDataInfo.isFavorite
         favoriteResLiveData.value =
-            if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-        followersCountData.value = triple.third.size.toString()
+            if (gameDataInfo.isFavorite) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+        followersCountData.value = gameDataInfo.followers.size.toString()
     }
 
     private fun updateFavoriteData(isFavorite: Boolean) {
         viewModelScope.launch {
             if (isFavorite) {
-                gameDataUseCase.insertFavorite(gameLiveData.value?.data!!)
+                gameDataInfoUseCase.insertFavorite(gameLiveData.value?.data!!)
             } else {
-                gameDataUseCase.deleteFavoriteById(gameId!!)
+                gameDataInfoUseCase.deleteFavoriteById(gameId!!)
             }
         }
     }

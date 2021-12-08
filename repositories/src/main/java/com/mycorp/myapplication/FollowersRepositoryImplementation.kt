@@ -10,7 +10,7 @@ class FollowersRepositoryImplementation(
     private val followersStorage: FollowersStorage
 ) : FollowersRepository {
 
-    override suspend fun fetchFollowersSuspend(id: String): List<FollowerInfo> {
+    override suspend fun fetchFollowers(id: String): List<FollowerInfo> {
         val followers = followersController.getGameItemDataFromNetworkSuspend(id).follows?.map {
             it!!.toModel()
         }
@@ -18,7 +18,7 @@ class FollowersRepositoryImplementation(
         return followers ?: listOf()
     }
 
-    override suspend fun getFollowersByGameIdSuspend(gameId: String): List<FollowerInfo> {
+    override suspend fun getFollowersByGameId(gameId: String): List<FollowerInfo> {
         return followersStorage.getFollowersByGameIdSuspend(gameId)
     }
 }

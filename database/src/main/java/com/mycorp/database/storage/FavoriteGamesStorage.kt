@@ -8,8 +8,7 @@ import io.reactivex.Single
 
 interface FavoriteGamesStorage {
     fun getFavoriteGamesList(): PagingSource<Int, FavoriteGameDataEntity>
-    fun checkIsFavorite(gameId: String): Single<Int>
-    suspend fun checkIsFavoriteSuspend(gameId: String): Int
+    suspend fun checkIsFavorite(gameId: String): Boolean
     suspend fun insertFavoriteGame(gameData: GameData)
     suspend fun deleteFavoriteByGameId(gameId: String)
 }

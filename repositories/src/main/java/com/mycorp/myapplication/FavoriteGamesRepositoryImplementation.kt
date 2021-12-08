@@ -7,9 +7,9 @@ class FavoriteGamesRepositoryImplementation(
     private val favoriteGamesStorage: FavoriteGamesStorage
 ) : FavoriteGamesRepository {
 
-    override fun getFavoriteGamesList() = favoriteGamesStorage.getFavoriteGamesList()
+    override fun getFavoriteGames() = favoriteGamesStorage.getFavoriteGamesList()
 
-    override suspend fun checkIsFavoriteSuspend(gameId: String) = favoriteGamesStorage.checkIsFavoriteSuspend(gameId)
+    override suspend fun checkIsFavorite(gameId: String) = favoriteGamesStorage.checkIsFavorite(gameId)
 
     override suspend fun insertFavoriteGame(gameData: GameData) {
         favoriteGamesStorage.insertFavoriteGame(gameData)

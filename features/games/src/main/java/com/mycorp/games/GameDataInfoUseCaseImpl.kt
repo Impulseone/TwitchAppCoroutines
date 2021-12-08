@@ -1,40 +1,39 @@
 package com.mycorp.games
 
-import com.mycorp.model.FollowerInfo
 import com.mycorp.model.GameData
+import com.mycorp.model.GameDataInfo
 import com.mycorp.myapplication.FavoriteGamesRepository
 import com.mycorp.myapplication.FollowersRepository
 import com.mycorp.myapplication.GamesRepository
-import io.reactivex.Single
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class GameDataUseCaseImpl(
+class GameDataInfoUseCaseImpl(
     private val followersRepository: FollowersRepository,
     private val gamesRepository: GamesRepository,
     private val favoriteGamesRepository: FavoriteGamesRepository,
     private val dispatcher: CoroutineDispatcher
-) : GameDataUseCase {
-    override suspend fun fetchGameData(gameId: String): Triple<Int, GameData, List<FollowerInfo>> {
-        val triple: Triple<Int, GameData, List<FollowerInfo>>
+) : GameDataInfoUseCase {
+    override suspend fun fetchGameDataInfo(gameId: String): GameDataInfo {
+        val gameDataInfo: GameDataInfo
         withContext(dispatcher) {
             val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
-            val isFavorite = favoriteGamesRepository.checkIsFavoriteSuspend(gameId)
-            val followers = followersRepository.fetchFollowersSuspend(gameId)
-            triple = Triple(isFavorite, gameData, followers)
+            val isFavorite = favoriteGamesRepository.checkIsFavorite(gameId)
+            val followers = followersRepository.fetchFollowers(gameId)
+            gameDataInfo = GameDataInfo(isFavorite, gameData, followers)
         }
-        return triple
+        return gameDataInfo
     }
 
-    override suspend fun getGameData(gameId: String): Triple<Int, GameData, List<FollowerInfo>> {
-        val triple: Triple<Int, GameData, List<FollowerInfo>>
+    override suspend fun getGameDataInfo(gameId: String): GameDataInfo {
+        val gameDataInfo: GameDataInfo
         withContext(dispatcher) {
             val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
-            val isFavorite = favoriteGamesRepository.checkIsFavoriteSuspend(gameId)
-            val followers = followersRepository.getFollowersByGameIdSuspend(gameId)
-            triple = Triple(isFavorite, gameData, followers)
+            val isFavorite = favoriteGamesRepository.checkIsFavorite(gameId)
+            val followers = followersRepository.getFollowersByGameId(gameId)
+            gameDataInfo = GameDataInfo(isFavorite, gameData, followers)
         }
-        return triple
+        return gameDataInfo
     }
 
     override suspend fun insertFavorite(gameData: GameData) {

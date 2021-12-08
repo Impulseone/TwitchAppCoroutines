@@ -6,11 +6,11 @@ import com.mycorp.common.helpers.GameDataViewState
 import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.model.FollowerInfo
 import com.mycorp.model.ListItemData
-import com.mycorp.games.GameDataUseCase
+import com.mycorp.games.GameDataInfoUseCase
 import kotlinx.coroutines.launch
 
 class FollowersViewModel(
-    private val gameDataUseCase: GameDataUseCase
+    private val gameDataInfoUseCase: GameDataInfoUseCase
 ) : BaseViewModel() {
 
     private var gameId: String? = null
@@ -32,7 +32,7 @@ class FollowersViewModel(
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    val followers = gameDataUseCase.fetchGameData(it).third
+                    val followers = gameDataInfoUseCase.fetchGameDataInfo(it).followers
                     followersLiveData.value = GameDataViewState.success(
                         data = followers.map { follower ->
                             ListItemData(follower.followerId, follower)
@@ -49,7 +49,7 @@ class FollowersViewModel(
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    val followers = gameDataUseCase.getGameData(it).third
+                    val followers = gameDataInfoUseCase.getGameDataInfo(it).followers
                     followersLiveData.value = GameDataViewState.success(
                         data = followers.map { follower ->
                             ListItemData(follower.followerId, follower)
