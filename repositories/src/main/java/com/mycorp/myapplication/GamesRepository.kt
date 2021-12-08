@@ -9,7 +9,6 @@ interface GamesRepository {
     fun fetchGamesDataList(limit: Int, offset: Int): Single<List<GameData>>
 
     fun getGamesLimited(limit: Int, offset: Int): Single<List<GameData>>
-    fun getGameDataById(id: String): Single<GameData>
     suspend fun getGameDataByIdSuspend(id: String): GameData
 
     fun insertGamesData(gameDataList: List<GameData>): Completable

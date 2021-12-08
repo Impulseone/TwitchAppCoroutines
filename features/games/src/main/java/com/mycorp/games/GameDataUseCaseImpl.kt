@@ -15,21 +15,6 @@ class GameDataUseCaseImpl(
     private val favoriteGamesRepository: FavoriteGamesRepository,
     private val dispatcher: CoroutineDispatcher
 ) : GameDataUseCase {
-    override fun fetchGameData(gameId: String) = Single.just(gameId)
-        .flatMap { id ->
-            gamesRepository.getGameDataById(id)
-                .flatMap { data ->
-                    favoriteGamesRepository.checkIsFavorite(id).map {
-                        it to data
-                    }
-                }
-                .flatMap { (isFavorite, gameData) ->
-                    followersRepository.fetchFollowers(id).map { list ->
-                        Triple(isFavorite, gameData, list)
-                    }
-                }
-        }
-
     override suspend fun fetchGameDataSuspend(gameId: String): Triple<Int, GameData, List<FollowerInfo>> {
         val triple: Triple<Int, GameData, List<FollowerInfo>>
         withContext(dispatcher) {
@@ -40,21 +25,6 @@ class GameDataUseCaseImpl(
         }
         return triple
     }
-
-    override fun getGameData(gameId: String) = Single.just(gameId)
-        .flatMap { id ->
-            gamesRepository.getGameDataById(id)
-                .flatMap { data ->
-                    favoriteGamesRepository.checkIsFavorite(id).map {
-                        it to data
-                    }
-                }
-                .flatMap { (isFavorite, gameData) ->
-                    followersRepository.getFollowersByGameId(id).map { list ->
-                        Triple(isFavorite, gameData, list)
-                    }
-                }
-        }
 
     override suspend fun getGameDataSuspend(gameId: String): Triple<Int, GameData, List<FollowerInfo>> {
         val triple: Triple<Int, GameData, List<FollowerInfo>>

@@ -9,19 +9,6 @@ class FollowersRepositoryImplementation(
     private val followersController: FollowersController,
     private val followersStorage: FollowersStorage
 ) : FollowersRepository {
-    override fun fetchFollowers(id: String): Single<List<FollowerInfo>> {
-        return followersController.getGameItemDataFromNetwork(id)
-            .map {
-                it.follows ?: listOf()
-            }
-            .map { list ->
-                list.filterNotNull().map { it.toModel() }
-            }
-            .flatMap {
-                followersStorage.insertFollowersData(it, id)
-                    .andThen(Single.just(it))
-            }
-    }
 
     override suspend fun fetchFollowersSuspend(id: String): List<FollowerInfo> {
         val followers = followersController.getGameItemDataFromNetworkSuspend(id).follows?.map {
@@ -30,9 +17,6 @@ class FollowersRepositoryImplementation(
         followers?.let { followersStorage.insertFollowersDataSuspend(it, id) }
         return followers ?: listOf()
     }
-
-    override fun getFollowersByGameId(gameId: String) =
-        followersStorage.getFollowersByGameId(gameId)
 
     override suspend fun getFollowersByGameIdSuspend(gameId: String): List<FollowerInfo> {
         return followersStorage.getFollowersByGameIdSuspend(gameId)
