@@ -8,8 +8,6 @@ class FollowersControllerImplementation(private val followersApi: FollowersApi) 
 
     override fun getGameItemDataFromNetwork(id: String) = followersApi.loadGameDataItem(id)
 
-    override suspend fun getGameItemDataFromNetworkSuspend(id: String): GameItemDataDto {
-        return followersApi.loadGameDataItemSuspend(id)
-    }
+    override suspend fun getGameItemDataFromNetworkSuspend(id: String) = followersApi.loadGameDataItemSuspend(id)
 
 }
