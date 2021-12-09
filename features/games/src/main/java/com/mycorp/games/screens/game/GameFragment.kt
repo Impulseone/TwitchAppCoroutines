@@ -13,8 +13,6 @@ import com.bumptech.glide.Glide
 import com.mycorp.common.fragment.BaseFragment
 import com.mycorp.games.R
 import com.mycorp.games.databinding.FragmentGameBinding
-import com.mycorp.navigation.BaseNavigationFlow
-import com.mycorp.navigation.MainNavigationFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,34 +47,31 @@ class GameFragment :
 
     override fun bindVm() {
         super.bindVm()
-        with(binding) {
-            with(viewModel) {
-                lifecycleScope.launch {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        gameFlow.collectLatest {
-                            progressIndicator.isVisible = it.progressIndicatorVisibility
-                            gameName.text = it.data?.name ?: ""
-                            Glide.with(requireContext()).load(it.data?.logoUrl).into(image)
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                with(binding) {
+                    with(viewModel) {
+                        launch {
+                            gameDataInfoFlow.collectLatest {
+                                progressIndicator.isVisible = false
+                                gameName.text = it.gameData.name
+                                Glide.with(requireContext()).load(it.gameData.logoUrl).into(image)
+                                followersCount.text =
+                                    getString(
+                                        R.string.scr_game_layout_followers_tv,
+                                        it.followers.size.toString()
+                                    )
+                            }
                         }
-                    }
-                }
-                lifecycleScope.launch {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        followersCountFlow.collectLatest {
-                            followersCount.text =
-                                getString(R.string.scr_game_layout_followers_tv, it)
-                        }
-                    }
-                }
-                lifecycleScope.launch {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        favoriteResFlow.collectLatest {
-                            like.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                    requireContext(),
-                                    it
+                        launch {
+                            isFavoriteFlow.collectLatest {
+                                like.setImageDrawable(
+                                    ContextCompat.getDrawable(
+                                        requireContext(),
+                                        if (it) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }

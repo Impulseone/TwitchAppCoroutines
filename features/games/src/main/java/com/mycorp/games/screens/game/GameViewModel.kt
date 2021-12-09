@@ -1,10 +1,8 @@
 package com.mycorp.games.screens.game
 
 import androidx.lifecycle.viewModelScope
-import com.mycorp.common.helpers.GameDataViewState
 import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.games.GameDataInfoUseCase
-import com.mycorp.games.R
 import com.mycorp.model.GameData
 import com.mycorp.model.GameDataInfo
 import com.mycorp.navigation.MainNavigationFlow
@@ -14,11 +12,11 @@ import kotlinx.coroutines.launch
 class GameViewModel(
     private val gameDataInfoUseCase: GameDataInfoUseCase
 ) : BaseViewModel() {
-    val gameFlow = MutableSharedFlow<GameDataViewState<GameData>>()
-    val followersCountFlow = MutableSharedFlow<String>()
-    val favoriteResFlow = MutableSharedFlow<Int>()
-    private var isFavorite: Boolean? = null
 
+    val gameDataInfoFlow = MutableSharedFlow<GameDataInfo>()
+    val isFavoriteFlow = MutableSharedFlow<Boolean>()
+
+    private var isFavorite: Boolean? = null
     private var gameId: String? = null
     private var gameData: GameData? = null
 
@@ -35,9 +33,6 @@ class GameViewModel(
         isFavorite?.let {
             viewModelScope.launch {
                 isFavorite = !it
-                favoriteResFlow.emit(
-                    if (!it) R.drawable.like_filled_icon else R.drawable.like_outlined_icon)
-
                 updateFavoriteData(!it)
             }
         }
@@ -77,16 +72,15 @@ class GameViewModel(
     private fun updateFlowWithDataFromSource(gameDataInfo: GameDataInfo) {
         viewModelScope.launch {
             gameData = gameDataInfo.gameData
-            gameFlow.emit(GameDataViewState.success(gameDataInfo.gameData))
-            followersCountFlow.emit(gameDataInfo.followers.size.toString())
-            favoriteResFlow.emit(
-                if (gameDataInfo.isFavorite) R.drawable.like_filled_icon else R.drawable.like_outlined_icon)
+            gameDataInfoFlow.emit(gameDataInfo)
+            isFavoriteFlow.emit(gameDataInfo.isFavorite)
         }
         isFavorite = gameDataInfo.isFavorite
     }
 
     private fun updateFavoriteData(isFavorite: Boolean) {
         viewModelScope.launch {
+            isFavoriteFlow.emit(isFavorite)
             if (isFavorite) {
                 gameData?.let { gameDataInfoUseCase.insertFavorite(it) }
             } else {
