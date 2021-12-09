@@ -14,38 +14,28 @@ class GameDataInfoUseCaseImpl(
     private val favoriteGamesRepository: FavoriteGamesRepository,
     private val dispatcher: CoroutineDispatcher
 ) : GameDataInfoUseCase {
-    override suspend fun fetchGameDataInfo(gameId: String): GameDataInfo {
-        val gameDataInfo: GameDataInfo
-        withContext(dispatcher) {
-            val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
-            val isFavorite = favoriteGamesRepository.checkIsFavorite(gameId)
-            val followers = followersRepository.fetchFollowers(gameId)
-            gameDataInfo = GameDataInfo(isFavorite, gameData, followers)
-        }
-        return gameDataInfo
+    override suspend fun fetchGameDataInfo(gameId: String) = withContext(dispatcher) {
+        val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
+        val isFavorite = favoriteGamesRepository.checkIsFavorite(gameId)
+        val followers = followersRepository.fetchFollowers(gameId)
+        return@withContext GameDataInfo(isFavorite, gameData, followers)
     }
 
-    override suspend fun getGameDataInfo(gameId: String): GameDataInfo {
-        val gameDataInfo: GameDataInfo
+    override suspend fun getGameDataInfo(gameId: String) =
         withContext(dispatcher) {
             val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
             val isFavorite = favoriteGamesRepository.checkIsFavorite(gameId)
             val followers = followersRepository.getFollowersByGameId(gameId)
-            gameDataInfo = GameDataInfo(isFavorite, gameData, followers)
+            return@withContext GameDataInfo(isFavorite, gameData, followers)
         }
-        return gameDataInfo
+
+    override suspend fun insertFavorite(gameData: GameData) = withContext(dispatcher) {
+        favoriteGamesRepository.insertFavoriteGame(gameData)
     }
 
-    override suspend fun insertFavorite(gameData: GameData) {
-        withContext(dispatcher) {
-            favoriteGamesRepository.insertFavoriteGame(gameData)
-        }
-    }
 
-    override suspend fun deleteFavoriteById(gameId: String) {
-        withContext(dispatcher) {
-            favoriteGamesRepository.deleteByGameId(gameId)
-        }
+    override suspend fun deleteFavoriteById(gameId: String) = withContext(dispatcher) {
+        favoriteGamesRepository.deleteByGameId(gameId)
     }
 
 }

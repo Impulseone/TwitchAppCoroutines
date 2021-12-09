@@ -9,14 +9,12 @@ class FavoriteGamesRepositoryImplementation(
 
     override fun getFavoriteGames() = favoriteGamesStorage.getFavoriteGamesList()
 
-    override suspend fun checkIsFavorite(gameId: String) = favoriteGamesStorage.checkIsFavorite(gameId)
+    override suspend fun checkIsFavorite(gameId: String) =
+        favoriteGamesStorage.checkIsFavorite(gameId)
 
-    override suspend fun insertFavoriteGame(gameData: GameData) {
+    override suspend fun insertFavoriteGame(gameData: GameData) =
         favoriteGamesStorage.insertFavoriteGame(gameData)
-    }
 
-    override suspend fun deleteByGameId(gameId: String) {
+    override suspend fun deleteByGameId(gameId: String) =
         favoriteGamesStorage.deleteFavoriteByGameId(gameId)
-    }
-
 }
