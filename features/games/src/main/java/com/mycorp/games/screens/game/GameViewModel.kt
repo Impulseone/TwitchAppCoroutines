@@ -1,25 +1,26 @@
 package com.mycorp.games.screens.game
 
 import androidx.lifecycle.viewModelScope
-import com.mycorp.common.Data
 import com.mycorp.common.helpers.GameDataViewState
 import com.mycorp.common.viewModel.BaseViewModel
+import com.mycorp.games.GameDataInfoUseCase
 import com.mycorp.games.R
 import com.mycorp.model.GameData
-import com.mycorp.games.GameDataInfoUseCase
 import com.mycorp.model.GameDataInfo
 import com.mycorp.navigation.MainNavigationFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 class GameViewModel(
     private val gameDataInfoUseCase: GameDataInfoUseCase
 ) : BaseViewModel() {
-    val gameLiveData = Data<GameDataViewState<GameData>>()
-    val followersCountData = Data<String>()
-    val favoriteResLiveData = Data<Int>()
+    val gameFlow = MutableSharedFlow<GameDataViewState<GameData>>()
+    val followersCountFlow = MutableSharedFlow<String>()
+    val favoriteResFlow = MutableSharedFlow<Int>()
+    private var isFavorite: Boolean? = null
 
     private var gameId: String? = null
-    private val isFavoriteLiveData = Data<Boolean>()
+    private var gameData: GameData? = null
 
     fun init(gameId: String) {
         this.gameId = gameId
@@ -31,11 +32,14 @@ class GameViewModel(
     }
 
     fun onLikeClicked() {
-        isFavoriteLiveData.value?.let {
-            isFavoriteLiveData.value = !it
-            favoriteResLiveData.value =
-                if (!it) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-            updateFavoriteData(!it)
+        isFavorite?.let {
+            viewModelScope.launch {
+                isFavorite = !it
+                favoriteResFlow.emit(
+                    if (!it) R.drawable.like_filled_icon else R.drawable.like_outlined_icon)
+
+                updateFavoriteData(!it)
+            }
         }
     }
 
@@ -50,7 +54,7 @@ class GameViewModel(
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    updateLiveDataWithDataFromSource(gameDataInfoUseCase.fetchGameDataInfo(it))
+                    updateFlowWithDataFromSource(gameDataInfoUseCase.fetchGameDataInfo(it))
                 } catch (t: Throwable) {
                     handleException(t)
                 }
@@ -62,7 +66,7 @@ class GameViewModel(
         gameId?.let {
             viewModelScope.launch {
                 try {
-                    updateLiveDataWithDataFromSource(gameDataInfoUseCase.getGameDataInfo(it))
+                    updateFlowWithDataFromSource(gameDataInfoUseCase.getGameDataInfo(it))
                 } catch (t: Throwable) {
                     handleException(t)
                 }
@@ -70,20 +74,23 @@ class GameViewModel(
         }
     }
 
-    private fun updateLiveDataWithDataFromSource(gameDataInfo: GameDataInfo) {
-        gameLiveData.value = GameDataViewState.success(gameDataInfo.gameData)
-        isFavoriteLiveData.value = gameDataInfo.isFavorite
-        favoriteResLiveData.value =
-            if (gameDataInfo.isFavorite) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-        followersCountData.value = gameDataInfo.followers.size.toString()
+    private fun updateFlowWithDataFromSource(gameDataInfo: GameDataInfo) {
+        viewModelScope.launch {
+            gameData = gameDataInfo.gameData
+            gameFlow.emit(GameDataViewState.success(gameDataInfo.gameData))
+            followersCountFlow.emit(gameDataInfo.followers.size.toString())
+            favoriteResFlow.emit(
+                if (gameDataInfo.isFavorite) R.drawable.like_filled_icon else R.drawable.like_outlined_icon)
+        }
+        isFavorite = gameDataInfo.isFavorite
     }
 
     private fun updateFavoriteData(isFavorite: Boolean) {
         viewModelScope.launch {
             if (isFavorite) {
-                gameDataInfoUseCase.insertFavorite(gameLiveData.value?.data!!)
+                gameData?.let { gameDataInfoUseCase.insertFavorite(it) }
             } else {
-                gameDataInfoUseCase.deleteFavoriteById(gameId!!)
+                gameId?.let { gameDataInfoUseCase.deleteFavoriteById(it) }
             }
         }
     }
