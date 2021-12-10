@@ -4,6 +4,6 @@ import com.mycorp.model.FollowerInfo
 import io.reactivex.Single
 
 interface FollowersRepository {
-    suspend fun fetchFollowersSuspend(id: String): List<FollowerInfo>
-    suspend fun getFollowersByGameIdSuspend(gameId:String): List<FollowerInfo>
+    suspend fun fetchFollowers(id: String): List<FollowerInfo>
+    suspend fun getFollowersByGameId(gameId:String): List<FollowerInfo>
 }

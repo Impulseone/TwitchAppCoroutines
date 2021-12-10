@@ -15,7 +15,7 @@ class FavoriteGamesViewModel(
     val favoriteGamesFlow: Flow<PagingData<ListItemData<FavoriteGameData>>> = Pager(
         config = pagingConfig
     ) {
-        favoriteGamesRepository.getFavoriteGamesList()
+        favoriteGamesRepository.getFavoriteGames()
     }.flow
         .map { pagingData ->
             pagingData

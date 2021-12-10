@@ -9,8 +9,8 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 interface FavoriteGamesRepository {
-    fun getFavoriteGamesList(): PagingSource<Int, FavoriteGameDataEntity>
-    suspend fun checkIsFavoriteSuspend(gameId: String): Int
-    fun insertFavoriteGame(gameData: GameData): Completable
-    fun deleteByGameId(gameId: String): Completable
+    fun getFavoriteGames(): PagingSource<Int, FavoriteGameDataEntity>
+    suspend fun checkIsFavorite(gameId: String): Boolean
+    suspend fun insertFavoriteGame(gameData: GameData)
+    suspend fun deleteByGameId(gameId: String)
 }
