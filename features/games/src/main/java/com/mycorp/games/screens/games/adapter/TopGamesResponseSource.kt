@@ -1,73 +1,41 @@
 package com.mycorp.games.screens.games.adapter
 
 import android.content.Context
-import androidx.paging.PositionalDataSource
-import com.mycorp.model.GameData
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.mycorp.model.ListItemData
 import com.mycorp.myapplication.GamesRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 
 class TopGamesResponseSource(
     private val context: Context,
-    private val compositeDisposable: CompositeDisposable,
-    private val throwableStateSubject: PublishSubject<Throwable>,
     private val gamesRepository: GamesRepository
-) : PositionalDataSource<ListItemData<GameListItem>>() {
-    override fun loadInitial(
-        params: LoadInitialParams,
-        callback: LoadInitialCallback<ListItemData<GameListItem>>
-    ) {
-        compositeDisposable.add(
-            gamesRepository.fetchGamesDataList(
-                limit = params.pageSize,
-                offset = params.requestedStartPosition
+) : PagingSource<Int, ListItemData<GameListItem>>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ListItemData<GameListItem>> {
+        try {
+            val currentLoadingPageKey = params.key ?: 1
+            val gamesList =
+                gamesRepository.fetchGamesDataListSuspend(params.loadSize, currentLoadingPageKey).map {
+                    ListItemData(it.id, GameListItem(context, it))
+                }
+            val responseData = mutableListOf<ListItemData<GameListItem>>()
+            responseData.addAll(gamesList)
+
+            val prevKey = if (currentLoadingPageKey == 1) null else currentLoadingPageKey - 1
+
+            return LoadResult.Page(
+                data = responseData,
+                prevKey = prevKey,
+                nextKey = currentLoadingPageKey.plus(1)
             )
-                .subscribe({
-                    callback.onResult(
-                        it.map { game ->
-                            ListItemData(game.id, GameListItem(context, game))
-                        },
-                        DEFAULT_START_POSITION
-                    )
-                    saveData(it)
-                }, {
-                    throwableStateSubject.onNext(it)
-                })
-        )
+        } catch (e: Exception) {
+            return LoadResult.Error(e)
+        }
     }
 
-    override fun loadRange(
-        params: LoadRangeParams,
-        callback: LoadRangeCallback<ListItemData<GameListItem>>
-    ) {
-        compositeDisposable.add(
-            gamesRepository.fetchGamesDataList(
-                limit = params.loadSize,
-                offset = params.startPosition
-            ).subscribe({
-                callback.onResult(
-                    it.map { game ->
-                        ListItemData(game.id, GameListItem(context, game))
-                    }
-                )
-                saveData(it)
-            }, {
-                throwableStateSubject.onNext(it)
-            })
-        )
-    }
-
-    private fun saveData(gameDataList:List<GameData>){
-        gamesRepository.insertGamesData(gameDataList)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, {}).dispose()
-    }
-
-    companion object {
-        private const val DEFAULT_START_POSITION = 0
+    override fun getRefreshKey(state: PagingState<Int, ListItemData<GameListItem>>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
     }
 }

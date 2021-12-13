@@ -11,4 +11,10 @@ interface GamesApi {
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
     ): Single<TopGamesResponseDto>
+
+    @GET("kraken/games/top")
+    suspend fun loadGamesSuspend(
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
+    ): TopGamesResponseDto
 }

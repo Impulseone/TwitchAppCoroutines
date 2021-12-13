@@ -13,6 +13,8 @@ class GamesRepositoryImplementation(
             it.toModel()
         }!!
 
+    override suspend fun fetchGamesDataListSuspend(limit: Int, offset: Int) = gamesController.getDataFromNetworkSuspend(limit, offset).toModel()
+
     override fun getGamesLimited(limit: Int, offset: Int) =
         gamesStorage.getGamesLimited(limit, offset).map {
             it.map { gameDataEntity ->

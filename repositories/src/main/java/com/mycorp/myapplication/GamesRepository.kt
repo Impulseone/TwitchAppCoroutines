@@ -7,8 +7,10 @@ import io.reactivex.Single
 interface GamesRepository {
 
     fun fetchGamesDataList(limit: Int, offset: Int): Single<List<GameData>>
+    suspend fun fetchGamesDataListSuspend(limit: Int, offset: Int): List<GameData>
 
     fun getGamesLimited(limit: Int, offset: Int): Single<List<GameData>>
+
     suspend fun getGameDataByIdSuspend(id: String): GameData
 
     fun insertGamesData(gameDataList: List<GameData>): Completable
