@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mycorp.games.databinding.ItemGameBinding
 
-class GameViewHolder(private val binding: ItemGameBinding, private val itemClicked: (Int) -> Unit) :
+class GameViewHolder(private val binding: ItemGameBinding, private val itemClicked: (String) -> Unit) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: GameListItem) {
@@ -15,12 +15,12 @@ class GameViewHolder(private val binding: ItemGameBinding, private val itemClick
             gameName.text = item.name
             channelsCount.text = item.channels
             watchersCount.text = item.watchers
-            root.setOnClickListener { itemClicked(bindingAdapterPosition) }
+            root.setOnClickListener { itemClicked(item.id) }
         }
     }
 
     companion object {
-        fun from(parent: ViewGroup, itemClicked: (Int) -> Unit): GameViewHolder {
+        fun from(parent: ViewGroup, itemClicked: (String) -> Unit): GameViewHolder {
             return GameViewHolder(
                 ItemGameBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false

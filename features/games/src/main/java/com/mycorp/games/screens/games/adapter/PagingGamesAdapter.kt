@@ -6,12 +6,13 @@ import androidx.paging.PagingDataAdapter
 import com.mycorp.common.helpers.BaseItemCallback
 import com.mycorp.model.ListItemData
 
-class PagedGamesAdapter(
-    private val itemClicked: (Int) -> Unit
+class PagingGamesAdapter(
+    private val itemClicked: (String) -> Unit
 ) : PagingDataAdapter<ListItemData<GameListItem>, GameViewHolder>(
     BaseItemCallback()
 ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = GameViewHolder.from(parent, itemClicked)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = GameViewHolder.
+    from(parent, itemClicked)
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         getItem(position)?.let {

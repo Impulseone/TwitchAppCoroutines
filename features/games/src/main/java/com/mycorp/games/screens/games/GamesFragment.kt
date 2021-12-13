@@ -11,7 +11,7 @@ import com.mycorp.common.extensions.setIgnoreLastDivider
 import com.mycorp.common.fragment.BaseFragment
 import com.mycorp.games.R
 import com.mycorp.games.databinding.FragmentGamesBinding
-import com.mycorp.games.screens.games.adapter.PagedGamesAdapter
+import com.mycorp.games.screens.games.adapter.PagingGamesAdapter
 import com.mycorp.navigation.MainNavigationFlow
 import com.mycorp.navigation.OnBackPressed
 import kotlinx.coroutines.flow.collectLatest
@@ -23,7 +23,7 @@ class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games), OnB
     override val viewModel: GamesViewModel by viewModel()
 
     private val binding: FragmentGamesBinding by viewBinding()
-    private var pagedAdapter: PagedGamesAdapter? = null
+    private var pagingAdapter: PagingGamesAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,7 +37,7 @@ class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games), OnB
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.gamesFlow.collectLatest {
                     binding.progressIndicator.isVisible = false
-                    pagedAdapter?.submitData(it)
+                    pagingAdapter?.submitData(it)
                 }
             }
         }
@@ -45,12 +45,12 @@ class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games), OnB
 
     private fun initViews() {
         with(binding) {
-            pagedAdapter = PagedGamesAdapter {
+            pagingAdapter = PagingGamesAdapter {
                 viewModel.gameItemClicked(it)
             }
             gamesRv.apply {
                 setIgnoreLastDivider(R.drawable.shape_game_divider)
-                adapter = this@GamesFragment.pagedAdapter
+                adapter = this@GamesFragment.pagingAdapter
             }
             rateButton.setOnClickListener {
                 viewModel.navigateTo(MainNavigationFlow.RatingFlow, GamesFragmentDirections.actionGamesFragmentToRatingFragment())
