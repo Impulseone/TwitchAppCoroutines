@@ -12,6 +12,8 @@ class GamesStorageImplementation(
     override fun getGamesDataPaging() =
         gameDataDao.getAllGamesPaging()
 
+    override suspend fun deleteAllGames() = gameDataDao.deleteAll()
+
     override suspend fun getGameDataEntityByIdSuspend(id: String) =
         gameDataDao.getGameByIdSuspend(id)
 

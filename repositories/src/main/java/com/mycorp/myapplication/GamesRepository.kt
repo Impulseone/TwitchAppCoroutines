@@ -8,6 +8,8 @@ interface GamesRepository {
 
     suspend fun fetchGamesDataList(limit: Int, offset: Int): List<GameData>
 
+    suspend fun deleteAllGames()
+
     fun getGamesPaging(): PagingSource<Int, GameDataEntity>
 
     suspend fun getGameDataByIdSuspend(id: String): GameData

@@ -19,6 +19,7 @@ import com.mycorp.model.ListItemData
 import com.mycorp.navigation.MainNavigationFlow
 import com.mycorp.navigation.OnBackPressed
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,7 +41,7 @@ class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games), OnB
         super.bindVm()
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.gamesFlow.collectLatest {
+                viewModel.getGames().distinctUntilChanged().collectLatest {
                     binding.progressIndicator.isVisible = false
                     pagingAdapter?.submitData(it.map {
                         ListItemData(

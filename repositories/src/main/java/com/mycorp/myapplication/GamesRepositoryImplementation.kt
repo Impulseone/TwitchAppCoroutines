@@ -11,6 +11,10 @@ class GamesRepositoryImplementation(
     override suspend fun fetchGamesDataList(limit: Int, offset: Int) =
         gamesController.getDataFromNetworkSuspend(limit, offset).toModel()
 
+    override suspend fun deleteAllGames() {
+        gamesStorage.deleteAllGames()
+    }
+
     override fun getGamesPaging() = gamesStorage.getGamesDataPaging()
 
     override suspend fun getGameDataByIdSuspend(id: String) =
