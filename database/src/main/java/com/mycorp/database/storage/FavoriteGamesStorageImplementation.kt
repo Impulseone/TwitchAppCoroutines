@@ -8,7 +8,7 @@ class FavoriteGamesStorageImplementation(private val favoriteGameDataDao: Favori
     FavoriteGamesStorage {
 
     override suspend fun checkIsFavorite(gameId: String) =
-        favoriteGameDataDao.checkExistSuspend(gameId) > 0
+        favoriteGameDataDao.checkExist(gameId) > 0
 
     override suspend fun insertFavoriteGame(gameData: GameData) = favoriteGameDataDao.insert(
             FavoriteGameDataEntity(gameData)

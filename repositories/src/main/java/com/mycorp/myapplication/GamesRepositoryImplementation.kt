@@ -8,22 +8,14 @@ class GamesRepositoryImplementation(
     private val gamesController: GamesController,
     private val gamesStorage: GamesStorage,
 ) : GamesRepository {
-    override fun fetchGamesDataList(limit: Int, offset: Int) =
-        gamesController.getDataFromNetwork(limit, offset).map {
-            it.toModel()
-        }!!
+    override suspend fun fetchGamesDataList(limit: Int, offset: Int) =
+        gamesController.getDataFromNetworkSuspend(limit, offset).toModel()
 
-    override suspend fun fetchGamesDataListSuspend(limit: Int, offset: Int) = gamesController.getDataFromNetworkSuspend(limit, offset).toModel()
+    override fun getGamesPaging() = gamesStorage.getGamesDataPaging()
 
-    override fun getGamesLimited(limit: Int, offset: Int) =
-        gamesStorage.getGamesLimited(limit, offset).map {
-            it.map { gameDataEntity ->
-                gameDataEntity.toModel()
-            }
-        }
+    override suspend fun getGameDataByIdSuspend(id: String) =
+        gamesStorage.getGameDataEntityByIdSuspend(id).toModel()
 
-    override suspend fun getGameDataByIdSuspend(id: String) = gamesStorage.getGameDataEntityByIdSuspend(id).toModel()
-
-    override fun insertGamesData(gameDataList: List<GameData>) =
-        gamesStorage.insertGamesData(gamesData = gameDataList)
+    override suspend fun insertGamesDataSuspend(gameDataList: List<GameData>) =
+        gamesStorage.insertGamesDataSuspend(gameDataList)
 }
