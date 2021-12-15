@@ -22,13 +22,12 @@ class TopGamesRemoteMediator(
         state: PagingState<Int, GameDataEntity>
     ): MediatorResult {
 
-        val pageKeyData = getKeyPageData(loadType, state)
-        val page = when (pageKeyData) {
-            is MediatorResult.Success -> return pageKeyData
-            else -> pageKeyData as Int
-        }
-
         return try {
+            val pageKeyData = getKeyPageData(loadType, state)
+            val page = when (pageKeyData) {
+                is MediatorResult.Success -> return pageKeyData
+                else -> pageKeyData as Int
+            }
             val response = gamesRepository.fetchGamesDataList(state.config.pageSize, page)
             val isEndOfList = response.isEmpty()
             if (loadType == LoadType.REFRESH) {
@@ -42,7 +41,7 @@ class TopGamesRemoteMediator(
             }
             remoteKeysStorage.insertAll(keys)
             gamesRepository.insertGamesDataSuspend(response)
-            MediatorResult.Success(response.isEmpty())
+            MediatorResult.Success(isEndOfList)
         } catch (exception: IOException) {
             MediatorResult.Error(exception)
         } catch (exception: HttpException) {
