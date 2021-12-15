@@ -42,7 +42,7 @@ class TopGamesRemoteMediator(
             }
             remoteKeysStorage.insertAll(keys)
             gamesRepository.insertGamesDataSuspend(response)
-            MediatorResult.Success(true)
+            MediatorResult.Success(response.isEmpty())
         } catch (exception: IOException) {
             MediatorResult.Error(exception)
         } catch (exception: HttpException) {

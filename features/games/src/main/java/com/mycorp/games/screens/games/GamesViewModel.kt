@@ -28,9 +28,9 @@ class GamesViewModel(
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
-                prefetchDistance = 6,
+                prefetchDistance = 10,
                 enablePlaceholders = false,
-                initialLoadSize = 20
+                initialLoadSize = 30
             ),
             pagingSourceFactory = pagingSourceFactory,
             remoteMediator = TopGamesRemoteMediator(gamesRepository, remoteKeysStorage)
