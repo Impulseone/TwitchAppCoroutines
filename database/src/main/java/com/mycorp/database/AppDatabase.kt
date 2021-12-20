@@ -7,7 +7,7 @@ import com.mycorp.database.dao.*
 import com.mycorp.database.entities.*
 
 @Database(
-    entities = [GameDataEntity::class, FollowerInfoEntity::class, FavoriteGameDataEntity::class, GameFollowersEntity::class, RemoteKeys::class],
+    entities = [GameDataEntity::class, FollowerInfoEntity::class, FavoriteGameDataEntity::class, GameFollowersEntity::class],
     version = 3,
     exportSchema = false
 )
@@ -21,6 +21,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract val favoriteGameDataDao: FavoriteGameDataDao
 
     abstract val gameFollowersDao: GameFollowersDao
-
-    abstract val remoteKeysDao: RemoteKeysDao
 }

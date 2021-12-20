@@ -20,11 +20,9 @@ val dbModule = module {
     single<GamesStorage> { GamesStorageImplementation(get()) }
     single<FollowersStorage> { FollowersStorageImplementation(get(), get()) }
     single<FavoriteGamesStorage> { FavoriteGamesStorageImplementation(get()) }
-    single<RemoteKeysStorage> { RemoteKeysStorageImplementation(get()) }
 
     single { get<AppDatabase>().gameDataDao }
     single { get<AppDatabase>().followersDao }
     single { get<AppDatabase>().favoriteGameDataDao }
     single { get<AppDatabase>().gameFollowersDao }
-    single { get<AppDatabase>().remoteKeysDao }
 }
