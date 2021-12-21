@@ -50,10 +50,10 @@ class GamesFragment : BaseFragment<GamesViewModel>(R.layout.fragment_games), OnB
             pagingAdapter!!.addLoadStateListener {
                 if (it.refresh is LoadState.Error) {
                     dbJob?.cancel()
-                    dbJob = collectFlowSuspend(viewModel.getFlow(GamesSourceType.DATABASE)){
-                            binding.progressIndicator.isVisible = false
-                            pagingAdapter?.submitData(it)
-                        }
+                    dbJob = collectFlowSuspend(viewModel.getFlow(GamesSourceType.DATABASE)) {
+                        binding.progressIndicator.isVisible = false
+                        pagingAdapter?.submitData(it)
+                    }
                 }
             }
             gamesRv.apply {

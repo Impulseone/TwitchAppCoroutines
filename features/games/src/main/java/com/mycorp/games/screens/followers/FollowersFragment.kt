@@ -38,8 +38,8 @@ class FollowersFragment : BaseFragment<FollowersViewModel>(R.layout.fragment_fol
     override fun bindVm() {
         super.bindVm()
         collectFlowSuspend(viewModel.followersFlow) {
-            binding.progressIndicator.isVisible = (it.progressIndicatorVisibility)
-            followersAdapter?.submitList(it.data)
+            binding.progressIndicator.isVisible = false
+            followersAdapter?.submitList(it)
         }
     }
 }
