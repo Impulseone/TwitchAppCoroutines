@@ -14,9 +14,9 @@ class GamesStorageImplementation(
 
     override suspend fun deleteAllGames() = gameDataDao.deleteAll()
 
-    override suspend fun getGameDataEntityByIdSuspend(id: String) =
+    override suspend fun getGameDataEntityById(id: String) =
         gameDataDao.getGameByIdSuspend(id)
 
-    override suspend fun insertGamesDataSuspend(gamesData: List<GameData>) =
-        gameDataDao.insertAllSuspend(gamesData.map { GameDataEntity(it) })
+    override suspend fun insertGamesData(gamesData: List<GameData>) =
+        gameDataDao.insertAll(gamesData.map { GameDataEntity(it) })
 }

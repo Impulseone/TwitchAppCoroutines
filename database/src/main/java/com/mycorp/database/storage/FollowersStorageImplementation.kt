@@ -5,53 +5,24 @@ import com.mycorp.database.dao.GameFollowersDao
 import com.mycorp.database.entities.FollowerInfoEntity
 import com.mycorp.database.entities.GameFollowersEntity
 import com.mycorp.model.FollowerInfo
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class FollowersStorageImplementation(
     private val followersDao: FollowersDao,
     private val gameFollowersDao: GameFollowersDao
 ) : FollowersStorage {
 
-    override fun getFollowersByGameId(gameId: String): Single<List<FollowerInfo>> {
-        return Single.just(gameId).flatMap {
-            gameFollowersDao.getGameFollowersById(it).map { entity ->
-                entity.followersId
-            }
-        }.flatMap { followersId ->
-            followersDao.getByIds(followersId).map { followerEntities ->
-                followerEntities.map {
-                    it.toModel()
-                }
-            }
-        }
-    }
-
-    override suspend fun getFollowersByGameIdSuspend(gameId: String): List<FollowerInfo> {
-        val followersId = gameFollowersDao.getGameFollowersByIdSuspend(gameId).followersId
-        return followersDao.getByIdsSuspend(followersId).map {
+    override suspend fun getFollowersByGameId(gameId: String): List<FollowerInfo> {
+        val followersId = gameFollowersDao.getGameFollowersById(gameId).followersId
+        return followersDao.getByIds(followersId).map {
             it.toModel()
         }
     }
 
-    override fun insertFollowersData(
-        followersData: List<FollowerInfo>,
-        gameId: String
-    ): Completable {
-        gameFollowersDao.insert(GameFollowersEntity(followersData, gameId))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, {}).dispose()
-        return followersDao.insertAll(followersData.map { FollowerInfoEntity(it) })
-    }
-
-    override suspend fun insertFollowersDataSuspend(
+    override suspend fun insertFollowersData(
         followersData: List<FollowerInfo>,
         gameId: String
     ) {
-        gameFollowersDao.insertSuspend((GameFollowersEntity(followersData, gameId)))
-        followersDao.insertAllSuspend(followersData.map { FollowerInfoEntity(it) })
+        gameFollowersDao.insert((GameFollowersEntity(followersData, gameId)))
+        followersDao.insertAll(followersData.map { FollowerInfoEntity(it) })
     }
 }

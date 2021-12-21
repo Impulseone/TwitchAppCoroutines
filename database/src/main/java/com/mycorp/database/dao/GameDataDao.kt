@@ -2,7 +2,6 @@ package com.mycorp.database.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -12,7 +11,7 @@ import com.mycorp.database.entities.GameDataEntity
 interface GameDataDao {
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertAllSuspend(objects: List<GameDataEntity>)
+    suspend fun insertAll(objects: List<GameDataEntity>)
 
     @Query("DELETE FROM GameDataEntity")
     suspend fun deleteAll()

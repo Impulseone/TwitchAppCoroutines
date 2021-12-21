@@ -1,15 +1,10 @@
 package com.mycorp.common.fragment
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.mycorp.common.R
 import com.mycorp.common.viewModel.BaseViewModel
-import com.mycorp.navigation.BaseNavigationFlow
 import com.mycorp.navigation.ToFlowNavigatable
 
 @SuppressLint("ResourceType")

@@ -7,6 +7,6 @@ import com.mycorp.model.GameData
 interface GamesStorage {
     fun getGamesDataPaging(): PagingSource<Int, GameDataEntity>
     suspend fun deleteAllGames()
-    suspend fun getGameDataEntityByIdSuspend(id: String): GameDataEntity
-    suspend fun insertGamesDataSuspend(gamesData: List<GameData>)
+    suspend fun getGameDataEntityById(id: String): GameDataEntity
+    suspend fun insertGamesData(gamesData: List<GameData>)
 }

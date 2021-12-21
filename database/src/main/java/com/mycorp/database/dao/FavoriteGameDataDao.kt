@@ -6,8 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.mycorp.database.entities.FavoriteGameDataEntity
-import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 interface FavoriteGameDataDao {
