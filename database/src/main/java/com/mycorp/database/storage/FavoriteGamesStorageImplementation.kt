@@ -6,16 +6,16 @@ import com.mycorp.model.GameData
 
 class FavoriteGamesStorageImplementation(private val favoriteGameDataDao: FavoriteGameDataDao) :
     FavoriteGamesStorage {
-    override fun checkIsFavorite(gameId: String) = favoriteGameDataDao.checkExist(gameId)
 
-    override fun insertFavoriteGame(gameData: GameData) = favoriteGameDataDao.insert(
-        FavoriteGameDataEntity(gameData)
-    )
+    override suspend fun checkIsFavorite(gameId: String) =
+        favoriteGameDataDao.checkExist(gameId) > 0
 
-    override fun deleteFavoriteByGameId(gameId: String) = favoriteGameDataDao.deleteByGameId(gameId)
+    override suspend fun insertFavoriteGame(gameData: GameData) = favoriteGameDataDao.insert(
+            FavoriteGameDataEntity(gameData)
+        )
 
-    override fun getFavoriteGames(limit: Int, offset: Int) =
-        favoriteGameDataDao.getAll(limit, offset)
+    override suspend fun deleteFavoriteByGameId(gameId: String) = favoriteGameDataDao.deleteByGameId(gameId)
 
 
+    override fun getFavoriteGamesList() = favoriteGameDataDao.getAll()
 }

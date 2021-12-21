@@ -16,7 +16,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mycorp.twitchapprxjava"
+        applicationId "com.mycorp.twitchappcoroutines"
         minSdk 21
         targetSdk 31
         versionCode 1
@@ -26,20 +26,9 @@ android {
     }
 
     buildTypes {
-        debug {
-            buildConfigField "String", "API_URL", "\"https://api.twitch.tv/\""
-            buildConfigField "String", "ACCEPT_HEADER", "\"Accept\""
-            buildConfigField "String", "CLIENT_ID", "\"Client-ID\""
-            buildConfigField "String", "ACCEPT_HEADER_VALUE", "\"application/vnd.twitchtv.v5+json\""
-            buildConfigField "String", "CLIENT_ID_HEADER_VALUE", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
-        }
+        debug {}
         release {
             minifyEnabled false
-            buildConfigField "String", "API_URL", "\"https://api.twitch.tv/\""
-            buildConfigField "String", "ACCEPT_HEADER", "\"Accept\""
-            buildConfigField "String", "CLIENT_ID", "\"Client-ID\""
-            buildConfigField "String", "ACCEPT_HEADER_VALUE", "\"application/vnd.twitchtv.v5+json\""
-            buildConfigField "String", "CLIENT_ID_HEADER_VALUE", "\"ahuoi1tl0qmqbyi8jo8nitbmuaad7w\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -64,16 +53,12 @@ dependencies {
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
 
     //ViewBinding
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$vbPropertyDelegate"
-
-    //Glide
-    implementation "com.github.bumptech.glide:glide:$glide"
-    kapt "com.github.bumptech.glide:compiler:$glide"
 
     //Koin
     implementation "io.insert-koin:koin-core:$koin"

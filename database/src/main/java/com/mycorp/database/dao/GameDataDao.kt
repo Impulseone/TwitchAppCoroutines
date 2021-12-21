@@ -1,23 +1,24 @@
 package com.mycorp.database.dao
 
-import androidx.paging.DataSource
-import androidx.room.*
+import androidx.paging.PagingSource
+import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
 import com.mycorp.database.entities.GameDataEntity
-import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 interface GameDataDao {
+
     @Insert(onConflict = REPLACE)
-    fun insertAll(objects: List<GameDataEntity>): Completable
+    suspend fun insertAll(objects: List<GameDataEntity>)
+
+    @Query("DELETE FROM GameDataEntity")
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM GameDataEntity")
-    fun getAllGames(): DataSource.Factory<Int, GameDataEntity>
-
-    @Query("SELECT * FROM GameDataEntity limit :limit offset :offset")
-    fun getGamesLimited(limit:Int,offset:Int): Single<List<GameDataEntity>>
+    fun getAllGamesPaging(): PagingSource<Int, GameDataEntity>
 
     @Query("SELECT * FROM GameDataEntity where id=:id")
-    fun getGameById(id: String): Single<GameDataEntity>
+    suspend fun getGameByIdSuspend(id: String): GameDataEntity
 }

@@ -6,12 +6,11 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.mycorp.common.extensions.collectFlowSuspend
 import com.mycorp.common.fragment.BaseFragment
 import com.mycorp.games.R
 import com.mycorp.games.databinding.FragmentFollowersBinding
 import com.mycorp.games.screens.followers.adapter.FollowersAdapter
-import com.mycorp.navigation.BaseNavigationFlow
-import com.mycorp.navigation.MainNavigationFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FollowersFragment : BaseFragment<FollowersViewModel>(R.layout.fragment_followers) {
@@ -38,9 +37,9 @@ class FollowersFragment : BaseFragment<FollowersViewModel>(R.layout.fragment_fol
 
     override fun bindVm() {
         super.bindVm()
-        bindData(viewModel.followersLiveData()) {
-            binding.progressIndicator.isVisible = (it.progressIndicatorVisibility)
-            followersAdapter?.submitList(it.data)
+        collectFlowSuspend(viewModel.followersFlow) {
+            binding.progressIndicator.isVisible = false
+            followersAdapter?.submitList(it)
         }
     }
 }

@@ -7,11 +7,10 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.mycorp.common.extensions.collectFlow
 import com.mycorp.common.fragment.BaseFragment
 import com.mycorp.games.R
 import com.mycorp.games.databinding.FragmentGameBinding
-import com.mycorp.navigation.BaseNavigationFlow
-import com.mycorp.navigation.MainNavigationFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GameFragment :
@@ -44,22 +43,35 @@ class GameFragment :
 
     override fun bindVm() {
         super.bindVm()
+        bindGameDataInfoFlow()
+        bindIsFavoriteFlow()
+    }
+
+    private fun bindGameDataInfoFlow() {
         with(binding) {
             with(viewModel) {
-                bindData(gameLiveData) {
-                    progressIndicator.isVisible = it.progressIndicatorVisibility
-                    gameName.text = it.data?.name ?: ""
-                    Glide.with(requireContext()).load(it.data?.logoUrl).into(image)
-                }
-                bindData(followersCountData) {
+                collectFlow(gameDataInfoFlow) {
+                    progressIndicator.isVisible = false
+                    gameName.text = it.gameData.name
+                    Glide.with(requireContext()).load(it.gameData.logoUrl).into(image)
                     followersCount.text =
-                        getString(R.string.scr_game_layout_followers_tv, it)
+                        getString(
+                            R.string.scr_game_layout_followers_tv,
+                            it.followers.size.toString()
+                        )
                 }
-                bindData(favoriteResLiveData) {
+            }
+        }
+    }
+
+    private fun bindIsFavoriteFlow() {
+        with(binding) {
+            with(viewModel) {
+                collectFlow(isFavoriteFlow) {
                     like.setImageDrawable(
                         ContextCompat.getDrawable(
                             requireContext(),
-                            it
+                            if (it) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
                         )
                     )
                 }

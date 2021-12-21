@@ -1,15 +1,10 @@
 package com.mycorp.common.fragment
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.mycorp.common.R
 import com.mycorp.common.viewModel.BaseViewModel
-import com.mycorp.navigation.BaseNavigationFlow
 import com.mycorp.navigation.ToFlowNavigatable
 
 @SuppressLint("ResourceType")
@@ -25,16 +20,14 @@ abstract class BaseFragment<VM : BaseViewModel>(layoutId: Int) : Fragment(layout
 
     open fun bindVm() {
         with(viewModel) {
-            bindData(showToast) {
-                if (it != null) {
-                    val (text, length) = it
-                    Toast.makeText(requireContext(), text, length).show()
-                }
+            bindEvent(showToastEvent) {
+                val (text, length) = it
+                Toast.makeText(requireContext(), text, length).show()
             }
-            bindCommand(openScreenCommand) {
+            bindEvent(openScreenEvent) {
                 flowNavigatable.navigateToFlow(it.first, it.second)
             }
-            bindCommand(connectionExceptionCommand) {
+            bindEvent(connectionExceptionEvent) {
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.scr_base_fragment_connection_error),

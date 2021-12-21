@@ -1,25 +1,24 @@
 package com.mycorp.games.screens.game
 
-import com.mycorp.common.Data
-import com.mycorp.common.helpers.GameDataViewState
+import androidx.lifecycle.viewModelScope
 import com.mycorp.common.viewModel.BaseViewModel
-import com.mycorp.games.R
+import com.mycorp.games.GameDataInfoUseCase
 import com.mycorp.model.GameData
-import com.mycorp.games.GameDataUseCase
+import com.mycorp.model.GameDataInfo
 import com.mycorp.navigation.MainNavigationFlow
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 class GameViewModel(
-    private val gameDataUseCase: GameDataUseCase
+    private val gameDataInfoUseCase: GameDataInfoUseCase
 ) : BaseViewModel() {
 
-    private var gameId: String? = null
-    private val isFavoriteLiveData = Data<Boolean>()
+    val gameDataInfoFlow = MutableSharedFlow<GameDataInfo>()
+    val isFavoriteFlow = MutableSharedFlow<Boolean>()
 
-    val gameLiveData = Data<GameDataViewState<GameData>>()
-    val followersCountData = Data<String>()
-    val favoriteResLiveData = Data<Int>()
+    private var isFavorite: Boolean? = null
+    private var gameId: String? = null
+    private var gameData: GameData? = null
 
     fun init(gameId: String) {
         this.gameId = gameId
@@ -30,57 +29,12 @@ class GameViewModel(
         getGameData()
     }
 
-    private fun fetchGameData() {
-        gameDataUseCase
-            .fetchGameData(gameId!!)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ (isFavorite, gameData, followers) ->
-                gameLiveData.value = GameDataViewState.success(gameData)
-                isFavoriteLiveData.value = isFavorite > 0
-                favoriteResLiveData.value =
-                    if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-                followersCountData.value = followers.size.toString()
-            }, { throwable ->
-                handleException(throwable)
-            })
-            .addToSubscription()
-    }
-
-    private fun getGameData() {
-        gameDataUseCase
-            .getGameData(gameId!!)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ (isFavorite, gameData, followers) ->
-                gameLiveData.value = GameDataViewState.success(gameData)
-                isFavoriteLiveData.value = isFavorite > 0
-                favoriteResLiveData.value =
-                    if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-                followersCountData.value = followers.size.toString()
-            }, { throwable ->
-                handleException(throwable)
-            })
-            .addToSubscription()
-    }
-
     fun onLikeClicked() {
-        try {
-            if (isFavoriteLiveData.value != null) isFavoriteLiveData.value =
-                !isFavoriteLiveData.value!!
-            favoriteResLiveData.value =
-                if (isFavoriteLiveData.value!!) R.drawable.like_filled_icon else R.drawable.like_outlined_icon
-            (if (isFavoriteLiveData.value!!) {
-                gameDataUseCase.insertFavorite(gameLiveData.value?.data!!)
-            } else {
-                gameDataUseCase.deleteFavoriteById(gameId!!)
-            }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({}, {
-                    handleException(it)
-                }).addToSubscription()
-        } catch (t: Throwable) {
-            handleException(t)
+        isFavorite?.let {
+            viewModelScope.launch {
+                isFavorite = !it
+                updateFavoriteData(!it)
+            }
         }
     }
 
@@ -89,5 +43,49 @@ class GameViewModel(
             MainNavigationFlow.FollowersFlow,
             GameFragmentDirections.actionGameFragmentToFollowersFragment(gameId!!)
         )
+    }
+
+    private fun fetchGameData() {
+        gameId?.let {
+            viewModelScope.launch {
+                try {
+                    updateFlowWithDataFromSource(gameDataInfoUseCase.fetchGameDataInfo(it))
+                } catch (t: Throwable) {
+                    handleException(t)
+                }
+            }
+        }
+    }
+
+    private fun getGameData() {
+        gameId?.let {
+            viewModelScope.launch {
+                try {
+                    updateFlowWithDataFromSource(gameDataInfoUseCase.getGameDataInfo(it))
+                } catch (t: Throwable) {
+                    handleException(t)
+                }
+            }
+        }
+    }
+
+    private fun updateFlowWithDataFromSource(gameDataInfo: GameDataInfo) {
+        viewModelScope.launch {
+            gameData = gameDataInfo.gameData
+            gameDataInfoFlow.emit(gameDataInfo)
+            isFavoriteFlow.emit(gameDataInfo.isFavorite)
+        }
+        isFavorite = gameDataInfo.isFavorite
+    }
+
+    private fun updateFavoriteData(isFavorite: Boolean) {
+        viewModelScope.launch {
+            isFavoriteFlow.emit(isFavorite)
+            if (isFavorite) {
+                gameData?.let { gameDataInfoUseCase.insertFavorite(it) }
+            } else {
+                gameId?.let { gameDataInfoUseCase.deleteFavoriteById(it) }
+            }
+        }
     }
 }
