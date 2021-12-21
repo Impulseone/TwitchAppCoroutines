@@ -17,9 +17,9 @@ class GamesRepositoryImplementation(
 
     override fun getGamesPaging() = gamesStorage.getGamesDataPaging()
 
-    override suspend fun getGameDataByIdSuspend(id: String) =
+    override suspend fun getGameDataById(id: String) =
         gamesStorage.getGameDataEntityById(id).toModel()
 
-    override suspend fun insertGamesDataSuspend(gameDataList: List<GameData>) =
+    override suspend fun insertGamesData(gameDataList: List<GameData>) =
         gamesStorage.insertGamesData(gameDataList)
 }

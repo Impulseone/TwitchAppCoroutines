@@ -12,7 +12,7 @@ interface GamesRepository {
 
     fun getGamesPaging(): PagingSource<Int, GameDataEntity>
 
-    suspend fun getGameDataByIdSuspend(id: String): GameData
+    suspend fun getGameDataById(id: String): GameData
 
-    suspend fun insertGamesDataSuspend(gameDataList: List<GameData>)
+    suspend fun insertGamesData(gameDataList: List<GameData>)
 }

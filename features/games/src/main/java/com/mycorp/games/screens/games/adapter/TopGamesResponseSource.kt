@@ -18,7 +18,7 @@ class TopGamesResponseSource(
                     params.loadSize,
                     currentLoadingPageKey * keyParam
                 )
-            gamesRepository.insertGamesDataSuspend(gamesList)
+            gamesRepository.insertGamesData(gamesList)
             val gameItemsList = gamesList.map {
                 ListItemData(it.id, GameListItem(context, it))
             }
