@@ -1,7 +1,6 @@
 package com.mycorp.games.screens.games.adapter
 
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.paging.PagingDataAdapter
 import com.mycorp.common.helpers.BaseItemCallback
 import com.mycorp.model.ListItemData

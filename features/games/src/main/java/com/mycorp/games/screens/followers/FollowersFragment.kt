@@ -3,18 +3,14 @@ package com.mycorp.games.screens.followers
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.mycorp.common.extensions.collectFlowSuspend
 import com.mycorp.common.fragment.BaseFragment
 import com.mycorp.games.R
 import com.mycorp.games.databinding.FragmentFollowersBinding
 import com.mycorp.games.screens.followers.adapter.FollowersAdapter
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FollowersFragment : BaseFragment<FollowersViewModel>(R.layout.fragment_followers) {
@@ -41,14 +37,9 @@ class FollowersFragment : BaseFragment<FollowersViewModel>(R.layout.fragment_fol
 
     override fun bindVm() {
         super.bindVm()
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.followersFlow.collectLatest {
-                    binding.progressIndicator.isVisible = (it.progressIndicatorVisibility)
-                    followersAdapter?.submitList(it.data)
-                }
-            }
+        collectFlowSuspend(viewModel.followersFlow) {
+            binding.progressIndicator.isVisible = (it.progressIndicatorVisibility)
+            followersAdapter?.submitList(it.data)
         }
-
     }
 }
