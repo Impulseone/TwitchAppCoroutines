@@ -13,12 +13,12 @@ class TopGamesSourceFactory(
     private val context: Context,
     private val gamesRepository: GamesRepository
 ) {
-    fun create() = Pager(PagingConfig(pageSize = 10)) {
+    fun create() = Pager(PagingConfig(pageSize = 10, initialLoadSize = 10)) {
         TopGamesResponseSource(context, gamesRepository)
     }
 
     fun createDb() = Pager(
-        config = PagingConfig(pageSize = 10)
+        config = PagingConfig(pageSize = 10, initialLoadSize = 10)
     ) {
         gamesRepository.getGamesPaging()
     }.flow

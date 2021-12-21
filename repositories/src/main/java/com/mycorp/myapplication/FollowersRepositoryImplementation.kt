@@ -3,7 +3,6 @@ package com.mycorp.myapplication
 import com.mycorp.api.controllers.FollowersController
 import com.mycorp.database.storage.FollowersStorage
 import com.mycorp.model.FollowerInfo
-import io.reactivex.Single
 
 class FollowersRepositoryImplementation(
     private val followersController: FollowersController,
@@ -11,7 +10,7 @@ class FollowersRepositoryImplementation(
 ) : FollowersRepository {
 
     override suspend fun fetchFollowers(id: String): List<FollowerInfo> {
-        val followers = followersController.getGameItemDataFromNetworkSuspend(id).follows?.map {
+        val followers = followersController.getGameItemDataFromNetwork(id).follows?.map {
             it!!.toModel()
         }
         followers?.let { followersStorage.insertFollowersDataSuspend(it, id) }

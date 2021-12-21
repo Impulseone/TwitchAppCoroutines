@@ -16,7 +16,7 @@ class GamesViewModel(
 
     val gamesFlow = topGamesSourceFactory.create().flow.cachedIn(viewModelScope)
 
-    val gamesFlowDb: Flow<PagingData<ListItemData<GameListItem>>> = topGamesSourceFactory.createDb().cachedIn(viewModelScope)
+    val gamesFlowDb = topGamesSourceFactory.createDb().cachedIn(viewModelScope)
 
     fun gameItemClicked(gameId: String) {
         navigateTo(

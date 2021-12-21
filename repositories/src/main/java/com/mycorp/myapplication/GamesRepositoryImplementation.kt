@@ -9,7 +9,7 @@ class GamesRepositoryImplementation(
     private val gamesStorage: GamesStorage,
 ) : GamesRepository {
     override suspend fun fetchGamesDataList(limit: Int, offset: Int) =
-        gamesController.getDataFromNetworkSuspend(limit, offset).toModel()
+        gamesController.getDataFromNetwork(limit, offset).toModel()
 
     override suspend fun deleteAllGames() {
         gamesStorage.deleteAllGames()
