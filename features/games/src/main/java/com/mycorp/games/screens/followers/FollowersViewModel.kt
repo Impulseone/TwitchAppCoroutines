@@ -1,7 +1,6 @@
 package com.mycorp.games.screens.followers
 
 import androidx.lifecycle.viewModelScope
-import com.mycorp.common.helpers.GameDataViewState
 import com.mycorp.common.viewModel.BaseViewModel
 import com.mycorp.model.FollowerInfo
 import com.mycorp.model.ListItemData
@@ -15,7 +14,7 @@ class FollowersViewModel(
 
     private var gameId: String? = null
 
-    val followersFlow = MutableSharedFlow<GameDataViewState<List<ListItemData<FollowerInfo>>>>()
+    val followersFlow = MutableSharedFlow<List<ListItemData<FollowerInfo>>>()
 
     fun init(gameId: String) {
         this.gameId = gameId
@@ -31,11 +30,9 @@ class FollowersViewModel(
             viewModelScope.launch {
                 try {
                     val followers = gameDataInfoUseCase.fetchGameDataInfo(it).followers
-                    followersFlow.emit(GameDataViewState.success(
-                        data = followers.map { follower ->
-                            ListItemData(follower.followerId, follower)
-                        }
-                    ))
+                    followersFlow.emit(followers.map { follower ->
+                        ListItemData(follower.followerId, follower)
+                    })
                 } catch (t: Throwable) {
                     handleException(t)
                 }
@@ -48,11 +45,10 @@ class FollowersViewModel(
             viewModelScope.launch {
                 try {
                     val followers = gameDataInfoUseCase.getGameDataInfo(it).followers
-                    followersFlow.emit(GameDataViewState.success(
-                        data = followers.map { follower ->
-                            ListItemData(follower.followerId, follower)
-                        }
-                    ))
+                    followersFlow.emit(followers.map { follower ->
+                        ListItemData(follower.followerId, follower)
+                    }
+                    )
                 } catch (t: Throwable) {
                     handleException(t)
                 }

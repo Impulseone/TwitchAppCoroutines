@@ -1,15 +1,18 @@
 package com.mycorp.myapplication
 
+import androidx.paging.PagingSource
+import com.mycorp.database.entities.GameDataEntity
 import com.mycorp.model.GameData
-import io.reactivex.Completable
-import io.reactivex.Single
 
 interface GamesRepository {
 
-    fun fetchGamesDataList(limit: Int, offset: Int): Single<List<GameData>>
+    suspend fun fetchGamesDataList(limit: Int, offset: Int): List<GameData>
 
-    fun getGamesLimited(limit: Int, offset: Int): Single<List<GameData>>
-    suspend fun getGameDataByIdSuspend(id: String): GameData
+    suspend fun deleteAllGames()
 
-    fun insertGamesData(gameDataList: List<GameData>): Completable
+    fun getGamesPaging(): PagingSource<Int, GameDataEntity>
+
+    suspend fun getGameDataById(id: String): GameData
+
+    suspend fun insertGamesData(gameDataList: List<GameData>)
 }

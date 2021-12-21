@@ -6,8 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.mycorp.database.entities.FavoriteGameDataEntity
-import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 interface FavoriteGameDataDao {
@@ -15,10 +13,7 @@ interface FavoriteGameDataDao {
     suspend fun insert(favoriteGameDataEntity: FavoriteGameDataEntity)
 
     @Query("SELECT COUNT() FROM FavoriteGameDataEntity WHERE id = :id")
-    fun checkExist(id: String): Single<Int>
-
-    @Query("SELECT COUNT() FROM FavoriteGameDataEntity WHERE id = :id")
-    suspend fun checkExistSuspend(id: String): Int
+    suspend fun checkExist(id: String): Int
 
     @Query("SELECT * FROM FavoriteGameDataEntity")
     fun getAll(): PagingSource<Int, FavoriteGameDataEntity>

@@ -47,10 +47,6 @@ dependencies {
     //Pagination
     implementation "androidx.paging:paging-runtime-ktx:$paging_v3"
 
-    //RxJava
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava"
-
     //Koin
     implementation "io.insert-koin:koin-core:$koin"
     implementation "io.insert-koin:koin-android:$koin"

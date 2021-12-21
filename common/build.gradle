@@ -36,6 +36,7 @@ android {
 dependencies {
     implementation project(path: ':model')
     implementation project(path: ':api')
+    implementation project(path: ':navigation')
     
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
@@ -44,16 +45,6 @@ dependencies {
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
-
-    //RxJava
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava"
-
-    //Pagination
-    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
-    implementation project(path: ':navigation')
-    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
-    implementation "androidx.paging:paging-rxjava2-ktx:$paging_version"
 
     //Lifecycle
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")

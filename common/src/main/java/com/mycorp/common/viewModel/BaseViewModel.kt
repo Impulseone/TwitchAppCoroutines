@@ -3,29 +3,31 @@ package com.mycorp.common.viewModel
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.mycorp.api.dto.ConvertDtoException
-import com.mycorp.common.TCommand
 import com.mycorp.common.helpers.TAG
 import com.mycorp.navigation.BaseNavigationFlow
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val disposables = CompositeDisposable()
-
-    val showToast = TCommand<Pair<String, Int>>()
-    val openScreenCommand = TCommand<Pair<BaseNavigationFlow, NavDirections?>>()
-    val connectionExceptionCommand = TCommand<Boolean>()
+    val showToastEvent = MutableSharedFlow<Pair<String, Int>>()
+    val openScreenEvent = MutableSharedFlow<Pair<BaseNavigationFlow, NavDirections?>>()
+    val connectionExceptionEvent = MutableSharedFlow<Boolean>()
 
     fun showToast(text: String, length: Int = Toast.LENGTH_SHORT) {
-        showToast.value = text to length
+        viewModelScope.launch {
+            showToastEvent.emit(text to length)
+        }
     }
 
     fun navigateTo(flow: BaseNavigationFlow, directions: NavDirections? = null) {
-        openScreenCommand.value = flow to directions
+        viewModelScope.launch {
+            openScreenEvent.emit(flow to directions)
+        }
     }
 
     fun handleException(t: Throwable) {
@@ -35,7 +37,9 @@ abstract class BaseViewModel : ViewModel() {
             }
             is UnknownHostException -> run {
                 Log.e(TAG, t.message.toString())
-                connectionExceptionCommand.value = true
+                viewModelScope.launch {
+                    connectionExceptionEvent.emit(true)
+                }
                 getDataFromDb()
             }
             else -> {
@@ -45,14 +49,4 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     open fun getDataFromDb() {}
-
-    protected fun Disposable.addToSubscription() {
-        disposables.add(this)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.dispose()
-        disposables.clear()
-    }
 }

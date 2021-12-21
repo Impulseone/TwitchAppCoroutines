@@ -15,7 +15,7 @@ class GameDataInfoUseCaseImpl(
     private val dispatcher: CoroutineDispatcher
 ) : GameDataInfoUseCase {
     override suspend fun fetchGameDataInfo(gameId: String) = withContext(dispatcher) {
-        val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
+        val gameData = gamesRepository.getGameDataById(gameId)
         val isFavorite = favoriteGamesRepository.checkIsFavorite(gameId)
         val followers = followersRepository.fetchFollowers(gameId)
         return@withContext GameDataInfo(isFavorite, gameData, followers)
@@ -23,7 +23,7 @@ class GameDataInfoUseCaseImpl(
 
     override suspend fun getGameDataInfo(gameId: String) =
         withContext(dispatcher) {
-            val gameData = gamesRepository.getGameDataByIdSuspend(gameId)
+            val gameData = gamesRepository.getGameDataById(gameId)
             val isFavorite = favoriteGamesRepository.checkIsFavorite(gameId)
             val followers = followersRepository.getFollowersByGameId(gameId)
             return@withContext GameDataInfo(isFavorite, gameData, followers)
