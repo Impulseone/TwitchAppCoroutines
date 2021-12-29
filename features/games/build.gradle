@@ -45,26 +45,21 @@ dependencies {
     implementation project(path: ':repositories')
     implementation project(path: ':features:rating')
     implementation project(path: ':navigation')
-    
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation project(path: ':database')
+
+    implementation "androidx.legacy:legacy-support-v4:$legacy_support"
+    implementation "androidx.core:core-ktx:$core_ktx"
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout"
 
     //Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle")
 
     //ViewBinding
     implementation "com.github.kirich1409:viewbindingpropertydelegate:$vbPropertyDelegate"
-    implementation project(path: ':database')
-
-    //Testing
-    testImplementation "junit:junit:$junit"
-    androidTestImplementation "androidx.test.ext:junit:$test_junit"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 
     //Glide
     implementation "com.github.bumptech.glide:glide:$glide"
@@ -74,6 +69,8 @@ dependencies {
     implementation "io.insert-koin:koin-core:$koin"
     implementation "io.insert-koin:koin-android:$koin"
     implementation "io.insert-koin:koin-android-compat:$koin"
+    testImplementation "io.insert-koin:koin-test:$koin"
+    testImplementation("io.insert-koin:koin-test-junit4:$koin")
 
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
@@ -83,4 +80,20 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$paging_v3"
     testImplementation "androidx.paging:paging-common-ktx:$paging_v3"
     implementation "androidx.paging:paging-rxjava2-ktx:$paging_v3"
+
+    // Local Unit Tests
+    implementation "androidx.test:core:$android_test_core"
+    testImplementation "junit:junit:$junit"
+    testImplementation "androidx.arch.core:core-testing:$android_core_testing"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_coroutines_test"
+    testImplementation "com.google.truth:truth:$truth"
+    testImplementation "org.mockito:mockito-core:$mockito"
+    testImplementation "app.cash.turbine:turbine:$turbine"
+
+    // Instrumented Unit Tests
+    androidTestImplementation "junit:junit:$junit"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_coroutines_test"
+    androidTestImplementation "androidx.arch.core:core-testing:$android_core_testing"
+    androidTestImplementation "com.google.truth:truth:$truth"
+    androidTestImplementation "androidx.test.ext:junit:$test_junit"
 }
